@@ -45,5 +45,5 @@ dependencies {
     compile "mysql:mysql-connector-java:8.0.15"
     compile 'com.alibaba:fastjson:1.2.61'
     // https://mvnrepository.com/artifact/online.sanen/cdm-all
-    compile group: 'online.sanen', name: 'cdm-all', version: '2.2.5'
+    compile group: 'online.sanen', name: 'cdm-all', version: '2.2.5' //https://github.com/sanen-projects/cdm/wiki
 }

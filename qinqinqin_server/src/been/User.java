@@ -13,7 +13,15 @@ public class User {
     @NoInsert
     private int uid;
     private String name;
+    private String passWd;
 
+    public String getPassWd() {
+        return passWd;
+    }
+
+    public void setPassWd(String passWd) {
+        this.passWd = passWd;
+    }
 
     public int getUid() {
         return uid;

@@ -1,5 +1,6 @@
 package com.blabla
 
+import api.UserDao
 import been.User
 import com.alibaba.fastjson.JSON
 import com.blabla.api.userRoute
@@ -21,6 +22,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.http.ContentType.Application.Json
 import sun.rmi.runtime.Log
+import kotlin.coroutines.suspendCoroutine
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -42,22 +44,34 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
 
-        userRoute(this)
+     //   userRoute(this)
 
         get("/") {
 
             val list = JdbcConnection.bootstrap.queryTable<User>(User::class.java).list(User::class.java)
             var s=""
-
-//            list.asIterable().forEach {
-//
-//            }
             list.forEach{
                 s+it.name
                 s+"  "+it.uid
             }
             call.respondText(JSON.toJSONString(list), Json)
         }
+
+
+        get("/listUser") {
+            suspendCoroutine<Any> {
+                UserDao().listUser(call,it)
+            }
+        }
+
+
+
+        post("/login") {
+            suspendCoroutine<Any> {
+                UserDao().login(call,it)
+            }
+        }
+
 
         get("/html-dsl") {
             call.respondHtml {

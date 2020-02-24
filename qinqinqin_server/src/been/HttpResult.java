@@ -11,6 +11,12 @@ public class HttpResult<T> {
         this.msg = msg;
     }
 
+
+    public HttpResult( int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
     public T getData() {
         return data;
     }
