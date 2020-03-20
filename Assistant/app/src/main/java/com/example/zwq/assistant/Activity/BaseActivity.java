@@ -1,33 +1,34 @@
-package com.example.zwq.assistant;
+package com.example.zwq.assistant.Activity;
 
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 
+import com.example.zwq.assistant.util.Handler.CommonDoHandler;
+import com.example.zwq.assistant.util.Handler.CommonHandler;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener, CommonDoHandler {
     protected CommonHandler<BaseActivity> uiHandler;
-    protected HttpAction httpAction;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        httpAction =HttpAction.getInstance();
+
         init();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
     }
 
     @Override

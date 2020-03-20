@@ -1,4 +1,9 @@
 package com.example.zwq.assistant.util.Handler;
 
-public class CommonDoHandler {
+import android.os.Message;
+
+public interface CommonDoHandler {
+    void doHandler(Message msg);
 }
+
+
