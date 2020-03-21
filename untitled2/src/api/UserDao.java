@@ -60,7 +60,7 @@ public class UserDao extends BaseDao {
         }
     }
 
-    
+
     public void info(ApplicationCall call, Continuation continuation){
         //请求
         ApplicationRequest request = call.getRequest();
@@ -77,14 +77,12 @@ public class UserDao extends BaseDao {
         String address = request.getQueryParameters().get("address");
         String birthday = request.getQueryParameters().get("birthday");
         String stuType = request.getQueryParameters().get("stuType");
-        String passWd = request.getQueryParameters().get("passWd");
         int id1=Integer.parseInt(id);
         int sex1 = Integer.parseInt(sex);
         int classID1 = Integer.parseInt(classID);
         int number1 = Integer.parseInt(number);
         int stuType1 = Integer.parseInt(stuType);
         User user = new User();
-        user.setPassWd(passWd);
         user.setId(id1);
         user.setStuID(stuID);
         user.setName(name);
@@ -110,8 +108,8 @@ public class UserDao extends BaseDao {
 //                    ,"address","birthday","stuType1").insert();
 //            writeGsonResponds(JSON.toJSONString(new HttpResult<User>(user,200,"修改成功")),call,continuation);
 //        }
-        JdbcConnection.bootstrap.query(user).setFields("passWd","college","className","classID","number","parentPho","identity"
-                ,"address","birthday","stuType1","stuID","name","sex").update();
+        JdbcConnection.bootstrap.query(user).setFields("college","className","classID","number","parentPho","identity"
+                ,"address","birthday","stuType","stuID","name","sex").update();
         writeGsonResponds(JSON.toJSONString(new HttpResult<User>(user,200,"修改成功")),call,continuation);
 
     }
