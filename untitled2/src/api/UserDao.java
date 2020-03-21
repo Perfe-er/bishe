@@ -60,6 +60,7 @@ public class UserDao extends BaseDao {
         }
     }
 
+    
     public void info(ApplicationCall call, Continuation continuation){
         //请求
         ApplicationRequest request = call.getRequest();
