@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.zwq.assistant.R;
 import com.example.zwq.assistant.Service.RetrofitManager;
@@ -77,7 +78,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
 
                             @Override
                             public void onError(Throwable e) {
-
+                                Toast.makeText(LoginActivity.this,"用户名密码错误",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override

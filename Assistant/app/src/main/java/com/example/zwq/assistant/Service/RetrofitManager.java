@@ -1,6 +1,8 @@
 package com.example.zwq.assistant.Service;
 
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -42,7 +44,7 @@ public class RetrofitManager {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(AppConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .build();
     }
