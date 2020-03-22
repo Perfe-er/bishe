@@ -27,6 +27,17 @@ public class User {
     private String birthday;
     private int stuType;  //0：普通学生，1：班委，3：导员
 
+    private String token;
+
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public String getPassWd() {
         return passWd;
     }

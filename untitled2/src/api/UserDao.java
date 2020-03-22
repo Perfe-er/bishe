@@ -96,21 +96,18 @@ public class UserDao extends BaseDao {
         user.setAddress(address);
         user.setBirthday(birthday);
         user.setStuType(stuType1);
-//        List<User> users = JdbcConnection.bootstrap.queryTable(User.class).addCondition(
-//                c->{
-//                    c.add(C.eq("id",id));
-//                }
-//        ).list(User.class);
-//        if (users.isEmpty()){
-//            writeGsonResponds(JSON.toJSONString(new HttpResult(400,"请登录后操作")),call,continuation);
-//        }else {
-//            JdbcConnection.bootstrap.query(user).setFields("stuID","name","sex","college","className","classID","number","parentPho","identity"
-//                    ,"address","birthday","stuType1").insert();
-//            writeGsonResponds(JSON.toJSONString(new HttpResult<User>(user,200,"修改成功")),call,continuation);
-//        }
-        JdbcConnection.bootstrap.query(user).setFields("college","className","classID","number","parentPho","identity"
+        List<User> users = JdbcConnection.bootstrap.queryTable(User.class).addCondition(
+                c->{
+                    c.add(C.eq("id",id));
+                }
+        ).list(User.class);
+        if (users.isEmpty()){
+            writeGsonResponds(JSON.toJSONString(new HttpResult(400,"该用户不存在")),call,continuation);
+        }else {
+            JdbcConnection.bootstrap.query(user).setFields("college","className","classID","number","parentPho","identity"
                 ,"address","birthday","stuType","stuID","name","sex").update();
-        writeGsonResponds(JSON.toJSONString(new HttpResult<User>(user,200,"修改成功")),call,continuation);
+            writeGsonResponds(JSON.toJSONString(new HttpResult<User>(user,200,"修改成功")),call,continuation);
+        }
 
     }
 

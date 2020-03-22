@@ -10,16 +10,16 @@ import online.sanen.cdm.template.jpa.Table;
 public class AnnoReceive {
     @Id
     @NoInsert
-    private int anreID;
+    private int id;
     private int classID;
     private int annoID;
 
-    public int getAnreID() {
-        return anreID;
+    public int getId() {
+        return id;
     }
 
-    public void setAnreID(int anreID) {
-        this.anreID = anreID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getClassID() {

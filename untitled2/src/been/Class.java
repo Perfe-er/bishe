@@ -10,16 +10,16 @@ import online.sanen.cdm.template.jpa.Table;
 public class Class {
     @Id
     @NoInsert
-    private int classId;
+    private int classID;
     private String className;
-    private int id;
+    private int founderId;
 
-    public int getClassId() {
-        return classId;
+    public int getClassID() {
+        return classID;
     }
 
-    public void setClassId(int classId) {
-        this.classId = classId;
+    public void setClassID(int classID) {
+        this.classID = classID;
     }
 
     public String getClassName() {
@@ -30,11 +30,12 @@ public class Class {
         this.className = className;
     }
 
-    public int getId() {
-        return id;
+
+    public int getFounderId() {
+        return founderId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setFounderId(int founderId) {
+        this.founderId = founderId;
     }
 }

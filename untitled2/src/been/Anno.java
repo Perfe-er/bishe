@@ -1,9 +1,8 @@
 package been;
 
-import online.sanen.cdm.template.jpa.Id;
-import online.sanen.cdm.template.jpa.NoInsert;
-import online.sanen.cdm.template.jpa.Priority;
-import online.sanen.cdm.template.jpa.Table;
+import online.sanen.cdm.template.jpa.*;
+
+import java.util.List;
 
 @Table(name = "anno")
 @Priority
@@ -13,9 +12,10 @@ public class Anno {
     private int annoID;
     private String annoTitle;
     private String content;
-    private int id;
-    private String releDate;
-
+    private int releaseID;
+    private long releDate;
+    @NoDB
+    private List<String> classIds;
     public int getAnnoID() {
         return annoID;
     }
@@ -40,19 +40,27 @@ public class Anno {
         this.content = content;
     }
 
-    public String getReleDate() {
+    public int getReleaseID() {
+        return releaseID;
+    }
+
+    public void setReleaseID(int releaseID) {
+        this.releaseID = releaseID;
+    }
+
+    public long getReleDate() {
         return releDate;
     }
 
-    public void setReleDate(String releDate) {
+    public void setReleDate(long releDate) {
         this.releDate = releDate;
     }
 
-    public int getId() {
-        return id;
+    public List<String> getClassIds() {
+        return classIds;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setClassIds(List<String> classIds) {
+        this.classIds = classIds;
     }
 }
