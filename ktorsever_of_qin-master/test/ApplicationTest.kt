@@ -1,6 +1,5 @@
-package com.example
+package com.hapi
 
-import com.hapi.module
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -9,6 +8,13 @@ import io.ktor.http.*
 import io.ktor.html.*
 import kotlinx.html.*
 import kotlinx.css.*
+import io.ktor.sessions.*
+import io.ktor.websocket.*
+import io.ktor.http.cio.websocket.*
+import java.time.*
+import io.ktor.auth.*
+import io.ktor.gson.*
+import io.ktor.features.*
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import kotlin.test.*

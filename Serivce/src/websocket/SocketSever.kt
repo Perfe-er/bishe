@@ -1,4 +1,4 @@
-package com.hapi
+package websocket
 
 import been.*
 import com.alibaba.fastjson.JSON

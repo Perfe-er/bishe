@@ -1,22 +1,24 @@
 package been;
 
-import online.sanen.cdm.template.jpa.Id;
-import online.sanen.cdm.template.jpa.NoInsert;
-import online.sanen.cdm.template.jpa.Priority;
-import online.sanen.cdm.template.jpa.Table;
+import online.sanen.cdm.template.jpa.*;
+
+import java.util.List;
 
 @Table(name = "awards")
 @Priority
-public class Awards {
+public class AwardsPub {
     @Id
     @NoInsert
     private int awardsID;
-    private int id;
+    private int releaseID;
     private String awardsTitle;
     private String awardsContent;
     private String word;
-    private String startTime;
-    private String endTime;
+    private long startTime;
+    private long endTime;
+
+    @NoDB
+    private List<String> toClass;
 
     public int getAwardsID() {
         return awardsID;
@@ -50,27 +52,35 @@ public class Awards {
         this.word = word;
     }
 
-    public String getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
 
-    public int getId() {
-        return id;
+    public int getReleaseID() {
+        return releaseID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setReleaseID(int releaseID) {
+        this.releaseID = releaseID;
+    }
+
+    public List<String> getToClass() {
+        return toClass;
+    }
+
+    public void setToClass(List<String> toClass) {
+        this.toClass = toClass;
     }
 }

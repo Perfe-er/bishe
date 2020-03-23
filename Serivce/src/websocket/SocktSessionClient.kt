@@ -1,4 +1,4 @@
-package com.hapi
+package websocket
 
 import io.ktor.http.cio.websocket.DefaultWebSocketSession
 

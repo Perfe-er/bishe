@@ -16,6 +16,7 @@ import com.example.zwq.assistant.Service.RetrofitManager;
 import com.example.zwq.assistant.Service.UserInfo;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.User;
+import com.mob.MobSDK;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -35,6 +36,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        MobSDK.submitPolicyGrantResult(true, null);
         initView();
     }
 
@@ -91,7 +93,8 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
 
                 break;
             case R.id.tvRegister:
-
+                    intent = new Intent(this,RegisterActivity.class);
+                    startActivity(intent);
                 break;
         }
 
@@ -100,8 +103,10 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
     private void changeBtnBg() {
         if (etPassWd.getText().length()>6 && etPhone.getText().length()>10) {
             btnLogin.setBackgroundResource(R.drawable.shape_login);
+            btnLogin.setEnabled(true);
         } else {
             btnLogin.setBackgroundResource(R.drawable.shape_login_no);
+            btnLogin.setEnabled(false);
         }
     }
 

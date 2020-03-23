@@ -1,4 +1,4 @@
-package com.hapi
+package websocket
 
 class KtSession (val uid:Int){
 }

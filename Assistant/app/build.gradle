@@ -6,7 +6,7 @@ apply plugin: 'com.mob.sdk'
 MobSDK {
     appKey "2e7743f3d3cca"//申请Mob的appkey
     appSecret "42f8e522e0085504ba8593b1b809b65c"//申请Mob的AppSecret
-    SMSSDK {}
+    SMSSDK { gui false }
 }
 
 android {
