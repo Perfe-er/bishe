@@ -1,2 +1,0 @@
-include ':app', ':happy_vm', ':vmAnnotation', ':base_frame', ':happy_dialog', ':vmBinding'
-rootProject.name='xiaozhuzai'

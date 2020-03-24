@@ -26,10 +26,10 @@ public interface UserInfo {
      * 注册
      * @param phone 手机号
      * @param passWd 密码
-     * @param areaCode 验证码
+
      * @return
      */
     @FormUrlEncoded
     @POST("/register")
-    Observable<HttpResult<User>> register(@Field("phone") String phone,@Field("passWd") String passWd,@Field("areaCode") String areaCode);
+    Observable<HttpResult<User>> register(@Field("phone") String phone,@Field("passWd") String passWd);
 }
