@@ -1,7 +1,9 @@
 package com.example.zwq.assistant.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -12,32 +14,43 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zwq.assistant.R;
-import com.example.zwq.assistant.Service.RetrofitManager;
+import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.Service.UserInfo;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.User;
+import com.example.zwq.assistant.manager.UserInfoManager;
 import com.mob.MobSDK;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-public class LoginActivity extends BaseActivity implements TextWatcher {
 
+public class LoginActivity extends BaseActivity implements TextWatcher {
     EditText etPhone;
     EditText etPassWd;
     CheckBox cbPassWd;
     Button btnLogin;
     TextView tvRegister;
     TextView tvForget;
+    final String REMEMBER_PWD_PREF = "rememberPwd";
+    final String ACCOUNT_PREF = "account";
+    final String PASSWORD_PREF = "password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         MobSDK.submitPolicyGrantResult(true, null);
         initView();
+
+        final SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isRemember = preference.getBoolean(REMEMBER_PWD_PREF, false);
+        if (isRemember) {
+            etPhone.setText(preference.getString(ACCOUNT_PREF, ""));
+            etPassWd.setText(preference.getString(PASSWORD_PREF, ""));
+            cbPassWd.setChecked(true);
+        }
     }
 
     public void initView(){
@@ -57,11 +70,12 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
 
     public void onClick(View view){
         super.onClick(view);
-        Intent intent;
+        final Intent intent;
         switch (view.getId()){
             case R.id.btnLogin:
-                String account = etPhone.getText().toString();
-                String pwd = etPassWd.getText().toString();
+                final SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
+                final String account = etPhone.getText().toString();
+                final String pwd = etPassWd.getText().toString();
                 RetrofitManager.getInstance()
                         .createReq(UserInfo.class)
                         .login(account,pwd)
@@ -75,12 +89,24 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
 
                             @Override
                             public void onNext(HttpResult<User> userHttpResult) {
-
+                                SharedPreferences.Editor editor = preference.edit();
+                                if (cbPassWd.isChecked()) {//记住账号与密码
+                                    editor.putBoolean(REMEMBER_PWD_PREF, true);
+                                    editor.putString(ACCOUNT_PREF,account);
+                                    editor.putString(PASSWORD_PREF, pwd);
+                                } else {//清空数据
+                                    editor.clear();
+                                }
+                                editor.apply();
+                                UserInfoManager.getInstance().onLogin(userHttpResult.getData());
+                                Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                                Intent intent1 = new Intent(LoginActivity.this,TabMenuActivity.class);
+                                startActivity(intent1);
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Toast.makeText(LoginActivity.this,"用户名密码错误",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override

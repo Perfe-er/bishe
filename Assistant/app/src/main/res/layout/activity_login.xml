@@ -11,7 +11,7 @@
         android:id="@+id/etPhone"
         android:layout_width="240dp"
         android:layout_height="50dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="140dp"
         android:background="#F5F3F3"
         android:hint="请输入手机号"
         android:phoneNumber="true"
@@ -69,21 +69,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="86dp"
-        android:layout_marginTop="183dp"
+        android:layout_marginBottom="91dp"
         android:text="注册账号"
         android:textColor="#0B4BBD"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvForget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="183dp"
         android:layout_marginEnd="85dp"
+        android:layout_marginBottom="91dp"
         android:text="忘记密码"
         android:textColor="#0B4BBD"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

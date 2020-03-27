@@ -3,19 +3,12 @@ package api
 import been.HttpResult
 import been.User
 import com.alibaba.fastjson.JSON
-
-
 import db.JdbcConnection
 import io.ktor.application.ApplicationCall
-import io.ktor.http.Parameters
-import io.ktor.request.ApplicationRequest
 import io.ktor.request.receiveParameters
-import kotlin.coroutines.Continuation
 import online.sanen.cdm.api.condition.C
 import org.apache.http.util.TextUtils
 import websocket.Auth
-
-import java.util.ArrayList
 
 class UserDao : BaseDao() {
 
@@ -84,7 +77,7 @@ class UserDao : BaseDao() {
         //客户端参数
         val passWd = request["passWd"]
 
-        println("login\${phone} \${passWd}$phone $passWd")
+        println("login  \${phone} \${passWd}$phone $passWd")
 
         val users = JdbcConnection.bootstrap.queryTable(User::class.java).addCondition { c ->
             c.add(C.eq("phone", phone))

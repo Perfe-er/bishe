@@ -1,4 +1,4 @@
-package com.hapi
+package com.example
 
 import api.AnnoDao
 import api.ClassDao
@@ -31,8 +31,7 @@ import websocket.KtSession
 import websocket.SocketSever
 import websocket.SocktSessionClient
 import java.io.File
-import java.util.*
-import kotlin.coroutines.suspendCoroutine
+import java.lang.Exception
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -50,7 +49,8 @@ val awardsDao by lazy { AwardsDao() }
 fun Application.module(testing: Boolean = false) {
     JdbcConnection.initConnection()
     val verifier = Auth.makeJwtVerifier()
-    install(Authentication) {a
+    install(Authentication) {
+        a
         jwt {
             verifier(verifier)
             validate {
@@ -102,12 +102,7 @@ fun Application.module(testing: Boolean = false) {
                 call.respondText { "name: ${s.uid}" }
             }
         }
-
-        get("tokenTest") {
-            val t = Auth.sign("满家乐")["token"]
-            call.respondText("HELLO WORLD! ${t}", contentType = ContentType.Text.Plain)
-
-        }
+        
 
 
         get("/html-dsl") {
@@ -168,14 +163,16 @@ fun Application.module(testing: Boolean = false) {
             mSocketSever.incoming(client)
             try {
                 while (true) {
-                    while (true) {
-                        val frame = incoming.receive()
+
+                    val frame = incoming.receive()
 //                        if (frame is Frame.Text) {
 //                            send(Frame.Text("{$uid}Client said: " + frame.readText()))
 //                        }
-                        mSocketSever.onRecev(client, frame)
-                    }
+                    mSocketSever.onRecev(client, frame)
+
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             } finally {
                 mSocketSever.clients -= client
             }
@@ -201,18 +198,18 @@ fun Application.module(testing: Boolean = false) {
          */
         get("/getUserInfoById") {
 
-                userDao.getUserInfoById(call)
+            userDao.getUserInfoById(call)
         }
 
 
         post("/register") {
-                userDao.register(call)
+            userDao.register(call)
         }
 
 
 
         post("/login") {
-                userDao.login(call)
+            userDao.login(call)
         }
 
 
@@ -220,7 +217,7 @@ fun Application.module(testing: Boolean = false) {
         authenticate {
             route("/infoEdit") {
                 post {
-                        userDao.infoEdit(call)
+                    userDao.infoEdit(call)
                 }
             }
         }
@@ -229,7 +226,7 @@ fun Application.module(testing: Boolean = false) {
         authenticate {
             route("/modifyPassWd") {
                 post {
-                        userDao.modifyPassWd(call)
+                    userDao.modifyPassWd(call)
                 }
             }
         }
@@ -248,7 +245,7 @@ fun Application.module(testing: Boolean = false) {
         authenticate {
             route("/createClass") {
                 post {
-                        classDao.createClass(call)
+                    classDao.createClass(call)
                 }
             }
         }
@@ -257,7 +254,7 @@ fun Application.module(testing: Boolean = false) {
         authenticate {
             route("/deleteClass") {
                 post {
-                        classDao.deleteClass(call)
+                    classDao.deleteClass(call)
                 }
             }
         }
@@ -268,7 +265,7 @@ fun Application.module(testing: Boolean = false) {
         authenticate {
             route("/modifyClass") {
                 post {
-                        classDao.modifyClass(call)
+                    classDao.modifyClass(call)
                 }
             }
         }
@@ -277,7 +274,7 @@ fun Application.module(testing: Boolean = false) {
          * 根据班名查询班级详情
          */
         get("/findClassByClassName") {
-                classDao.findClassByClassName(call)
+            classDao.findClassByClassName(call)
         }
 
 
@@ -305,7 +302,7 @@ fun Application.module(testing: Boolean = false) {
          * 公告列表
          */
         get("/listAnno") {
-                annoDao.listAnno(call)
+            annoDao.listAnno(call)
         }
 
         /**
@@ -337,7 +334,6 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
         }
-
 
 
         /**
@@ -442,7 +438,7 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
         }
-      //签个到
+        //签个到
         authenticate {
             route("/sign") {
                 post {
@@ -525,12 +521,8 @@ fun Application.module(testing: Boolean = false) {
         }
 
 
-
-
     }
 }
-
-
 fun FlowOrMetaDataContent.styleCss(builder: CSSBuilder.() -> Unit) {
     style(type = ContentType.Text.CSS.toString()) {
         +CSSBuilder().apply(builder).toString()

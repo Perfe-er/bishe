@@ -1,6 +1,5 @@
 package com.example
 
-import com.hapi.module
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*

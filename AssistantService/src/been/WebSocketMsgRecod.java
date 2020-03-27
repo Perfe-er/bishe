@@ -9,6 +9,7 @@ import online.sanen.cdm.template.jpa.Table;
  * 离线没有收到的通知消息
  */
 @Table(name = "WebSocketMsgRecod")
+//@Table(name = "websocketmsgrecod")
 @Priority
 public class WebSocketMsgRecod {
     @Id

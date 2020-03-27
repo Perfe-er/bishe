@@ -2,7 +2,7 @@ buildscript {
     repositories {
         jcenter()
     }
-    
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -45,7 +45,7 @@ dependencies {
     implementation "io.ktor:ktor-client-core-jvm:$ktor_version"
     implementation "io.ktor:ktor-client-apache:$ktor_version"
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
-    
+
     implementation "mysql:mysql-connector-java:8.0.15"
     implementation 'com.alibaba:fastjson:1.2.61'
     // https://mvnrepository.com/artifact/online.sanen/cdm-all

@@ -3,9 +3,9 @@ package com.hapi.api
 import api.BaseDao
 import been.*
 import com.alibaba.fastjson.JSON
-import com.hapi.mSocketSever
-import com.hapi.pageSize
-import com.hapi.userDao
+import com.example.mSocketSever
+import com.example.pageSize
+import com.example.userDao
 import db.JdbcConnection
 import io.ktor.application.ApplicationCall
 import io.ktor.request.receiveParameters

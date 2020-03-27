@@ -6,6 +6,7 @@ import online.sanen.cdm.template.jpa.Priority;
 import online.sanen.cdm.template.jpa.Table;
 
 @Table(name = "AwardSignComment")
+//@Table(name = "awardsigncomment")
 @Priority
 public class AwardSignComment {
 

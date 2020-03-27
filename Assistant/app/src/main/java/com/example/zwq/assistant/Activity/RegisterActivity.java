@@ -1,27 +1,24 @@
 package com.example.zwq.assistant.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.zwq.assistant.R;
-import com.example.zwq.assistant.Service.RetrofitManager;
+import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.Service.UserInfo;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.User;
-
-import javax.security.auth.callback.Callback;
+import com.example.zwq.assistant.manager.UserInfoManager;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -83,6 +80,8 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
             case R.id.btnAreaCode:
                 if(judPhone())//去掉左右空格获取字符串
                 {
+                    final MyCountDownTimer myCountDownTimer = new MyCountDownTimer(60000,1000);
+                    myCountDownTimer.start();
                     //请求验证码
                     SMSSDK.getVerificationCode("86",phoneNumber);
                     etAreaCode.requestFocus();
@@ -109,15 +108,16 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
 
                                 @Override
                                 public void onNext(HttpResult<User> userHttpResult) {
-                                    if(userHttpResult.getCode()==200){
-                                        Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
-
-                                    }
+                                    Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
+                                    UserInfoManager.getInstance().onLogin(userHttpResult.getData());
+                                    Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                                    startActivity(intent);
                                 }
 
                                 @Override
                                 public void onError(Throwable e) {
-
+                                    Toast.makeText(RegisterActivity.this,"注册失败",Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
                                 }
 
                                 @Override
@@ -134,6 +134,10 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
     }
 
 
+    /**
+     * 核对手机号
+     * @return
+     */
     private boolean judPhone()
     {
         if(TextUtils.isEmpty(etPhone.getText().toString().trim()))
@@ -162,6 +166,10 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
         }
     }
 
+    /**
+     * 对输入的验证码核对
+     * @return
+     */
     private boolean judCord()
     {
         judPhone();
@@ -180,14 +188,15 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
         }
         else
         {
-            final MyCountDownTimer myCountDownTimer = new MyCountDownTimer(60000,1000);
-            myCountDownTimer.start();
             cordNumber=etAreaCode.getText().toString().trim();
             return true;
         }
 
     }
 
+    /**
+     * 验证码计时器
+     */
     private class MyCountDownTimer extends CountDownTimer {
 
         public MyCountDownTimer(long millisInFuture, long countDownInterval) {
@@ -209,6 +218,7 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
         public void onFinish() {
             //重新给Button设置文字
             btnAreaCode.setText("重获");
+            btnAreaCode.setBackgroundResource(R.drawable.shape_login);
             //设置可点击
             btnAreaCode.setClickable(true);
         }

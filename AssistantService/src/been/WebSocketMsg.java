@@ -19,25 +19,28 @@ public class WebSocketMsg<T> {
     /**
      * 新签到
      */
-    public static final int WebSocktMsgLevelMsgPubSign = 3;
+    public static final int WebSocktMsgLevelMsgPubSign = 4;
 
 
     /**
      * 发布奖学金评比
      */
-    public static final int WebSocktMsgLevelMsgPubAward = 4;
+    public static final int WebSocktMsgLevelMsgPubAward = 5;
 
 
     /**
      * 有人奖学金评比
      */
-    public static final int WebSocktMsgLevelMsgAwardSign = 5;
+    public static final int WebSocktMsgLevelMsgAwardSign = 6;
 
 
     /**
      * 奖学金评比被评论
      */
-    public static final int WebSocktMsgLevelMsgAwardComment = 6;
+    public static final int WebSocktMsgLevelMsgAwardComment = 7;
+
+
+
 
 
 
