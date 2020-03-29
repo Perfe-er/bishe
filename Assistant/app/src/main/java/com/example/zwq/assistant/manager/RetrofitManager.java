@@ -41,7 +41,6 @@ public class RetrofitManager {
         LoginInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-
         builder.addInterceptor(LoginInterceptor); //添加retrofit日志打印
         builder.connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS);
         builder.readTimeout(READ_TIMEOUT, TimeUnit.SECONDS);

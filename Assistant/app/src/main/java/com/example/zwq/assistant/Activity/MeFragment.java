@@ -3,6 +3,7 @@ package com.example.zwq.assistant.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,26 +27,25 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class MeFragment extends BaseFragment {
-    TextView tvName;
-    TextView tvStuID;
-    TextView tvNumber;
-    TextView tvCollege;
-    TextView tvClass;
-    TextView tvBirthday;
-    TextView tvStuType;
-    TextView tvPhone;
-    TextView tvParentPho;
-    TextView tvIDCard;
-    TextView tvAddress;
-    ImageView ivSex;
-    ConstraintLayout conAddress;
-    ConstraintLayout conInfo;
-    ConstraintLayout conNumber;
-    ConstraintLayout conStuID;
-    ConstraintLayout conIDCard;
-    ConstraintLayout conClass;
-    ConstraintLayout conPerentPho;
-    private View mView;
+    private TextView tvNumber;
+    private TextView tvName;
+    private TextView tvStuID;
+    private TextView tvCollege;
+    private TextView tvClass;
+    private TextView tvBirthday;
+    private TextView tvStuType;
+    private TextView tvPhone;
+    private TextView tvParentPho;
+    private TextView tvIDCard;
+    private TextView tvAddress;
+    private ImageView ivSex;
+    private ConstraintLayout conAddress;
+    private ConstraintLayout conInfo;
+    private ConstraintLayout conNumber;
+    private ConstraintLayout conStuID;
+    private ConstraintLayout conIDCard;
+    private ConstraintLayout conClass;
+    private ConstraintLayout conParentPho;
 
     @Nullable
     @Override
@@ -74,7 +74,7 @@ public class MeFragment extends BaseFragment {
         conAddress = view.findViewById(R.id.conAddress);
         conStuID = view.findViewById(R.id.conStuID);
         conClass = view.findViewById(R.id.conClass);
-        conPerentPho = view.findViewById(R.id.conPerentPho);
+        conParentPho = view.findViewById(R.id.conPerentPho);
         conIDCard = view.findViewById(R.id.conIDCard);
         conInfo.setOnClickListener(this);
         conNumber.setOnClickListener(this);
@@ -85,7 +85,19 @@ public class MeFragment extends BaseFragment {
         Intent intent;
         switch (view.getId()){
             case R.id.conInfo:
-
+                intent = new Intent(getContext(),InfoEditActivity.class);
+                intent.putExtra("name",tvName.getText());
+                intent.putExtra("stuID",tvStuID.getText());
+                intent.putExtra("college",tvCollege.getText());
+                intent.putExtra("birthday",tvBirthday.getText());
+                intent.putExtra("parentPho",tvParentPho.getText());
+                intent.putExtra("address",tvAddress.getText());
+                intent.putExtra("IDCard",tvAddress.getText());
+                intent.putExtra("stuType",tvStuType.getText());
+                startActivity(intent);
+                break;
+            case R.id.conNumber:
+                break;
         }
     }
 
@@ -118,6 +130,8 @@ public class MeFragment extends BaseFragment {
                             tvPhone.setText(userHttpResult.getData().getPhone());
                             tvClass.setText(userHttpResult.getData().getClassName());
                             tvParentPho.setText(userHttpResult.getData().getParentPho());
+                            int number = userHttpResult.getData().getNumber();
+                            tvNumber.setText(String.valueOf(number));
                             int sex = userHttpResult.getData().getSex();
                             if (sex == 1){
                                 ivSex.setImageResource(R.drawable.sex_g);
@@ -126,14 +140,14 @@ public class MeFragment extends BaseFragment {
                             }
                             tvBirthday.setText(userHttpResult.getData().getBirthday());
                             int stuType = userHttpResult.getData().getStuType();
-                            if (stuType == 0){
+                            if (stuType == 0 ){
                                 tvStuType.setText("普通学生");
                                 conAddress.setVisibility(View.VISIBLE);
                                 conIDCard.setVisibility(View.VISIBLE);
                                 conStuID.setVisibility(View.VISIBLE);
                                 conNumber.setVisibility(View.VISIBLE);
                                 conClass.setVisibility(View.VISIBLE);
-                                conPerentPho.setVisibility(View.VISIBLE);
+                                conParentPho.setVisibility(View.VISIBLE);
                             }else if (stuType == 1){
                                 tvStuType.setText("班委");
                                 conAddress.setVisibility(View.VISIBLE);
@@ -141,9 +155,15 @@ public class MeFragment extends BaseFragment {
                                 conStuID.setVisibility(View.VISIBLE);
                                 conNumber.setVisibility(View.VISIBLE);
                                 conClass.setVisibility(View.VISIBLE);
-                                conPerentPho.setVisibility(View.VISIBLE);
+                                conParentPho.setVisibility(View.VISIBLE);
                             }else if (stuType == 2){
                                 tvStuType.setText("导员");
+                                conAddress.setVisibility(View.GONE);
+                                conIDCard.setVisibility(View.GONE);
+                                conStuID.setVisibility(View.GONE);
+                                conNumber.setVisibility(View.GONE);
+                                conClass.setVisibility(View.GONE);
+                                conParentPho.setVisibility(View.GONE);
                             }
                         }else {
                             Toast.makeText(getContext(),"获取失败",Toast.LENGTH_SHORT).show();

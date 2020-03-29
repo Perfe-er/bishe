@@ -102,20 +102,20 @@ class UserDao : BaseDao() {
         val name = request["name"]
         val sex = request["sex"]
         val college = request["college"]
-        val className = request["className"]
-        val classID = request["classID"]
-        val number = request["number"]
+//        val className = request["className"]
+//        val classID = request["classID"]
+//        val number = request["number"]
         val parentPho = request["parentPho"]
         val identity = request["identity"]
         val address = request["address"]
         val birthday = request["birthday"]
-        val stuType = request["stuType"]
+//        val stuType = request["stuType"]
 
-        val id1 = Integer.parseInt(id!!)
-        val sex1 = Integer.parseInt(sex!!)
-        val classID1 = Integer.parseInt(classID!!)
-        val number1 = Integer.parseInt(number!!)
-        val stuType1 = Integer.parseInt(stuType!!)
+        val id1 = Integer.valueOf(id)
+        val sex1 = Integer.valueOf(sex)
+//        val classID1 = Integer.valueOf(classID)
+//        val number1 = Integer.valueOf(number)
+//        val stuType1 = Integer.valueOf(stuType)
         val user = User()
 
         user.id = id1
@@ -123,25 +123,25 @@ class UserDao : BaseDao() {
         user.name = name
         user.sex = sex1
         user.college = college
-        user.className = className
-        user.classID = classID1
-        user.number = number1
+//        user.className = className
+//        user.classID = classID1
+//        user.number = number1
         user.parentPho = parentPho
         user.identity = identity
         user.address = address
         user.birthday = birthday
-        user.stuType = stuType1
+//        user.stuType = stuType1
 
         JdbcConnection.bootstrap.query(user).setFields(
             "college",
-            "className",
-            "classID",
-            "number",
+//            "className",
+//            "classID",
+//            "number",
             "parentPho",
             "identity",
             "address",
             "birthday",
-            "stuType",
+//            "stuType",
             "stuID",
             "name",
             "sex"

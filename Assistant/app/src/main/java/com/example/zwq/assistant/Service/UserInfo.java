@@ -38,4 +38,10 @@ public interface UserInfo {
 
     @GET("/getUserInfoById")
     Observable<HttpResult<User>> getUserInfoById(@Query("id") int id);
+
+    @FormUrlEncoded
+    @POST("/infoEdit")
+    Observable<HttpResult<User>> infoEdit(@Field("id") int id,@Field("stuID") String stuID,@Field("name") String name,@Field("sex") int sex,
+                                          @Field("college") String college,@Field("parentPho") String parentPho,@Field("identity") String identity,
+                                          @Field("address") String address,@Field("birthday") String birthday);
 }

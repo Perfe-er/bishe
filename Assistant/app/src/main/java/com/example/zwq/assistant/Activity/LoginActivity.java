@@ -89,24 +89,29 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
 
                             @Override
                             public void onNext(HttpResult<User> userHttpResult) {
-                                SharedPreferences.Editor editor = preference.edit();
-                                if (cbPassWd.isChecked()) {//记住账号与密码
-                                    editor.putBoolean(REMEMBER_PWD_PREF, true);
-                                    editor.putString(ACCOUNT_PREF,account);
-                                    editor.putString(PASSWORD_PREF, pwd);
-                                } else {//清空数据
-                                    editor.clear();
+                                if (userHttpResult.getCode() == 200){
+                                    SharedPreferences.Editor editor = preference.edit();
+                                    if (cbPassWd.isChecked()) {//记住账号与密码
+                                        editor.putBoolean(REMEMBER_PWD_PREF, true);
+                                        editor.putString(ACCOUNT_PREF,account);
+                                        editor.putString(PASSWORD_PREF, pwd);
+                                    } else {//清空数据
+                                        editor.clear();
+                                    }
+                                    editor.apply();
+                                    UserInfoManager.getInstance().onLogin(userHttpResult.getData());
+                                    Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                                    Intent intent1 = new Intent(LoginActivity.this,TabMenuActivity.class);
+                                    startActivity(intent1);
+                                }else {
+                                    Toast.makeText(LoginActivity.this,userHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
                                 }
-                                editor.apply();
-                                UserInfoManager.getInstance().onLogin(userHttpResult.getData());
-                                Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
-                                Intent intent1 = new Intent(LoginActivity.this,TabMenuActivity.class);
-                                startActivity(intent1);
+
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this,"网络出错",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
