@@ -3,11 +3,13 @@ package api
 import been.HttpResult
 import been.User
 import com.alibaba.fastjson.JSON
+import com.example.userDao
 import db.JdbcConnection
 import io.ktor.application.ApplicationCall
 import io.ktor.request.receiveParameters
 import online.sanen.cdm.api.condition.C
 import org.apache.http.util.TextUtils
+import org.sqlite.jdbc3.JDBC3Connection
 import websocket.Auth
 
 class UserDao : BaseDao() {
@@ -109,13 +111,11 @@ class UserDao : BaseDao() {
         val identity = request["identity"]
         val address = request["address"]
         val birthday = request["birthday"]
-//        val stuType = request["stuType"]
 
         val id1 = Integer.valueOf(id)
         val sex1 = Integer.valueOf(sex)
 //        val classID1 = Integer.valueOf(classID)
 //        val number1 = Integer.valueOf(number)
-//        val stuType1 = Integer.valueOf(stuType)
         val user = User()
 
         user.id = id1
@@ -130,7 +130,6 @@ class UserDao : BaseDao() {
         user.identity = identity
         user.address = address
         user.birthday = birthday
-//        user.stuType = stuType1
 
         JdbcConnection.bootstrap.query(user).setFields(
             "college",
@@ -141,13 +140,28 @@ class UserDao : BaseDao() {
             "identity",
             "address",
             "birthday",
-//            "stuType",
             "stuID",
             "name",
             "sex"
         ).update()
         writeGsonResponds(JSON.toJSONString(HttpResult(user, 200, "修改成功")), call)
 
+    }
+
+    /**
+     * 切换身份
+     */
+    suspend fun editStuType(call: ApplicationCall){
+        val request = call.receiveParameters()
+        val id = request["id"]
+        val stuType = request["stuType"]
+        val stuType1 = Integer.valueOf(stuType)
+        val id1 = Integer.valueOf(id)
+        val user = User()
+        user.id = id1
+        user.stuType = stuType1
+        JdbcConnection.bootstrap.query(user).setFields("stuType").update()
+        writeGsonResponds(JSON.toJSONString(HttpResult(user,200,"切换成功")),call)
     }
 
     /**

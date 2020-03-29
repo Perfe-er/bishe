@@ -103,6 +103,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
                                     Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
                                     Intent intent1 = new Intent(LoginActivity.this,TabMenuActivity.class);
                                     startActivity(intent1);
+
                                 }else {
                                     Toast.makeText(LoginActivity.this,userHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
                                 }

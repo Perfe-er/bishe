@@ -3,11 +3,14 @@ package com.example.zwq.assistant.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +49,14 @@ public class MeFragment extends BaseFragment {
     private ConstraintLayout conIDCard;
     private ConstraintLayout conClass;
     private ConstraintLayout conParentPho;
+    private PopupWindow popupWindow;
+
+    //让FragmentManager 知道需要菜单回调
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -55,6 +66,11 @@ public class MeFragment extends BaseFragment {
         getUserInfo();
         return view;
     }
+
+    //实例化菜单
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_info_setting, menu); }
 
     public void initView(View view){
         tvName = view.findViewById(R.id.tvName);
@@ -99,7 +115,18 @@ public class MeFragment extends BaseFragment {
             case R.id.conNumber:
                 break;
         }
+
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.setting) {
+            Intent intent = new Intent(getContext(), SettingActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onResume() {

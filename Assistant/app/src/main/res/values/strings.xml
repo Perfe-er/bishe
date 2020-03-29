@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Assistant</string>
+    <string name="app_name">小助手</string>
+    <string name="info_setting">设置</string>
 </resources>

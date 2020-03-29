@@ -227,6 +227,14 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
 
+            authenticate {
+                route("/editStuType"){
+                    post {
+                        userDao.editStuType(call)
+                    }
+                }
+            }
+
             //修改密码
             authenticate {
                 route("/modifyPassWd") {
