@@ -122,7 +122,8 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
                         });
                 break;
             case R.id.tvForget:
-
+                    intent = new Intent(this,ForgetPassWordActivity.class);
+                    startActivity(intent);
                 break;
             case R.id.tvRegister:
                     intent = new Intent(this,RegisterActivity.class);

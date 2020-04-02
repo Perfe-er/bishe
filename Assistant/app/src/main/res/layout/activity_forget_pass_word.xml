@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.ForgetPassWordActivity">
+
+    <EditText
+        android:id="@+id/etPhone"
+        android:layout_width="240dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="86dp"
+        android:layout_marginTop="170dp"
+        android:background="#F5F3F3"
+        android:hint="请输入手机号"
+        android:phoneNumber="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etAreaCode"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="86dp"
+        android:layout_marginTop="28dp"
+        android:background="#F5F3F3"
+        android:hint="请输入验证码"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPhone" />
+
+    <EditText
+        android:id="@+id/etPassWd"
+        android:layout_width="240dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="86dp"
+        android:layout_marginTop="28dp"
+        android:background="#F5F3F3"
+        android:hint="请输入要修改的密码"
+        android:password="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etAreaCode" />
+
+    <Button
+        android:id="@+id/btnModify"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:background="@drawable/shape_login_no"
+        android:text="确认修改"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPassWd" />
+
+    <Button
+        android:id="@+id/btnAreaCode"
+        android:layout_width="60dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/shape_login"
+        android:text="发送"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/etPassWd"
+        app:layout_constraintStart_toEndOf="@+id/etAreaCode"
+        app:layout_constraintTop_toBottomOf="@+id/etPhone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,7 +55,7 @@ class ClassDao : BaseDao() {
 
         val c = Class()
         c.className = className
-        c.founderId = Integer.parseInt(founderId!!)
+        c.founderID = Integer.parseInt(founderId!!)
         val cid = JdbcConnection.bootstrap.query(c).insert()
         c.classID = cid
         writeGsonResponds(JSON.toJSONString(HttpResult(c, 200, "创建成功")), call)
@@ -82,8 +82,8 @@ class ClassDao : BaseDao() {
 
    suspend fun modifyClass(call: ApplicationCall) {
         val request = call.receiveParameters()
-        val classID = request["classID"]//className
-        val className = request["className"]//className
+        val classID = request["classID"]
+        val className = request["className"]
         val c = Class()
         c.classID = Integer.parseInt(classID!!)
         c.className = className
@@ -96,6 +96,17 @@ class ClassDao : BaseDao() {
             writeGsonResponds(JSON.toJSONString(HttpResult<Unit>(400, "修改失败　" + e.message)), call)
         }
 
+    }
+
+    suspend fun showClassByFounder(call: ApplicationCall){
+        val request = call.request
+        val founderID = request.queryParameters["founderID"]?.toInt()
+        val classShow = ArrayList<Class>()
+        val cs = JdbcConnection.bootstrap.queryTable(Class::class.java).addCondition { c ->
+            c.add(C.eq("founderID", founderID))
+        }.list(Class::class.java)
+        classShow.addAll(cs)
+        writeGsonResponds(JSON.toJSONString(HttpResult<List<Class>>(classShow, 200, "")), call)
     }
 
 }

@@ -244,6 +244,11 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
 
+            //通过手机号
+            post("/modifyPassWdByPhone"){
+                userDao.modifyPassWdByPhone(call)
+            }
+
 
             /***
              *
@@ -288,6 +293,11 @@ fun Application.module(testing: Boolean = false) {
              */
             get("/findClassByClassName") {
                 classDao.findClassByClassName(call)
+            }
+
+
+            get("/showClassByFounder"){
+                classDao.showClassByFounder(call)
             }
 
 

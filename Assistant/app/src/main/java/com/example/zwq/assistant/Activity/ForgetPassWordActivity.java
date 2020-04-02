@@ -1,5 +1,6 @@
 package com.example.zwq.assistant.Activity;
 
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.example.zwq.assistant.R;
-import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.Service.UserInfo;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.User;
+import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.manager.UserInfoManager;
 
 import cn.smssdk.EventHandler;
@@ -27,27 +29,23 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+public class ForgetPassWordActivity extends BaseActivity implements TextWatcher {
 
-public class RegisterActivity extends BaseActivity implements TextWatcher {
     EditText etPhone;
     EditText etPassWd;
     EditText etAreaCode;
     Button btnAreaCode;
-    Button btnRegister;
+    Button btnModify;
 
     EventHandler eventHandler;
     private boolean flag=true;
     private String phoneNumber;
     private String cordNumber;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-
+        setContentView(R.layout.activity_forget_pass_word);
         initView();
-
         eventHandler = new EventHandler() {
             public void afterEvent(int event, int result, Object data) {
                 Message msg=new Message();
@@ -66,28 +64,27 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
         etPassWd = findViewById(R.id.etPassWd);
         etAreaCode = findViewById(R.id.etAreaCode);
         btnAreaCode = findViewById(R.id.btnAreaCode);
-        btnRegister = findViewById(R.id.btnRegister);
-
+        btnModify = findViewById(R.id.btnModify);
         btnAreaCode.setOnClickListener(this);
-        btnRegister.setOnClickListener(this);
+        btnModify.setOnClickListener(this);
+        etPhone.addTextChangedListener(this);
         etPassWd.addTextChangedListener(this);
+        etAreaCode.addTextChangedListener(this);
     }
 
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.btnAreaCode:
                 if(judPhone())//去掉左右空格获取字符串
                 {
-                    final MyCountDownTimer myCountDownTimer = new MyCountDownTimer(60000,1000);
+                    final ForgetPassWordActivity.MyCountDownTimer myCountDownTimer = new ForgetPassWordActivity.MyCountDownTimer(60000,1000);
                     myCountDownTimer.start();
                     //请求验证码
                     SMSSDK.getVerificationCode("86",phoneNumber);
                     etAreaCode.requestFocus();
                 }
                 break;
-            case R.id.btnRegister:
+            case R.id.btnModify:
                 if(judCord())
                     //提交验证码
                     SMSSDK.submitVerificationCode("86",phoneNumber,cordNumber);
@@ -95,9 +92,8 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
                 if(judCord()&&judPhone()){
                     phoneNumber = etPhone.getText().toString();
                     String passNumber = etPassWd.getText().toString();
-                    RetrofitManager.getInstance()
-                            .createReq(UserInfo.class)
-                            .register(phoneNumber,passNumber)
+                    RetrofitManager.getInstance().createReq(UserInfo.class)
+                            .modifyPassWdByPhone(UserInfoManager.getInstance().getUid(),phoneNumber,passNumber)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Observer<HttpResult<User>>() {
@@ -108,20 +104,18 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
 
                                 @Override
                                 public void onNext(HttpResult<User> userHttpResult) {
-                                    if (userHttpResult.getCode() == 200) {
-                                        Toast.makeText(RegisterActivity.this, userHttpResult.getMsg(), Toast.LENGTH_SHORT).show();
-                                        UserInfoManager.getInstance().onLogin(userHttpResult.getData());
-                                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                    if (userHttpResult.getCode() == 200 && eventHandler.equals(SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE)){
+                                        Toast.makeText(ForgetPassWordActivity.this,userHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(ForgetPassWordActivity.this,LoginActivity.class);
                                         startActivity(intent);
                                     }else {
-                                        Toast.makeText(RegisterActivity.this, userHttpResult.getMsg(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ForgetPassWordActivity.this,userHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    Toast.makeText(RegisterActivity.this,"网络出错",Toast.LENGTH_SHORT).show();
-                                    e.printStackTrace();
+                                    Toast.makeText(ForgetPassWordActivity.this,"网络出错",Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -284,8 +278,6 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
         }
 
     };
-
-
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -300,15 +292,13 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
     public void afterTextChanged(Editable editable) {
 
     }
-
-
     private void changeBtnBg() {
         if (etPassWd.getText().length()>6 && etPhone.getText().length()>10 && etAreaCode.getText().length()>0) {
-            btnRegister.setBackgroundResource(R.drawable.shape_login);
-            btnRegister.setEnabled(true);
+            btnModify.setBackgroundResource(R.drawable.shape_login);
+            btnModify.setEnabled(true);
         } else {
-            btnRegister.setBackgroundResource(R.drawable.shape_login_no);
-            btnRegister.setEnabled(false);
+            btnModify.setBackgroundResource(R.drawable.shape_login_no);
+            btnModify.setEnabled(false);
         }
     }
 }

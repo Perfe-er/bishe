@@ -43,6 +43,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'org.xutils:xutils:3.5.0'
     implementation 'com.androidkun:XTabLayout:1.1.4'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 
     //retrofit2
     implementation 'com.google.code.gson:gson:2.8.1'

@@ -12,7 +12,7 @@ public class Class {
     @NoInsert
     private int classID;
     private String className;
-    private int founderId;
+    private int founderID;
 
     public int getClassID() {
         return classID;
@@ -31,11 +31,11 @@ public class Class {
     }
 
 
-    public int getFounderId() {
-        return founderId;
+    public int getFounderID() {
+        return founderID;
     }
 
-    public void setFounderId(int founderId) {
-        this.founderId = founderId;
+    public void setFounderID(int founderID) {
+        this.founderID = founderID;
     }
 }

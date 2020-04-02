@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON
 import com.example.userDao
 import db.JdbcConnection
 import io.ktor.application.ApplicationCall
+import io.ktor.client.request.request
 import io.ktor.request.receiveParameters
 import online.sanen.cdm.api.condition.C
 import org.apache.http.util.TextUtils
@@ -164,6 +165,31 @@ class UserDao : BaseDao() {
         writeGsonResponds(JSON.toJSONString(HttpResult(user,200,"切换成功")),call)
     }
 
+    //忘记密码
+    suspend fun modifyPassWdByPhone(call: ApplicationCall){
+        val request =  call.receiveParameters()
+        val id = request["id"]
+        val phone = request["phone"]
+        val passWd = request["passWd"]
+        val user = getUserById(Integer.parseInt(id!!))
+        val users = JdbcConnection.bootstrap.queryTable(User::class.java).addCondition { c ->
+            c.add(C.eq("phone", phone))
+        }.list(User::class.java)
+
+        if (users.isEmpty()){
+            writeGsonResponds(JSON.toJSONString(HttpResult<Unit>(400,"该账号还未被注册")),call)
+            return
+        }
+        if (user == null) {
+            writeGsonResponds(JSON.toJSONString(HttpResult<Unit>(400, "用户id错误")), call)
+            return
+        }
+            user.passWd = passWd
+            JdbcConnection.bootstrap.query(user).setFields("passWd").update()
+            writeGsonResponds(JSON.toJSONString(HttpResult(user, 200, "修改成功")), call)
+
+    }
+
     /**
      * 修改密码
      *
@@ -193,5 +219,6 @@ class UserDao : BaseDao() {
 
     }
 
-
 }
+
+

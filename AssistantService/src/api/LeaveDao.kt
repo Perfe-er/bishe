@@ -88,7 +88,7 @@ class LeaveDao : BaseDao() {
             return
         }
 
-        val guider = userDao.getUserById(clas.founderId)
+        val guider = userDao.getUserById(clas.founderID)
         if (guider == null) {
             writeError("找不到学生导员", 400, call)
             return

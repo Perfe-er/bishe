@@ -87,13 +87,13 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
                                 if (userHttpResult.getCode() == 200){
                                     Toast.makeText(SettingActivity.this,"切换成功",Toast.LENGTH_SHORT).show();
                                 }else {
-                                    Toast.makeText(SettingActivity.this,"网络出错",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SettingActivity.this,"出现错误",Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Toast.makeText(SettingActivity.this,"未知错误",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SettingActivity.this,"网络出错",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override

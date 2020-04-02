@@ -4,7 +4,6 @@ package com.example.zwq.assistant.Service;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.User;
 
-
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -51,5 +50,9 @@ public interface UserInfo {
     @FormUrlEncoded
     @POST("/modifyPassWd")
     Observable<HttpResult<User>> modifyPassWd(@Field("id") int id,@Field("oldPwd") String oldPwd,@Field("newPwd") String newPwd);
+
+    @FormUrlEncoded
+    @POST("/modifyPassWdByPhone")
+    Observable<HttpResult<User>> modifyPassWdByPhone(@Field("id") int id,@Field("phone") String phone,@Field("passWd") String passWd);
 
 }
