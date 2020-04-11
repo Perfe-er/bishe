@@ -206,11 +206,17 @@ fun Application.module(testing: Boolean = false) {
                 userDao.getUserInfoById(call)
             }
 
+            get("/getClassmate"){
+                userDao.getClassmate(call)
+            }
+
+            get("/getAssistantByClassID"){
+                userDao.getAssistantByClassID(call)
+            }
 
             post("/register") {
                 userDao.register(call)
             }
-
 
 
             post("/login") {
@@ -235,6 +241,13 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
 
+            authenticate {
+                route("/editClass"){
+                    post{
+                        userDao.editClass(call)
+                    }
+                }
+            }
             //修改密码
             authenticate {
                 route("/modifyPassWd") {

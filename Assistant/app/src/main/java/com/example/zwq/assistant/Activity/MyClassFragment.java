@@ -1,9 +1,19 @@
 package com.example.zwq.assistant.Activity;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.zwq.assistant.Adapter.BanjiAdapter;
@@ -21,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -32,30 +43,96 @@ public class MyClassFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     LinearLayoutManager mLinearLayoutManager;
     BanjiAdapter mBanjiAdapter;
+    SwipeRefreshLayout refresh;
 
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @SuppressLint("ResourceAsColor")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_class,container,false);
-        initList();
         mRecyclerView = view.findViewById(R.id.rcMyClass);
-        mLinearLayoutManager = new LinearLayoutManager(getContext());
-        mBanjiAdapter = new BanjiAdapter(getContext(),classList);
-        mLinearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.setAdapter(mBanjiAdapter);
+        refresh = view.findViewById(R.id.refresh);
+        initList();
+        refresh.setColorSchemeColors(R.color.colorPrimary);
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initList();
+                Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
+            }
+        });
+        initLongClick();
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initList();
-    }
+    //菜单
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_add, menu); }
 
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        initList();
+//    }
+
+    private void initItemClick(){
+
+    }
+    private void initLongClick(){
+        mRecyclerView.setLongClickable(true);
+        mBanjiAdapter.setOnItemLongClickListener(new BanjiAdapter.onItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, final int position, int classID) {
+                RetrofitManager.getInstance().createReq(ClassInfo.class)
+                        .deleteClass(classID)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<HttpResult<Class>>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(HttpResult<Class> classHttpResult) {
+                                if (classHttpResult.getCode() == 200){
+                                    classList.remove(position);
+                                    mBanjiAdapter.notifyDataSetChanged();
+                                }else {
+                                    return;
+                                }
+                                Toast.makeText(getContext(),classHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Toast.makeText(getContext(),"网络出错",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+            }
+        });
+    }
+    //请求class列表数据
     private void initList() {
         classList = new ArrayList<>();
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mBanjiAdapter = new BanjiAdapter(getContext(),classList);
+        mRecyclerView.setAdapter(mBanjiAdapter);
         RetrofitManager.getInstance().createReq(ClassInfo.class)
                 .showClassByFounder(UserInfoManager.getInstance().getUid())
                 .subscribeOn(Schedulers.io())
@@ -71,10 +148,13 @@ public class MyClassFragment extends BaseFragment {
                         if (listHttpResult.getCode() == 200 && listHttpResult.getData() != null){
                             classList.clear();
                             classList.addAll(listHttpResult.getData());
+                            mBanjiAdapter.notifyDataSetChanged();
+                            refresh.setRefreshing(false);
                         }else {
-                        Toast.makeText(getContext(),"你没有班级",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"你没有班级",Toast.LENGTH_SHORT).show();
                         }
                     }
+
 
                     @Override
                     public void onError(Throwable e) {
@@ -87,4 +167,62 @@ public class MyClassFragment extends BaseFragment {
                     }
                 });
     }
+
+
+    //点击菜单
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.add) {
+            OnClickClassName(item);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //点击菜单，添加class
+    public void OnClickClassName(MenuItem item){
+
+        View v=getLayoutInflater().inflate(R.layout.dialog_add_class,null);
+        final EditText etClassName=v.findViewById(R.id.etClassName);
+        new AlertDialog.Builder(getContext()).setTitle("添加班级")
+                .setIcon(null)
+                .setView(v)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final String className = etClassName.getText().toString();
+                        RetrofitManager.getInstance().createReq(ClassInfo.class)
+                                .createClass(className, UserInfoManager.getInstance().getUid())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Observer<HttpResult<Class>>() {
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(HttpResult<Class> classHttpResult) {
+                                        if (classHttpResult.getCode() == 200){
+                                            Toast.makeText(getContext(),classHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            Toast.makeText(getContext(),"创建失败",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Toast.makeText(getContext(),"网络出错",Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+
+                                    }
+                                });
+                    }
+                }).setNegativeButton("取消",null).show();
+    }
+
+
 }

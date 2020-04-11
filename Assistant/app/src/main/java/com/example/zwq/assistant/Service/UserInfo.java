@@ -4,6 +4,8 @@ package com.example.zwq.assistant.Service;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.User;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -38,6 +40,12 @@ public interface UserInfo {
     @GET("/getUserInfoById")
     Observable<HttpResult<User>> getUserInfoById(@Query("id") int id);
 
+    @GET("/getClassmate")
+    Observable<HttpResult<List<User>>> getClassmate(@Query("classID") int classID);
+
+    @GET("/getAssistantByClassID")
+    Observable<HttpResult<User>> getAssistantByClassID(@Query("classID") int classID);
+
     @FormUrlEncoded
     @POST("/infoEdit")
     Observable<HttpResult<User>> infoEdit(@Field("id") int id,@Field("stuID") String stuID,@Field("name") String name,@Field("sex") int sex,
@@ -54,5 +62,9 @@ public interface UserInfo {
     @FormUrlEncoded
     @POST("/modifyPassWdByPhone")
     Observable<HttpResult<User>> modifyPassWdByPhone(@Field("id") int id,@Field("phone") String phone,@Field("passWd") String passWd);
+
+    @FormUrlEncoded
+    @POST("/editClass")
+    Observable<HttpResult<User>> editClass(@Field("id") int id,@Field("className") String className,@Field("classID") int classID);
 
 }

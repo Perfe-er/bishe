@@ -3,6 +3,7 @@ package api
 import been.HttpResult
 import been.User
 import com.alibaba.fastjson.JSON
+import com.example.classDao
 import com.example.userDao
 import db.JdbcConnection
 import io.ktor.application.ApplicationCall
@@ -27,13 +28,33 @@ class UserDao : BaseDao() {
     }
 
 
-    fun getStudentByClassId(calssId: Int): List<User> {
+    fun getStudentByClassId(classID: Int): List<User> {
 
         val users =
-            JdbcConnection.bootstrap.queryTable(User::class.java).addCondition { c -> c.add(C.eq("classID", calssId)) }
+            JdbcConnection.bootstrap.queryTable(User::class.java).addCondition { c -> c.add(C.eq("classID", classID)) }
                 .list(User::class.java)
-        println("getStudentByClassId" + calssId + " " + users.size)
+        println("getStudentByClassId" + classID + " " + users.size)
         return users
+    }
+
+    suspend fun getAssistantByClassID(call: ApplicationCall){
+        val request = call.request
+        val classID = request.queryParameters["classID"]
+        val classID1 = Integer.valueOf(classID)
+        val founder = classDao.getClassByClassId(classID1)
+        if (founder != null){
+            val id = founder.founderID
+            val user = getUserById(id)
+            writeGsonResponds(JSON.toJSONString(HttpResult(user,200,"")),call)
+        }
+    }
+
+    suspend fun getClassmate(call: ApplicationCall){
+        val request = call.request
+        val classID = request.queryParameters["classID"]
+        val classID1 = Integer.valueOf(classID)
+        val users = getStudentByClassId(classID1)
+        writeGsonResponds(JSON.toJSONString(HttpResult<List<User>>(users,200,"")),call)
     }
 
 
@@ -105,8 +126,6 @@ class UserDao : BaseDao() {
         val name = request["name"]
         val sex = request["sex"]
         val college = request["college"]
-//        val className = request["className"]
-//        val classID = request["classID"]
 //        val number = request["number"]
         val parentPho = request["parentPho"]
         val identity = request["identity"]
@@ -115,7 +134,6 @@ class UserDao : BaseDao() {
 
         val id1 = Integer.valueOf(id)
         val sex1 = Integer.valueOf(sex)
-//        val classID1 = Integer.valueOf(classID)
 //        val number1 = Integer.valueOf(number)
         val user = User()
 
@@ -124,8 +142,6 @@ class UserDao : BaseDao() {
         user.name = name
         user.sex = sex1
         user.college = college
-//        user.className = className
-//        user.classID = classID1
 //        user.number = number1
         user.parentPho = parentPho
         user.identity = identity
@@ -134,8 +150,6 @@ class UserDao : BaseDao() {
 
         JdbcConnection.bootstrap.query(user).setFields(
             "college",
-//            "className",
-//            "classID",
 //            "number",
             "parentPho",
             "identity",
@@ -149,6 +163,20 @@ class UserDao : BaseDao() {
 
     }
 
+    suspend fun editClass(call: ApplicationCall){
+        val request = call.receiveParameters()
+        val id = request["id"]
+        val className = request["className"]
+        val classID = request["classID"]
+        val classID1 = Integer.valueOf(classID)
+        val id1 = Integer.valueOf(id)
+        val user = User()
+        user.className = className
+        user.classID = classID1
+        user.id = id1
+        JdbcConnection.bootstrap.query(user).setFields("className","classID").update()
+        writeGsonResponds(JSON.toJSONString(HttpResult(user,200,"加入成功")),call)
+    }
     /**
      * 切换身份
      */

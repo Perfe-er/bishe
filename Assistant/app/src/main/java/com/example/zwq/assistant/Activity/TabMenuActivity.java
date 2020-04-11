@@ -11,8 +11,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.zwq.assistant.R;
+import com.example.zwq.assistant.manager.UserInfoManager;
 
 public class TabMenuActivity extends BaseActivity {
     ImageView ivHome;
@@ -69,7 +71,11 @@ public class TabMenuActivity extends BaseActivity {
                 changeCheck(myHome);
                 break;
             case R.id.lClass:
+                if (UserInfoManager.getInstance().getLoginUser().getStuType() == 2){
                 changeCheck(lClass);
+                }else {
+                    Toast.makeText(this,"你还不是导员，无法操作",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.myCommunicate:
                 changeCheck(myCommunicate);

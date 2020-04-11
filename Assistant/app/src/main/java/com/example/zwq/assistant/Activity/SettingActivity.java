@@ -85,6 +85,8 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
                             @Override
                             public void onNext(HttpResult<User> userHttpResult) {
                                 if (userHttpResult.getCode() == 200){
+                                    Intent intent = new Intent(SettingActivity.this,LoginActivity.class);
+                                    startActivity(intent);
                                     Toast.makeText(SettingActivity.this,"切换成功",Toast.LENGTH_SHORT).show();
                                 }else {
                                     Toast.makeText(SettingActivity.this,"出现错误",Toast.LENGTH_SHORT).show();

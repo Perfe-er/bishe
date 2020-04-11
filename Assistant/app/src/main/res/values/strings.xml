@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">小助手</string>
     <string name="info_setting">设置</string>
+    <string name="class_add">添加</string>
 </resources>

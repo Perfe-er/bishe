@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,8 +48,6 @@ public class MeFragment extends BaseFragment {
     private ConstraintLayout conIDCard;
     private ConstraintLayout conClass;
     private ConstraintLayout conParentPho;
-    private PopupWindow popupWindow;
-
     //让FragmentManager 知道需要菜单回调
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +77,7 @@ public class MeFragment extends BaseFragment {
         tvClass = view.findViewById(R.id.tvClass);
         tvBirthday = view.findViewById(R.id.tvBirthday);
         tvStuType = view.findViewById(R.id.tvStuType);
-        tvPhone = view.findViewById(R.id.tvPhone);
+        tvPhone = view.findViewById(R.id.tvAssistantPhone);
         tvParentPho = view.findViewById(R.id.tvPerentPho);
         tvIDCard = view.findViewById(R.id.tvIDCard);
         tvAddress = view.findViewById(R.id.tvAddress);
@@ -94,6 +91,7 @@ public class MeFragment extends BaseFragment {
         conIDCard = view.findViewById(R.id.conIDCard);
         conInfo.setOnClickListener(this);
         conNumber.setOnClickListener(this);
+        conClass.setOnClickListener(this);
     }
 
     public void onClick(View view){
@@ -110,6 +108,11 @@ public class MeFragment extends BaseFragment {
                 intent.putExtra("address",tvAddress.getText());
                 intent.putExtra("IDCard",tvAddress.getText());
                 intent.putExtra("stuType",tvStuType.getText());
+                startActivity(intent);
+                break;
+            case R.id.conClass:
+                String className = tvClass.getText().toString();
+                intent = new Intent(getContext(),MyClassActivity.class);
                 startActivity(intent);
                 break;
             case R.id.conNumber:
@@ -153,6 +156,7 @@ public class MeFragment extends BaseFragment {
                             tvStuID.setText(userHttpResult.getData().getStuID());
                             tvAddress.setText(userHttpResult.getData().getAddress());
                             tvCollege.setText(userHttpResult.getData().getCollege());
+                            tvClass.setText(userHttpResult.getData().getClassName());
                             tvIDCard.setText(userHttpResult.getData().getIdentity());
                             tvPhone.setText(userHttpResult.getData().getPhone());
                             tvClass.setText(userHttpResult.getData().getClassName());
