@@ -5,52 +5,20 @@ import online.sanen.cdm.template.jpa.NoInsert;
 import online.sanen.cdm.template.jpa.Priority;
 import online.sanen.cdm.template.jpa.Table;
 
+import java.util.List;
+
 @Table(name = "moral")
 @Priority
 public class Moral {
     @Id
     @NoInsert
     private int moralID;
-    private int id;
-    private String name;
-    private int number;
-    private int add;
-    private int fine;
+    private double add;
+    private double fine;
     private int changeP;
+    private long dateTime;
     private String reason;
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public int getAdd() {
-        return add;
-    }
-
-    public void setAdd(int add) {
-        this.add = add;
-    }
-
-    public int getFine() {
-        return fine;
-    }
-
-    public void setFine(int fine) {
-        this.fine = fine;
-    }
+    private List<String> ids;
 
     public int getChangeP() {
         return changeP;
@@ -76,11 +44,35 @@ public class Moral {
         this.moralID = moralID;
     }
 
-    public int getId() {
-        return id;
+    public double getAdd() {
+        return add;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAdd(double add) {
+        this.add = add;
+    }
+
+    public double getFine() {
+        return fine;
+    }
+
+    public void setFine(double fine) {
+        this.fine = fine;
+    }
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+    }
+
+    public long getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(long dateTime) {
+        this.dateTime = dateTime;
     }
 }

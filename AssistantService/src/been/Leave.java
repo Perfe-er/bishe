@@ -19,6 +19,7 @@ public class Leave {
     private long startDate;
     private long endDate;
     private int ratifyID;
+    private int classID;
 
 
 
@@ -93,5 +94,13 @@ public class Leave {
 
     public void setLeaveID(int leaveID) {
         this.leaveID = leaveID;
+    }
+
+    public int getClassID() {
+        return classID;
+    }
+
+    public void setClassID(int classID) {
+        this.classID = classID;
     }
 }

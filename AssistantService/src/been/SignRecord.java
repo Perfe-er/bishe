@@ -9,12 +9,9 @@ public class SignRecord {
     @NoInsert
     private int signRecordId;
     private int uid;
-
     private int signStatus;  //1：已签到，2：未签到
     private long signDate;
-
     private int signId;
-
     @NoDB
     private Sign sign;
 

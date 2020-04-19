@@ -5,20 +5,14 @@ buildscript {
 //        google()
         jcenter()
         google()
+        maven {
+            url "https://dl.bintray.com/tencentqcloudterminal/maven"
+        }
         
     }
     dependencies {
-//        classpath 'com.android.tools.build:gradle:3.5.0'
-////        classpath "com.mob.sdk:MobSDK:2018.0319.1724"
-//        classpath 'com.mob.sdk:MobSDK:+'
         classpath 'com.android.tools.build:gradle:3.5.2'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-        // 注册MobSDK
         classpath 'com.mob.sdk:MobSDK:+'
-        
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
@@ -28,7 +22,9 @@ allprojects {
         jcenter()
         google()
         maven { url "https://jitpack.io" }
-
+        maven {
+            url "https://dl.bintray.com/tencentqcloudterminal/maven"
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 package com.example.zwq.assistant.been;
 
-public class actreceive {
+
+public class ActReceive {
 
     private int receiveID;
     private int actID;
@@ -29,4 +30,5 @@ public class actreceive {
     public void setClassID(int classID) {
         this.classID = classID;
     }
+
 }

@@ -9,7 +9,7 @@ public class Anno {
     private String content;
     private int releaseID;
     private long releDate;
-    private List<String> classIds;
+    private List<String> classIDs;
     public int getAnnoID() {
         return annoID;
     }
@@ -51,10 +51,10 @@ public class Anno {
     }
 
     public List<String> getClassIds() {
-        return classIds;
+        return classIDs;
     }
 
     public void setClassIds(List<String> classIds) {
-        this.classIds = classIds;
+        this.classIDs = classIds;
     }
 }

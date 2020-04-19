@@ -1,4 +1,4 @@
-package com.hapi.api
+package api
 
 import api.BaseDao
 import been.*
@@ -11,6 +11,7 @@ import io.ktor.application.ApplicationCall
 import io.ktor.request.receiveParameters
 import online.sanen.cdm.api.basic.Sorts
 import online.sanen.cdm.api.condition.C
+import org.apache.http.util.TextUtils
 
 
 class AwardsDao : BaseDao() {
@@ -176,17 +177,17 @@ class AwardsDao : BaseDao() {
 
     suspend fun pubAwards(call: ApplicationCall) {
         val request = call.receiveParameters()
-        val releaseID: Int = request["leaveID"]?.toInt() ?: 0
-        val awardsTitle: String = request["leaveID"] ?: ""
-        val awardsContent: String = request["leaveID"] ?: ""
-        val word: String = request["leaveID"] ?: ""   //文档地址　上传对象存储返回得到url
-        val startTime: Long = request["leaveID"]?.toLong() ?: 0
-        val endTime: Long = request["leaveID"]?.toLong() ?: 0
+        val releaseID: Int = request["releaseID"]?.toInt() ?: 0
+        val awardsTitle: String = request["awardsTitle"] ?: ""
+        val awardsContent: String = request["awardsContent"] ?: ""
+        val word: String = request["word"] ?: ""   //文档地址　上传对象存储返回得到url
+        val startTime: Long = request["startTime"]?.toLong() ?: 0
+        val endTime: Long = request["endTime"]?.toLong() ?: 0
         val toClass: String = request["toClass"] ?: "" //接受班级　"1,2,4,6"
 
         val recs = toClass.split(",").toList()
         val awards = AwardsPub()
-        awards.awardsID = releaseID
+        awards.releaseID = releaseID
         awards.awardsTitle = awardsTitle
         awards.awardsContent = awardsContent
         awards.word = word
@@ -216,6 +217,91 @@ class AwardsDao : BaseDao() {
                 mSocketSever.sendFramByUid(user.id, msg)
             }
         }
+
+    }
+
+    suspend fun getListAwards(call: ApplicationCall){
+        val request = call.request
+        val classID = request.queryParameters["classID"]?.toInt()
+        val page = request.queryParameters["page"]?.toInt() ?: 0
+        val awardsRes = ArrayList<AwardsPub>()
+        val awardsClass =
+            JdbcConnection.bootstrap.queryTable(AwardClass::class.java).limit(
+                page * pageSize,
+                pageSize
+            )
+                .sort(Sorts.DESC, "awardsRecID")
+                .addCondition { c -> c.add(C.eq("classID", classID)) }
+                .list(AwardClass::class.java)
+        awardsClass?.forEach{
+            val awards =
+                JdbcConnection.bootstrap.queryTable(AwardsPub::class.java)
+                    .addCondition { c -> c.add(C.eq("awardsID", it.awardsID)) }
+                    .list(AwardsPub::class.java)
+            awardsRes.addAll(awards)
+        }
+        writeGsonResponds(JSON.toJSONString(HttpResult(awardsRes, 200, "成功")), call)
+    }
+
+    suspend fun deleteAwards(call: ApplicationCall) {
+
+        val request = call.receiveParameters()
+        val awardsID = request["awardsID"]?.toInt()
+        val award = AwardsPub()
+        award.awardsID = awardsID ?: 0
+        JdbcConnection.bootstrap.query(award).delete()
+
+        writeGsonResponds(JSON.toJSONString(HttpResult(award, 200, "删除")), call)
+    }
+
+    suspend fun modifyAwards(call: ApplicationCall) {
+
+        val request = call.receiveParameters()
+        val awardsID = request["awardsID"]?.toInt()
+        val awardsTitle = request["awardsTitle"]//className
+        val awardsContent = request["awardsContent"]//className
+        val releaseID = Integer.valueOf(request["releaseID"])
+        val word = request["word"]
+        val startTime = request["startTime"]
+        val endTime = request["endTime"]
+        val startTime1:Long = startTime?.toLong()?:0
+        val endTime1:Long = endTime?.toLong()?:0
+        val awards = AwardsPub()
+        awards.awardsID = awardsID ?: 0
+        awards.awardsTitle = awardsTitle
+        awards.awardsContent = awardsContent
+        awards.releaseID = releaseID
+        awards.word = word
+        awards.startTime = startTime1
+        awards.endTime = endTime1
+        try {
+            JdbcConnection.bootstrap.query(awards).setFields("awardsTitle", "awardsContent","releaseID","word","startTime","endTime").update()
+            writeGsonResponds(JSON.toJSONString(HttpResult(awards, 200, "更新成功")), call)
+        } catch (e: Exception) {
+            writeGsonResponds(JSON.toJSONString(HttpResult<Unit>(400, "更新失败${e.message}")), call)
+        }
+
+
+    }
+
+    /**
+     * 搜索
+     */
+    suspend fun searchAwards(call: ApplicationCall) {
+
+        val request = call.request
+        val keyWorlds = request.queryParameters["keyWorlds"]
+        val awardsRes = java.util.ArrayList<AwardsPub>()
+        if (!TextUtils.isEmpty(keyWorlds)) {
+            val awards =
+                JdbcConnection.bootstrap.queryTable(AwardsPub::class.java)
+
+                    .addCondition { c -> c.add(C.contains("awardsTitle", keyWorlds)) }
+                    .limit(0, pageSize)
+                    .list(AwardsPub::class.java)
+            awardsRes.addAll(awards)
+        }
+        writeGsonResponds(JSON.toJSONString(HttpResult(awardsRes, 200, "成功")), call)
 
     }
 }

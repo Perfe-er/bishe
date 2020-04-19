@@ -1,11 +1,9 @@
 package com.example
 
-import api.AnnoDao
-import api.ClassDao
-import api.UserDao
-import com.hapi.api.AwardsDao
-import com.hapi.api.LeaveDao
-import com.hapi.api.SignDao
+import api.*
+import com.example.api.ActivityDao
+import com.example.api.MoralDao
+import com.example.api.SignDao
 import db.JdbcConnection
 import io.ktor.application.*
 import io.ktor.response.*
@@ -42,7 +40,8 @@ val annoDao by lazy { AnnoDao() }
 val leaveDao by lazy { LeaveDao() }
 val signDao by lazy { SignDao() }
 val awardsDao by lazy { AwardsDao() }
-
+val moralDao by lazy { MoralDao() }
+val activityDao by lazy { ActivityDao() }
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
@@ -50,7 +49,6 @@ fun Application.module(testing: Boolean = false) {
     JdbcConnection.initConnection()
     val verifier = Auth.makeJwtVerifier()
     install(Authentication) {
-        a
         jwt {
             verifier(verifier)
             validate {
@@ -399,7 +397,19 @@ fun Application.module(testing: Boolean = false) {
                 leaveDao.listlLeve(call)
             }
 
+            /**
+             * 导员查看所有成员请假记录
+             */
+            get("/listLeaveByRatifyID"){
+                    leaveDao.listLeaveByRatifyID(call)
+                }
 
+            /**
+             * 班委查看成员请假记录
+             */
+            get("/listLeaveByClassID"){
+                leaveDao.listLeaveByClassID(call)
+            }
             /**
              * 发请假
              */
@@ -495,6 +505,12 @@ fun Application.module(testing: Boolean = false) {
              */
 
             /**
+            * 奖学金列表
+            */
+            get("/getListAwards"){
+                awardsDao.getListAwards(call)
+            }
+            /**
              * 获取导员发布的奖学金的所有参评
              */
             get("/getawardsSignOfPub") {
@@ -556,9 +572,81 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
 
+            authenticate{
+                route("/deleteAwards"){
+                    post {
+                        awardsDao.deleteAwards(call)
+                    }
+                }
+            }
 
-        }
+            authenticate {
+                route("/modifyAwards"){
+                    post{
+                        awardsDao.modifyAwards(call)
+                    }
+                }
+            }
+
+            get("/searchAwards"){
+                awardsDao.searchAwards(call)
+            }
+
+
+            /**
+             * 德育
+             */
+            authenticate {
+                route("/createMoral"){
+                    post {
+                        moralDao.createMoral(call)
+                    }
+                }
+            }
+
+            /**
+             * 活动
+             */
+            authenticate {
+                route("/signActivity"){
+                    post {
+                        activityDao.signActivity(call)
+                    }
+                }
+            }
+
+            authenticate {
+                route("/pubActivity"){
+                    post {
+                        activityDao.pubActivity(call)
+                    }
+                }
+            }
+            authenticate {
+                route("/deleteActivity"){
+                    post {
+                        activityDao.deleteActivity(call)
+                    }
+                }
+            }
+
+            authenticate {
+                route("/modifyActivity"){
+                    post {
+                        activityDao.modifyActivity(call)
+                    }
+                }
+            }
+
+            get("/searchActivity") {
+                activityDao.searchActivity(call)
+            }
+
+            get("/listActivity") {
+                activityDao.listActivity(call)
+            }
     }
+}
     fun FlowOrMetaDataContent.styleCss(builder: CSSBuilder.() -> Unit) {
         style(type = ContentType.Text.CSS.toString()) {
             +CSSBuilder().apply(builder).toString()

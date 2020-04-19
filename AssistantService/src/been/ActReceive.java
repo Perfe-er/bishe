@@ -5,9 +5,11 @@ import online.sanen.cdm.template.jpa.NoInsert;
 import online.sanen.cdm.template.jpa.Priority;
 import online.sanen.cdm.template.jpa.Table;
 
+import java.util.List;
+
 @Table(name = "actreceive")
 @Priority
-public class actreceive {
+public class ActReceive {
     @Id
     @NoInsert
     private int receiveID;
@@ -37,4 +39,5 @@ public class actreceive {
     public void setClassID(int classID) {
         this.classID = classID;
     }
+
 }

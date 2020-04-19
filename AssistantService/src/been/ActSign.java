@@ -14,8 +14,9 @@ public class ActSign {
     @NoInsert
     private int actSignID;
     private int receiveID;
-    private Date signDate;
-    private int id;
+    private long signDate;
+    private int stuID;
+    private int classID;
     private int sign;  //1：报名，2：未报名
 
     public int getActSignID() {
@@ -34,15 +35,6 @@ public class ActSign {
         this.receiveID = receiveID;
     }
 
-    public Date getSignDate() {
-        return signDate;
-    }
-
-    public void setSignDate(Date signDate) {
-        this.signDate = signDate;
-    }
-
-
     public int getSign() {
         return sign;
     }
@@ -51,11 +43,28 @@ public class ActSign {
         this.sign = sign;
     }
 
-    public int getId() {
-        return id;
+
+    public long getSignDate() {
+        return signDate;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSignDate(long signDate) {
+        this.signDate = signDate;
+    }
+
+    public int getStuID() {
+        return stuID;
+    }
+
+    public void setStuID(int stuID) {
+        this.stuID = stuID;
+    }
+
+    public int getClassID() {
+        return classID;
+    }
+
+    public void setClassID(int classID) {
+        this.classID = classID;
     }
 }

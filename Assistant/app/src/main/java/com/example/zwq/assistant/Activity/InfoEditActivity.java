@@ -103,6 +103,7 @@ public class InfoEditActivity extends BaseActivity implements RadioGroup.OnCheck
                             @Override
                             public void onNext(HttpResult<User> userHttpResult) {
                                 if (userHttpResult.getCode() == 200){
+                                    UserInfoManager.getInstance().onLogin(userHttpResult.getData());
                                     Toast.makeText(InfoEditActivity.this,userHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
                                     finish();
                                 }else {

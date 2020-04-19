@@ -6,7 +6,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -85,6 +84,7 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
                             @Override
                             public void onNext(HttpResult<User> userHttpResult) {
                                 if (userHttpResult.getCode() == 200){
+                                    UserInfoManager.getInstance().onLogin(userHttpResult.getData());
                                     Intent intent = new Intent(SettingActivity.this,LoginActivity.class);
                                     startActivity(intent);
                                     Toast.makeText(SettingActivity.this,"切换成功",Toast.LENGTH_SHORT).show();

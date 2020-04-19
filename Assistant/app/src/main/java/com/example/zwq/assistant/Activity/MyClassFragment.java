@@ -78,15 +78,6 @@ public class MyClassFragment extends BaseFragment {
         inflater.inflate(R.menu.fragment_add, menu); }
 
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        initList();
-//    }
-
-    private void initItemClick(){
-
-    }
     private void initLongClick(){
         mRecyclerView.setLongClickable(true);
         mBanjiAdapter.setOnItemLongClickListener(new BanjiAdapter.onItemLongClickListener() {

@@ -11,7 +11,7 @@ public class User {
     private String college;
     private String className;
     private int classID;
-    private int number;
+    private double number;
     private String parentPho;
     private String identity;
     private String address;
@@ -78,14 +78,6 @@ public class User {
         this.classID = classID;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public String getIdentity() {
         return identity;
     }
@@ -148,5 +140,13 @@ public class User {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public double getNumber() {
+        return number;
+    }
+
+    public void setNumber(double number) {
+        this.number = number;
     }
 }

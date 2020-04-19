@@ -61,6 +61,7 @@ public class MyClassActivity extends BaseActivity {
         initAssistant();
     }
 
+
     public void initView(){
         mRecyclerView = findViewById(R.id.rvStudent);
         ivReturn = findViewById(R.id.ivReturn);

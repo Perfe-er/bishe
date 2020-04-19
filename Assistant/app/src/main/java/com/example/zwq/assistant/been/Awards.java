@@ -3,12 +3,12 @@ package com.example.zwq.assistant.been;
 public class Awards {
 
     private int awardsID;
-    private int id;
+    private int releaseID;
     private String awardsTitle;
     private String awardsContent;
     private String word;
-    private String startTime;
-    private String endTime;
+    private long startTime;
+    private long endTime;
 
     public int getAwardsID() {
         return awardsID;
@@ -42,27 +42,27 @@ public class Awards {
         this.word = word;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public int getReleaseID() {
+        return releaseID;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setReleaseID(int releaseID) {
+        this.releaseID = releaseID;
     }
 
-    public String getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
 
-    public int getId() {
-        return id;
+    public long getStartTime() {
+        return startTime;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 }

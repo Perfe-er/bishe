@@ -2,15 +2,16 @@ package com.example.zwq.assistant.been;
 
 public class Leave {
 
+    private int classID;
     private int stuID;
     private String name;
     private int sex;  //1：女，2：男
     private String reason;
     private int ratify;  //1：批准，2：不批准
-    private String startDate;
-    private String endDate;
+    private long endDate;
     private int id;
     private int leaveID;
+    private long startDate;
 
 
     public int getStuID() {
@@ -53,23 +54,6 @@ public class Leave {
         this.ratify = ratify;
     }
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-
     public int getId() {
         return id;
     }
@@ -84,5 +68,28 @@ public class Leave {
 
     public void setLeaveID(int leaveID) {
         this.leaveID = leaveID;
+    }
+
+    public int getClassID() {
+        return classID;
+    }
+
+    public void setClassID(int classID) {
+        this.classID = classID;
+    }
+
+    public long getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(long endDate) {
+        this.endDate = endDate;
+    }
+    public long getStartDate() {
+        return startDate;
+    }
+
+    public void getStartDate(long startDate) {
+        this.startDate = startDate;
     }
 }

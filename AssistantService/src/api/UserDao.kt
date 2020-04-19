@@ -16,6 +16,19 @@ import websocket.Auth
 
 class UserDao : BaseDao() {
 
+    fun updateNumber(number: Double,id: Int):User? {
+        val users = JdbcConnection.bootstrap.queryTable(User::class.java).addCondition { c -> c.add(C.eq("id", id)) }
+            .list(User::class.java)
+        if (users.isEmpty()) {
+            null
+        } else {
+            val user = User()
+            user.id = id
+            user.number = number
+            JdbcConnection.bootstrap.query(user).setFields("number").update();
+        }
+        return null
+    }
 
     fun getUserById(id: Int): User? {
         val users = JdbcConnection.bootstrap.queryTable(User::class.java).addCondition { c -> c.add(C.eq("id", id)) }
@@ -58,7 +71,7 @@ class UserDao : BaseDao() {
     }
 
 
-    suspend   fun getUserInfoById(call: ApplicationCall) {
+    suspend  fun getUserInfoById(call: ApplicationCall) {
         val request = call.request
         val id = request.queryParameters["id"]
         if (TextUtils.isEmpty(id)) {
@@ -126,7 +139,6 @@ class UserDao : BaseDao() {
         val name = request["name"]
         val sex = request["sex"]
         val college = request["college"]
-//        val number = request["number"]
         val parentPho = request["parentPho"]
         val identity = request["identity"]
         val address = request["address"]
@@ -134,7 +146,6 @@ class UserDao : BaseDao() {
 
         val id1 = Integer.valueOf(id)
         val sex1 = Integer.valueOf(sex)
-//        val number1 = Integer.valueOf(number)
         val user = User()
 
         user.id = id1
@@ -142,7 +153,6 @@ class UserDao : BaseDao() {
         user.name = name
         user.sex = sex1
         user.college = college
-//        user.number = number1
         user.parentPho = parentPho
         user.identity = identity
         user.address = address
@@ -150,7 +160,6 @@ class UserDao : BaseDao() {
 
         JdbcConnection.bootstrap.query(user).setFields(
             "college",
-//            "number",
             "parentPho",
             "identity",
             "address",

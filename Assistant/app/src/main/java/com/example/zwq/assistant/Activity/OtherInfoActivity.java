@@ -122,7 +122,7 @@ public class OtherInfoActivity extends AppCompatActivity {
                             tvPhone.setText(userHttpResult.getData().getPhone());
                             tvClass.setText(userHttpResult.getData().getClassName());
                             tvParentPho.setText(userHttpResult.getData().getParentPho());
-                            int number = userHttpResult.getData().getNumber();
+                            double number = userHttpResult.getData().getNumber();
                             tvNumber.setText(String.valueOf(number));
                             int sex = userHttpResult.getData().getSex();
                             if (sex == 1){

@@ -23,6 +23,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,6 +35,7 @@ public class BanjiAdapter extends RecyclerView.Adapter<BanjiAdapter.ViewHolder> 
     private Context context;
     private View inflater;
     private onItemLongClickListener itemLongClickListener;
+
 
     public BanjiAdapter(Context context,List<Class> classList) {
         this.mClasses = classList;

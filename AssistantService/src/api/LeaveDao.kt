@@ -1,6 +1,5 @@
-package com.hapi.api
+package api
 
-import api.BaseDao
 import been.*
 import com.alibaba.fastjson.JSON
 import com.example.classDao
@@ -40,6 +39,38 @@ class LeaveDao : BaseDao() {
         val leave = findLevelById(leaveID)
         writeGsonResponds(JSON.toJSONString(HttpResult(leave, 200, "发布成功")), call)
 
+    }
+
+    suspend fun listLeaveByClassID(call: ApplicationCall){
+        val request = call.request
+        val classID = request.queryParameters["classID"]?.toInt() ?:0
+        val page = request.queryParameters["page"]?.toInt() ?: 0
+        val listlLeves =
+            JdbcConnection.bootstrap.queryTable(Leave::class.java).limit(
+                page * pageSize,
+                pageSize
+            )
+                .sort(Sorts.DESC, "leaveID")
+                .addCondition { c ->
+                    c.add(C.eq("classID", classID))
+                    c.add(C.eq("ratify", 1))}
+                .list(Leave::class.java)
+        writeGsonResponds(JSON.toJSONString(HttpResult(listlLeves, 200, "成功")), call)
+    }
+
+    suspend fun listLeaveByRatifyID(call: ApplicationCall){
+        val request = call.request
+        val ratifyID = request.queryParameters["ratifyID"]?.toInt() ?:0
+        val page = request.queryParameters["page"]?.toInt() ?: 0
+        val listlLeves =
+            JdbcConnection.bootstrap.queryTable(Leave::class.java).limit(
+                page * pageSize,
+                pageSize
+            )
+                .sort(Sorts.DESC, "leaveID")
+                .addCondition { c -> c.add(C.eq("ratifyID", ratifyID)) }
+                .list(Leave::class.java)
+        writeGsonResponds(JSON.toJSONString(HttpResult(listlLeves, 200, "成功")), call)
     }
 
     suspend fun listlLeve(call: ApplicationCall) {
@@ -96,6 +127,7 @@ class LeaveDao : BaseDao() {
 
         val leave = Leave()
         leave.ratifyID = guider.id
+        leave.classID = user.classID
         leave.ratify = ratify
         leave.stuID = stuID
         leave.name = name
@@ -150,7 +182,6 @@ class LeaveDao : BaseDao() {
         val leaveID: Int = request["leaveID"]?.toInt() ?: 0
         val uid: Int = request["uid"]?.toInt() ?: 0 //自己的id
         val ratify: Int = request["ratify"]?.toInt() ?: 0
-        val reason = request["reason"]
 
         val leave = findLevelById(leaveID)
         if (leave == null) {
@@ -162,9 +193,8 @@ class LeaveDao : BaseDao() {
         }
 
         leave.ratify = ratify
-        leave.reason = reason
 
-        JdbcConnection.bootstrap.query(leave).setFields("ratify", "reason").update()
+        JdbcConnection.bootstrap.query(leave).setFields("ratify").update()
         writeGsonResponds(JSON.toJSONString(HttpResult(leave, 200, "审批成功")), call)
 
         val msg =

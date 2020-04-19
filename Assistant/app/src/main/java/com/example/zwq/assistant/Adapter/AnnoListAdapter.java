@@ -1,6 +1,7 @@
 package com.example.zwq.assistant.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -32,12 +33,13 @@ public class AnnoListAdapter extends BaseQuickAdapter<Anno, BaseViewHolder> {
         Date date = new Date(item.getReleDate());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String dateTime = sdf.format(date);
-        int releaseID = item.getReleaseID();
 
+        int annoID = item.getAnnoID();
+        int position = helper.getLayoutPosition();
+        int releaseID = item.getReleaseID();
         helper.setText(R.id.tvTitle,item.getAnnoTitle())
                 .setText(R.id.tvContent,item.getContent())
                 .setText(R.id.tvDateTime,dateTime);
-
         RetrofitManager.getInstance().createReq(UserInfo.class)
                 .getUserInfoById(releaseID)
                 .subscribeOn(Schedulers.io())
@@ -68,7 +70,6 @@ public class AnnoListAdapter extends BaseQuickAdapter<Anno, BaseViewHolder> {
 
                     }
                 });
-
-        int position = helper.getLayoutPosition();
     }
+
 }

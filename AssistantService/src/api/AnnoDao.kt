@@ -155,15 +155,20 @@ class AnnoDao : BaseDao() {
         val annoID = request["annoID"]?.toInt()
         val annoTitle = request["annoTitle"]//className
         val content = request["content"]//className
+        val releaseID = Integer.valueOf(request["releaseID"])
+        val releDate = request["releDate"]
+        val releDate1:Long = releDate?.toLong()?:0
         val anno = Anno()
         anno.annoID = annoID ?: 0
         anno.annoTitle = annoTitle
         anno.content = content
+        anno.releaseID = releaseID
+        anno.releDate = releDate1
         try {
-            JdbcConnection.bootstrap.query(anno).setFields("annoTitle", "content").update()
-            writeGsonResponds(JSON.toJSONString(HttpResult(anno, 200, "跟新成功")), call)
+            JdbcConnection.bootstrap.query(anno).setFields("annoTitle", "content","releaseID","releDate").update()
+            writeGsonResponds(JSON.toJSONString(HttpResult(anno, 200, "更新成功")), call)
         } catch (e: Exception) {
-            writeGsonResponds(JSON.toJSONString(HttpResult<Unit>(400, "跟新失败${e.message}")), call)
+            writeGsonResponds(JSON.toJSONString(HttpResult<Unit>(400, "更新失败${e.message}")), call)
         }
 
 
