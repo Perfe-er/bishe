@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.zwq.assistant.Adapter.BanjiAdapter;
@@ -44,13 +45,8 @@ public class MyClassFragment extends BaseFragment {
     LinearLayoutManager mLinearLayoutManager;
     BanjiAdapter mBanjiAdapter;
     SwipeRefreshLayout refresh;
+    ImageView ivAdd;
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
 
     @SuppressLint("ResourceAsColor")
     @Nullable
@@ -59,6 +55,13 @@ public class MyClassFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_my_class,container,false);
         mRecyclerView = view.findViewById(R.id.rcMyClass);
         refresh = view.findViewById(R.id.refresh);
+        ivAdd = view.findViewById(R.id.ivAdd);
+        ivAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnClickClassName();
+            }
+        });
         initList();
         refresh.setColorSchemeColors(R.color.colorPrimary);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -71,12 +74,6 @@ public class MyClassFragment extends BaseFragment {
         initLongClick();
         return view;
     }
-
-    //菜单
-    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_add, menu); }
-
 
     private void initLongClick(){
         mRecyclerView.setLongClickable(true);
@@ -160,19 +157,8 @@ public class MyClassFragment extends BaseFragment {
     }
 
 
-    //点击菜单
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.add) {
-            OnClickClassName(item);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    //点击菜单，添加class
-    public void OnClickClassName(MenuItem item){
-
+    //添加class
+    public void OnClickClassName(){
         View v=getLayoutInflater().inflate(R.layout.dialog_add_class,null);
         final EditText etClassName=v.findViewById(R.id.etClassName);
         new AlertDialog.Builder(getContext()).setTitle("添加班级")

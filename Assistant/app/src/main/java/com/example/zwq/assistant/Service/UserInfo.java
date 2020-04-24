@@ -67,4 +67,8 @@ public interface UserInfo {
     @POST("/editClass")
     Observable<HttpResult<User>> editClass(@Field("id") int id,@Field("className") String className,@Field("classID") int classID);
 
+    @FormUrlEncoded
+    @POST("/editHead")
+    Observable<HttpResult<User>> editHead(@Field("id") int id,@Field("head") String head);
+
 }

@@ -20,7 +20,6 @@ public class HomeFragment extends BaseFragment {
     private XTabLayout tlTabs;
     private AnnoFragment mAnnoFragment;
     private ActionFragment mActionFragment;
-    private MoreFragment mMoreFragment;
     private AwardsFragment mAwardsFragment;
     private ViewPageAdapter mViewPageAdapter;
     @Nullable
@@ -38,20 +37,16 @@ public class HomeFragment extends BaseFragment {
         titles.add("通知");
         titles.add("活动");
         titles.add("评选");
-        titles.add("更多");
         tlTabs.addTab(tlTabs.newTab().setText(titles.get(0)));
         tlTabs.addTab(tlTabs.newTab().setText(titles.get(1)));
         tlTabs.addTab(tlTabs.newTab().setText(titles.get(2)));
-        tlTabs.addTab(tlTabs.newTab().setText(titles.get(3)));
         ArrayList<Fragment> mFragments = new ArrayList<>();
         mActionFragment = new ActionFragment();
         mAnnoFragment = new AnnoFragment();
         mAwardsFragment = new AwardsFragment();
-        mMoreFragment = new MoreFragment();
         mFragments.add(mAnnoFragment);
         mFragments.add(mActionFragment);
         mFragments.add(mAwardsFragment);
-        mFragments.add(mMoreFragment);
         mViewPageAdapter = new ViewPageAdapter(getChildFragmentManager(),mFragments,titles);
         vpHome.setAdapter(mViewPageAdapter);
         //将TabLayout与ViewPager关联起来

@@ -172,6 +172,17 @@ class UserDao : BaseDao() {
 
     }
 
+    suspend fun editHead(call: ApplicationCall){
+        val request = call.receiveParameters()
+        val id:Int = request["id"]?.toInt()?:0
+        val head = request["head"]
+        val user =  User()
+        user.id = id
+        user.head = head
+        JdbcConnection.bootstrap.query(user).setFields("head").update()
+        writeGsonResponds(JSON.toJSONString(HttpResult(user,200,"更换成功")),call)
+    }
+
     suspend fun editClass(call: ApplicationCall){
         val request = call.receiveParameters()
         val id = request["id"]

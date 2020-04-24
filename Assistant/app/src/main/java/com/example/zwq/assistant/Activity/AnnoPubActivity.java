@@ -1,8 +1,6 @@
 package com.example.zwq.assistant.Activity;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.Observer;
@@ -10,12 +8,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,9 +29,10 @@ import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.manager.UserInfoManager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-public class PubAnnoActivity extends BaseActivity {
+public class AnnoPubActivity extends BaseActivity {
     EditText etTitle;
     EditText etContent;
     TextView tvPubAnno;
@@ -49,6 +47,7 @@ public class PubAnnoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN , WindowManager.LayoutParams. FLAG_FULLSCREEN);
         setContentView(R.layout.activity_pub_anno);
         initView();
         setClassList();
@@ -96,7 +95,7 @@ public class PubAnnoActivity extends BaseActivity {
 
                     @Override
                     public void onNext(HttpResult<Anno> annoHttpResult) {
-                        Toast.makeText(PubAnnoActivity.this,annoHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AnnoPubActivity.this,annoHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
                         if (annoHttpResult.getCode() == 200){
                             finish();
                         }else {

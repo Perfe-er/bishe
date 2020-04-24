@@ -232,6 +232,13 @@ fun Application.module(testing: Boolean = false) {
             }
 
             authenticate {
+                route("/editHead") {
+                    post {
+                        userDao.editHead(call)
+                    }
+                }
+            }
+            authenticate {
                 route("/editStuType"){
                     post {
                         userDao.editStuType(call)
@@ -642,6 +649,9 @@ fun Application.module(testing: Boolean = false) {
                 activityDao.searchActivity(call)
             }
 
+            get("/signList"){
+                activityDao.signList(call)
+            }
             get("/listActivity") {
                 activityDao.listActivity(call)
             }

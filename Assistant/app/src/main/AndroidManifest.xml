@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.zwq.assistant">
 
     <application
@@ -11,13 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
-        <activity android:name=".Activity.LeaveInfoActivity"></activity>
+        <activity android:name=".Activity.ActionPubActivity"></activity>
+        <activity android:name=".Activity.ActionInfoActivity" />
+        <activity android:name=".Activity.MineActivity" />
+        <activity android:name=".Activity.LeaveInfoActivity" />
         <activity android:name=".Activity.LeaveRecordActivity" />
         <activity android:name=".Activity.LeaveActivity" />
         <activity android:name=".Activity.AwardsPubActivity" />
         <activity android:name=".Activity.AwardsInfoActivity" />
-        <activity android:name=".Activity.PubAnnoActivity" />
+        <activity android:name=".Activity.AnnoPubActivity" />
         <activity android:name=".Activity.AnnoInfoActivity" />
         <activity android:name=".Activity.ClassManageActivity" />
         <activity android:name=".Activity.OtherInfoActivity" />
@@ -26,7 +29,6 @@
         <activity android:name=".Activity.ExampleActivity" />
         <activity android:name=".Activity.ForgetPassWordActivity" />
         <activity android:name=".Activity.EditPassActivity" />
-        <activity android:name=".Activity.SettingActivity" />
         <activity android:name=".Activity.MoreFragment" />
         <activity android:name=".Activity.AwardsFragment" />
         <activity android:name=".Activity.ActionFragment" />
@@ -45,8 +47,8 @@
             <meta-data
                 android:name="Mob-AppSecret"
                 android:value="你的AppSecret" />
-        </activity> <!-- 在application中注册activity -->
-        <activity android:name=".Activity.RegisterActivity" />
+        </activity>
+        <activity android:name=".Activity.RegisterActivity" /> <!-- 在application中注册activity -->
         <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,15 +60,22 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_security_config" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 网络 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

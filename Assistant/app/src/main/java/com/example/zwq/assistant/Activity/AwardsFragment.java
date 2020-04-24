@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,19 +43,26 @@ public class AwardsFragment extends BaseFragment {
     LinearLayoutManager mLinearLayoutManager;
     AwardsPubAdapter mAwardsPubAdapter;
     List<Awards> mAwardsList;
+    ImageView ivAdd;
     private int page;
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_awards,container,false);
+        ivAdd = view.findViewById(R.id.ivAdd);
+        ivAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (UserInfoManager.getInstance().getLoginUser().getStuType() == 0){
+                    Toast.makeText(getContext(),"你没有权限发布通知",Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent intent = new Intent(getContext(),AwardsPubActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
         fillRecycle = view.findViewById(R.id.fillRecycle);
         fillRefresh = view.findViewById(R.id.fillRefresh);
         fillRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -68,13 +76,6 @@ public class AwardsFragment extends BaseFragment {
         onItemLongClick();
         return view;
     }
-
-    //菜单
-    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_add, menu);
-    }
-
 
     public void initList(){
         mAwardsList = new ArrayList<>();
@@ -113,20 +114,6 @@ public class AwardsFragment extends BaseFragment {
 
                     }
                 });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.add) {
-            if (UserInfoManager.getInstance().getLoginUser().getStuType() == 0){
-                Toast.makeText(getContext(),"你没有权限发布通知",Toast.LENGTH_SHORT).show();
-            }else {
-                Intent intent = new Intent(getContext(),AwardsPubActivity.class);
-                startActivity(intent);
-            }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public void onItemClick(){

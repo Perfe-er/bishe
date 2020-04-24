@@ -2,7 +2,6 @@ package com.example.zwq.assistant.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -13,28 +12,22 @@ import io.reactivex.schedulers.Schedulers;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zwq.assistant.Adapter.AnnoListAdapter;
 import com.example.zwq.assistant.Adapter.AssistantAnnoListAdapter;
-import com.example.zwq.assistant.Adapter.BanjiAdapter;
 import com.example.zwq.assistant.R;
 import com.example.zwq.assistant.Service.AnnoInfo;
-import com.example.zwq.assistant.Service.ClassInfo;
 import com.example.zwq.assistant.been.Anno;
-import com.example.zwq.assistant.been.Class;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.manager.UserInfoManager;
@@ -45,18 +38,12 @@ import java.util.List;
 public class AnnoFragment extends BaseFragment {
     RecyclerView rvAnnoList;
     List<Anno> mAnnoList;
-    List<Class> classList;
+    ImageView ivAdd;
     AnnoListAdapter mAnnoListAdapter;
     AssistantAnnoListAdapter assistantClass;
     LinearLayoutManager mLinearLayoutManager;
     SwipeRefreshLayout annoRefresh;
     private int page;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
 
     @SuppressLint("ResourceAsColor")
     @Nullable
@@ -65,6 +52,18 @@ public class AnnoFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_anno,container,false);
         rvAnnoList = view.findViewById(R.id.rvAnnoList);
         annoRefresh = view.findViewById(R.id.annoRefresh);
+        ivAdd = view.findViewById(R.id.ivAdd);
+        ivAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (UserInfoManager.getInstance().getLoginUser().getStuType() == 0){
+                    Toast.makeText(getContext(),"你没有权限发布通知",Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent intent = new Intent(getContext(), AnnoPubActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
         final int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
         initList();
         onItemClick();
@@ -79,13 +78,6 @@ public class AnnoFragment extends BaseFragment {
             }
         });
         return view;
-    }
-
-
-    //菜单
-    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_add, menu);
     }
 
 
@@ -129,20 +121,6 @@ public class AnnoFragment extends BaseFragment {
 
                     }
                 });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.add) {
-            if (UserInfoManager.getInstance().getLoginUser().getStuType() == 0){
-                Toast.makeText(getContext(),"你没有权限发布通知",Toast.LENGTH_SHORT).show();
-            }else {
-                Intent intent = new Intent(getContext(),PubAnnoActivity.class);
-                startActivity(intent);
-            }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public void onItemClick(){

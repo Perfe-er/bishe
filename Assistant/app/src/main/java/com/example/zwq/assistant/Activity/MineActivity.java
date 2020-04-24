@@ -24,7 +24,7 @@ import com.example.zwq.assistant.been.User;
 import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.manager.UserInfoManager;
 
-public class OtherInfoActivity extends AppCompatActivity {
+public class MineActivity extends AppCompatActivity {
     TextView tvNumber;
     TextView tvName;
     TextView tvStuID;
@@ -38,6 +38,7 @@ public class OtherInfoActivity extends AppCompatActivity {
     TextView tvAddress;
     ImageView ivSex;
     ImageView ivReturn;
+    ImageView ivSetting;
     ImageView ivHead;
     ConstraintLayout conAddress;
     ConstraintLayout conInfo;
@@ -46,18 +47,15 @@ public class OtherInfoActivity extends AppCompatActivity {
     ConstraintLayout conIDCard;
     ConstraintLayout conClass;
     ConstraintLayout conParentPho;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN , WindowManager.LayoutParams. FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_other_info);
+        setContentView(R.layout.activity_mine);
         initView();
         getUserInfo();
-        authority();
     }
-
     public void initView() {
         tvName = findViewById(R.id.tvName);
         tvStuID = findViewById(R.id.tvStuID);
@@ -80,6 +78,23 @@ public class OtherInfoActivity extends AppCompatActivity {
         conClass = findViewById(R.id.conClass);
         conParentPho = findViewById(R.id.conPerentPho);
         conIDCard = findViewById(R.id.conIDCard);
+        ivSetting = findViewById(R.id.ivSetting);
+        ivSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MineActivity.this,InfoEditActivity.class);
+                intent.putExtra("name",tvName.getText());
+                intent.putExtra("stuID",tvStuID.getText());
+                intent.putExtra("college",tvCollege.getText());
+                intent.putExtra("birthday",tvBirthday.getText());
+                intent.putExtra("parentPho",tvParentPho.getText());
+                intent.putExtra("address",tvAddress.getText());
+                intent.putExtra("IDCard",tvAddress.getText());
+                intent.putExtra("stuType",tvStuType.getText());
+                startActivity(intent);
+                startActivity(intent);
+            }
+        });
         ivReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,22 +103,8 @@ public class OtherInfoActivity extends AppCompatActivity {
         });
     }
 
-
-    private void authority(){
-        int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
-        if (userType == 2 ){
-            conAddress.setVisibility(View.VISIBLE);
-            conIDCard.setVisibility(View.VISIBLE);
-            conParentPho.setVisibility(View.VISIBLE);
-        }else{
-            conAddress.setVisibility(View.GONE);
-            conIDCard.setVisibility(View.GONE);
-            conParentPho.setVisibility(View.GONE);
-        }
-    }
     private void getUserInfo() {
-        Intent intent = getIntent();
-        int userID = Integer.parseInt(intent.getStringExtra("userID"));
+        int userID = UserInfoManager.getInstance().getUid();
         RetrofitManager.getInstance()
                 .createReq(UserInfo.class)
                 .getUserInfoById(userID)
@@ -127,10 +128,6 @@ public class OtherInfoActivity extends AppCompatActivity {
                             tvPhone.setText(userHttpResult.getData().getPhone());
                             tvClass.setText(userHttpResult.getData().getClassName());
                             tvParentPho.setText(userHttpResult.getData().getParentPho());
-                            String head = userHttpResult.getData().getHead();
-                            Glide.with(OtherInfoActivity.this)
-                                    .load(head)
-                                    .into(ivHead);
                             double number = userHttpResult.getData().getNumber();
                             tvNumber.setText(String.valueOf(number));
                             int sex = userHttpResult.getData().getSex();
@@ -143,29 +140,25 @@ public class OtherInfoActivity extends AppCompatActivity {
                             int stuType = userHttpResult.getData().getStuType();
                             if (stuType == 0 ){
                                 tvStuType.setText("普通学生");
-                                conStuID.setVisibility(View.VISIBLE);
-                                conNumber.setVisibility(View.VISIBLE);
-                                conClass.setVisibility(View.VISIBLE);
                             }else if (stuType == 1){
                                 tvStuType.setText("班委");
-                                conStuID.setVisibility(View.VISIBLE);
-                                conNumber.setVisibility(View.VISIBLE);
-                                conClass.setVisibility(View.VISIBLE);
                             }else if (stuType == 2){
                                 tvStuType.setText("导员");
-                                conStuID.setVisibility(View.GONE);
-                                conNumber.setVisibility(View.GONE);
-                                conClass.setVisibility(View.GONE);
                             }
+                            String url = userHttpResult.getData().getHead();
+                            Glide.with(MineActivity.this)
+                                    .load(url)
+                                    .into(ivHead);
+
                         }else {
-                            Toast.makeText(OtherInfoActivity.this,"获取失败",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MineActivity.this,"获取失败",Toast.LENGTH_SHORT).show();
                         }
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(OtherInfoActivity.this,"网络异常",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MineActivity.this,"网络异常",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

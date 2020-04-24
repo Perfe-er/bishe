@@ -26,7 +26,7 @@ public class User {
     private String address;
     private String birthday;
     private int stuType;  //0：普通学生，1：班委，3：导员
-
+    private String head;
     private String token;
 
 
@@ -157,5 +157,13 @@ public class User {
 
     public void setNumber(double number) {
         this.number = number;
+    }
+
+    public String getHead() {
+        return head;
+    }
+
+    public void setHead(String head) {
+        this.head = head;
     }
 }

@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -71,6 +72,7 @@ public class AwardsPubActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN , WindowManager.LayoutParams. FLAG_FULLSCREEN);
         setContentView(R.layout.activity_awards_pub);
         initView();
         getDate();
@@ -207,7 +209,7 @@ public class AwardsPubActivity extends BaseActivity {
             @Override
             public void onSuccess(String url) {
                 RetrofitManager.getInstance().createReq(AwardsInfo.class)
-                        .pubAwards(releaseID,title,content,url,startTime,endTime,classID)
+                        .pubAwards(releaseID,title,content,path,startTime,endTime,classID)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<HttpResult<Awards>>() {

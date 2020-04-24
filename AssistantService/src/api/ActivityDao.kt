@@ -3,9 +3,7 @@ package com.example.api
 import api.BaseDao
 import been.*
 import com.alibaba.fastjson.JSON
-import com.example.mSocketSever
 import com.example.pageSize
-import com.example.userDao
 import db.JdbcConnection
 import io.ktor.application.ApplicationCall
 import io.ktor.request.receiveParameters
@@ -16,22 +14,67 @@ import java.util.ArrayList
 
 class ActivityDao : BaseDao() {
 
+    fun getReceive(actID:Int,classID:Int): ActReceive? {
+        val recs =JdbcConnection.bootstrap.queryTable(ActReceive::class.java).addCondition { c ->
+            c.add(C.eq("actID", actID))
+            c.add(C.eq("classID",classID))}.list(ActReceive::class.java)
+        return if (recs.isEmpty()) {
+            null
+        } else {
+            recs[0]
+        }
+    }
+
+    fun getSignerByStudent(classID : Int,receiveID : Int) : List<ActSign>? {
+            val signs = JdbcConnection.bootstrap.queryTable(ActSign::class.java).addCondition{ c ->
+                c.add(C.eq("classID", classID))
+                c.add(C.eq("receiveID", receiveID))
+            }.list(ActSign::class.java)
+        println("getSignerByStudent" + classID + " " + signs.size)
+        return signs
+    }
+
+    fun getSignerByAssistant(receiveID : Int) : List<ActSign>? {
+        val signs = JdbcConnection.bootstrap.queryTable(ActSign::class.java).addCondition{ c ->
+            c.add(C.eq("receiveID", receiveID))
+        }.list(ActSign::class.java)
+        println("getSignerByAssistant" + receiveID + " " + signs.size)
+        return signs
+    }
+
+    suspend fun signList(call: ApplicationCall){
+        val request = call.request
+        val classID :Int = request.queryParameters["classID"]?.toInt()?:0
+        val receiveID:Int= request.queryParameters["receiveID"]?.toInt()?:0
+        val stuID = request.queryParameters["stuID"]?.toInt()
+        if (stuID == 2){
+            val signs = getSignerByAssistant(receiveID)
+            writeGsonResponds(JSON.toJSONString(HttpResult<List<ActSign>>(signs,200,"")),call)
+        }else{
+            val signs = getSignerByStudent(classID,receiveID)
+            writeGsonResponds(JSON.toJSONString(HttpResult<List<ActSign>>(signs,200,"")),call)
+        }
+    }
+
     /**
      * 活动报名
      */
-
     suspend fun signActivity(call: ApplicationCall){
         val request = call.receiveParameters()
-        val receiveID = request["receiveID"]?.toInt()
         val stuID = request["stuID"]?.toInt()
         val sign = request["sign"]?.toInt()
-        val classID = request["classID"]?.toInt()
+        val signDate = request["signDate"]?.toLong()
+        val classID:Int = request["classID"]?.toInt()?:0
+        val actID:Int = request["actID"]?.toInt()?:0
+        var receiveID:Int = getReceive(actID,classID)!!.receiveID
         val actSign = ActSign()
-        actSign.receiveID = receiveID?:0
+        actSign.receiveID = receiveID
         actSign.stuID = stuID?:0
         actSign.sign = sign?:0
-        actSign.classID = classID?:0
+        actSign.signDate = signDate?:0
+        actSign.classID = classID
         JdbcConnection.bootstrap.query(actSign).insert()
+        writeGsonResponds(JSON.toJSONString(HttpResult(actSign, 200, "报名成功")), call)
     }
     /**
      * 活动列表
@@ -43,17 +86,17 @@ class ActivityDao : BaseDao() {
         val page = request.queryParameters["page"]?.toInt() ?: 0
         val actRes = ArrayList<Activity>();
         val actReceives =
-            JdbcConnection.bootstrap.queryTable(AnnoReceive::class.java).limit(
+            JdbcConnection.bootstrap.queryTable(ActReceive::class.java).limit(
                 page * pageSize,
                 pageSize
             )
-                .sort(Sorts.DESC, "id")
+                .sort(Sorts.DESC, "receiveID")
                 .addCondition { c -> c.add(C.eq("classID", classID)) }
-                .list(AnnoReceive::class.java)
+                .list(ActReceive::class.java)
         actReceives?.forEach {
             val acts =
                 JdbcConnection.bootstrap.queryTable(Activity::class.java)
-                    .addCondition { c -> c.add(C.eq("annoID", it.annoID)) }
+                    .addCondition { c -> c.add(C.eq("actID", it.actID)) }
                     .list(Activity::class.java)
             actRes.addAll(acts)
         }
@@ -100,7 +143,6 @@ class ActivityDao : BaseDao() {
         ) {
             writeGsonResponds(JSON.toJSONString(HttpResult<Unit>(400, "参数有误")), call)
         } else {
-
             activity.actTitle = actTitle
             activity.actContent = actContent
             activity.actFouID = Integer.parseInt(actFouID!!)
