@@ -1,5 +1,6 @@
 package com.example.zwq.assistant.Service;
 
+import com.example.zwq.assistant.been.ActSign;
 import com.example.zwq.assistant.been.Activity;
 import com.example.zwq.assistant.been.Anno;
 import com.example.zwq.assistant.been.HttpResult;
@@ -36,4 +37,7 @@ public interface ActivityInfo {
     @POST("/signActivity")
     Observable<HttpResult<Activity>> signActivity(@Field("stuID") int stuID,@Field("actID") int actID,
                                                   @Field("sign") int sign,@Field("signDate") long signDate,@Field("classID") int classID);
+
+    @GET("/signList")
+    Observable<HttpResult<List<ActSign>>> signList(@Query("classID") int classID, @Query("actID") int actID,@Query("stuType") int stuType);
 }

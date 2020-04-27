@@ -4,12 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.zwq.assistant.R;
-import com.example.zwq.assistant.been.Class;
 import com.example.zwq.assistant.been.User;
 
 import java.util.List;
@@ -94,7 +92,7 @@ public class ClassmateAdapter extends RecyclerView.Adapter<ClassmateAdapter.View
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvClassName = itemView.findViewById(R.id.tvClassName);
-            tvPhone = itemView.findViewById(R.id.tvPhone);
+            tvPhone = itemView.findViewById(R.id.tvStuID);
             ivPhone = itemView.findViewById(R.id.ivPhone);
             ivChat = itemView.findViewById(R.id.ivChat);
             ivSex = itemView.findViewById(R.id.ivSex);

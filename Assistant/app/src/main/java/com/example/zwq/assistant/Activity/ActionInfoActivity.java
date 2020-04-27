@@ -104,6 +104,9 @@ public class ActionInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tvSign:
+                Intent intent = new Intent(this,ActionSignActivity.class);
+                intent.putExtra("actID",actID + "");
+                startActivity(intent);
                 break;
             case R.id.tvModify:
                 etTitle.setEnabled(true);

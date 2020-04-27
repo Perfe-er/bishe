@@ -45,9 +45,10 @@ class ActivityDao : BaseDao() {
     suspend fun signList(call: ApplicationCall){
         val request = call.request
         val classID :Int = request.queryParameters["classID"]?.toInt()?:0
-        val receiveID:Int= request.queryParameters["receiveID"]?.toInt()?:0
-        val stuID = request.queryParameters["stuID"]?.toInt()
-        if (stuID == 2){
+        val actID:Int = request.queryParameters["actID"]?.toInt()?:0
+        var receiveID:Int = getReceive(actID,classID)!!.receiveID
+        val stuType = request.queryParameters["stuType"]?.toInt()
+        if (stuType == 2){
             val signs = getSignerByAssistant(receiveID)
             writeGsonResponds(JSON.toJSONString(HttpResult<List<ActSign>>(signs,200,"")),call)
         }else{

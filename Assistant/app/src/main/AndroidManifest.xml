@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.ActionPubActivity"></activity>
+        <activity android:name=".Activity.ClassMoreActivity"></activity>
+        <activity android:name=".Activity.ActionSignActivity" />
+        <activity android:name=".Activity.ActionPubActivity" />
         <activity android:name=".Activity.ActionInfoActivity" />
         <activity android:name=".Activity.MineActivity" />
         <activity android:name=".Activity.LeaveInfoActivity" />
@@ -43,10 +45,10 @@
             android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="Mob-AppKey"
-                android:value="你的AppKey" />
+                android:value="2e7743f3d3cca" />
             <meta-data
                 android:name="Mob-AppSecret"
-                android:value="你的AppSecret" />
+                android:value="42f8e522e0085504ba8593b1b809b65c" />
         </activity>
         <activity android:name=".Activity.RegisterActivity" /> <!-- 在application中注册activity -->
         <activity android:name=".Activity.LoginActivity">
@@ -67,9 +69,9 @@
     </application>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" /> <!-- 网络 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 网络 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.zwq.assistant.Adapter.ClassmateAdapter;
 import com.example.zwq.assistant.R;
 import com.example.zwq.assistant.Service.UserInfo;
+import com.example.zwq.assistant.been.Class;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.User;
 import com.example.zwq.assistant.manager.RetrofitManager;
@@ -29,6 +30,7 @@ import java.util.List;
 
 public class ClassManageActivity extends BaseActivity {
     ImageView ivReturn;
+    ImageView ivMore;
     TextView tvClassName;
     RecyclerView rvStudent;
     ClassmateAdapter mClassmateAdapter;
@@ -48,6 +50,15 @@ public class ClassManageActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        ivMore = findViewById(R.id.ivMore);
+        ivMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ClassManageActivity.this, ClassMoreActivity.class);
+                intent.putExtra("classID",classID);
+                startActivity(intent);
             }
         });
         Intent intent = getIntent();

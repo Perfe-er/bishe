@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -142,7 +141,7 @@ public class LeaveRecordActivity extends BaseActivity {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()){
-                    case R.id.tvPhone:
+                    case R.id.tvStuID:
                         String phone = mLeaveListAdapter.getPhone();
                         Intent intent = new Intent(Intent.ACTION_DIAL);
                         Uri data = Uri.parse("tel:" + phone);
