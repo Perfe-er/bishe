@@ -37,6 +37,7 @@ public class ClassManageActivity extends BaseActivity {
     LinearLayoutManager mLinearLayoutManager;
     private List<User> mUserList;
     private int classID;
+    private String className;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,13 +58,15 @@ public class ClassManageActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ClassManageActivity.this, ClassMoreActivity.class);
-                intent.putExtra("classID",classID);
+                intent.putExtra("classID",classID + "");
+                intent.putExtra("className",className);
                 startActivity(intent);
             }
         });
         Intent intent = getIntent();
         classID = Integer.parseInt(intent.getStringExtra("classID"));
-        tvClassName.setText(intent.getStringExtra("className"));
+        className = intent.getStringExtra("className");
+        tvClassName.setText(className);
         initList();
         initItemClick();
     }

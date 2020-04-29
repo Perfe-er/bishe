@@ -37,7 +37,7 @@ public class TabMenuActivity extends BaseActivity {
     FragmentManager fragmentManager;
     HomeFragment mHomeFragment;
     MyClassFragment mMyClassFragment;
-    CommunicateFragment mCommunicateFragment;
+//    CommunicateFragment mCommunicateFragment;
     MeFragment mMeFragment;
     private int hindColor = 0xFF8C8B8B;
 
@@ -47,25 +47,25 @@ public class TabMenuActivity extends BaseActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_tab_menu);
         initView();
-        changeCheck(myHome);
+        changeCheck(myInfo);
     }
     public void initView(){
         ivHome = findViewById(R.id.ivHome);
         ivClass = findViewById(R.id.ivClass);
-        ivCommunicate = findViewById(R.id.ivCommunicate);
+//        ivCommunicate = findViewById(R.id.ivCommunicate);
         ivMine = findViewById(R.id.ivMine);
         tvHome = findViewById(R.id.tvHome);
         tvClass = findViewById(R.id.tvClass);
-        tvCommunicate = findViewById(R.id.tvCommunicate);
+//        tvCommunicate = findViewById(R.id.tvCommunicate);
         tvMine = findViewById(R.id.tvMine);
         myHome = findViewById(R.id.myHome);
         lClass = findViewById(R.id.lClass);
-        myCommunicate = findViewById(R.id.myCommunicate);
+//        myCommunicate = findViewById(R.id.myCommunicate);
         myInfo = findViewById(R.id.myInfo);
         contentFrame = findViewById(R.id.contentFrame);
         myHome.setOnClickListener(this);
         lClass.setOnClickListener(this);
-        myCommunicate.setOnClickListener(this);
+//        myCommunicate.setOnClickListener(this);
         myInfo.setOnClickListener(this);
     }
 
@@ -73,7 +73,11 @@ public class TabMenuActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.myHome:
-                changeCheck(myHome);
+                if (UserInfoManager.getInstance().getLoginUser().getStuType() == 2) {
+                    Toast.makeText(this,"查看通知请去班级查看",Toast.LENGTH_SHORT).show();
+                }else {
+                    changeCheck(myHome);
+                }
                 break;
             case R.id.lClass:
                 if (UserInfoManager.getInstance().getLoginUser().getStuType() == 2){
@@ -82,9 +86,9 @@ public class TabMenuActivity extends BaseActivity {
                     Toast.makeText(this,"你还不是导员，无法操作",Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.myCommunicate:
-                changeCheck(myCommunicate);
-                break;
+//            case R.id.myCommunicate:
+//                changeCheck(myCommunicate);
+//                break;
             case R.id.myInfo:
                 changeCheck(myInfo);
                 break;
@@ -117,17 +121,17 @@ public class TabMenuActivity extends BaseActivity {
                     transaction.show(mMyClassFragment);
                 }
                 break;
-            case R.id.myCommunicate:
-                select();
-                ivCommunicate.setImageResource(R.drawable.icon_use_message_s);
-                tvCommunicate.setTextColor(Color.RED);
-                if(mCommunicateFragment==null){
-                    mCommunicateFragment = new CommunicateFragment();
-                    transaction.add(R.id.contentFrame,mCommunicateFragment);
-                }else{
-                    transaction.show(mCommunicateFragment);
-                }
-                break;
+//            case R.id.myCommunicate:
+//                select();
+//                ivCommunicate.setImageResource(R.drawable.icon_use_message_s);
+//                tvCommunicate.setTextColor(Color.RED);
+//                if(mCommunicateFragment==null){
+//                    mCommunicateFragment = new CommunicateFragment();
+//                    transaction.add(R.id.contentFrame,mCommunicateFragment);
+//                }else{
+//                    transaction.show(mCommunicateFragment);
+//                }
+//                break;
             case R.id.myInfo:
                 select();
                 ivMine.setImageResource(R.drawable.icon_user_mine_s);
@@ -148,8 +152,8 @@ public class TabMenuActivity extends BaseActivity {
         tvHome.setTextColor(hindColor);
         ivClass.setImageResource(R.drawable.myclass);
         tvClass.setTextColor(hindColor);
-        ivCommunicate.setImageResource(R.drawable.icon_use_message);
-        tvCommunicate.setTextColor(hindColor);
+//        ivCommunicate.setImageResource(R.drawable.icon_use_message);
+//        tvCommunicate.setTextColor(hindColor);
         ivMine.setImageResource(R.drawable.icon_user_mine);
         tvMine.setTextColor(hindColor);
     }
@@ -161,9 +165,9 @@ public class TabMenuActivity extends BaseActivity {
         if(mMyClassFragment!=null){
             transaction.hide(mMyClassFragment);
         }
-        if(mCommunicateFragment!=null){
-            transaction.hide(mCommunicateFragment);
-        }
+//        if(mCommunicateFragment!=null){
+//            transaction.hide(mCommunicateFragment);
+//        }
         if(mMeFragment!=null){
             transaction.hide(mMeFragment);
         }

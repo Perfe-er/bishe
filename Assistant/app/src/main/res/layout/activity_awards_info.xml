@@ -149,13 +149,13 @@
         android:id="@+id/tvModify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:text="修改内容"
         android:textColor="#0459DA"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvModifuFill" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
 
     <TextView
         android:id="@+id/tvPath"
@@ -190,5 +190,29 @@
         android:textColor="#0933B1"
         app:layout_constraintStart_toEndOf="@+id/tvPath"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
+
+    <TextView
+        android:id="@+id/tvSignRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="查看报名情况"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvModify" />
+
+    <Button
+        android:id="@+id/tvSign1"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/shape_login"
+        android:text="报名"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvModifuFill" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

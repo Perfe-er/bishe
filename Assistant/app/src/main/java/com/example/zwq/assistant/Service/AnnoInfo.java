@@ -32,5 +32,7 @@ public interface AnnoInfo {
     Observable<HttpResult<Anno>> pubAnno(@Field("annoTitle") String annoTitle,@Field("content") String content, @Field("releaseID") int releaseID,
                                          @Field("releDate") Long releDate,@Field("classIDs") String classIDs);
 
+    @GET("/searchAnno")
+    Observable<HttpResult<List<Anno>>> searchAnno(@Query("classID") int classID,@Query("keyWorlds") String keyWorlds);
 
 }

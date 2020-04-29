@@ -39,6 +39,7 @@ public class ActionFragment extends BaseFragment {
     SwipeRefreshLayout actRefresh;
     List<Activity> mActivities;
     ImageView ivAdd;
+    ImageView ivSearch;
     ActivityAdapter mActivityAdapter;
     LinearLayoutManager  mLinearLayoutManager;
     private int page;
@@ -58,6 +59,14 @@ public class ActionFragment extends BaseFragment {
                     Intent intent = new Intent(getContext(), ActionPubActivity.class);
                     startActivity(intent);
                 }
+            }
+        });
+        ivSearch = view.findViewById(R.id.ivSearch);
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),ActionSearchActivity.class);
+                startActivity(intent);
             }
         });
         actRecycle = view.findViewById(R.id.actRecycle);

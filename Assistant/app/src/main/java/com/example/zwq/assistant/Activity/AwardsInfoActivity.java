@@ -1,8 +1,6 @@
 package com.example.zwq.assistant.Activity;
 import android.app.Activity;
-import android.app.Application;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -55,7 +54,9 @@ public class AwardsInfoActivity extends BaseActivity {
     TextView tvModifyFill;
     TextView tvPath;
     TextView tvDownLoad;
+    TextView tvSignRecord;
     ImageView ivReturn;
+    Button btnSign;
     private Calendar cal;
     private int year,month,day;
     private int awardID;
@@ -71,7 +72,14 @@ public class AwardsInfoActivity extends BaseActivity {
         getDate();
         initView();
         intentInfo();
-
+        int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
+        if (userType == 2){
+            btnSign.setVisibility(View.GONE);
+            tvSignRecord.setVisibility(View.VISIBLE);
+        }else {
+            btnSign.setVisibility(View.VISIBLE);
+            tvSignRecord.setVisibility(View.GONE);
+        }
     }
 
     public void initView(){
@@ -86,7 +94,9 @@ public class AwardsInfoActivity extends BaseActivity {
         tvDownLoad = findViewById(R.id.tvDownLoad);
         tvPath = findViewById(R.id.tvPath);
         tvModify = findViewById(R.id.tvModify);
+        tvSignRecord = findViewById(R.id.tvSignRecord);
         ivReturn = findViewById(R.id.ivReturn);
+        btnSign = findViewById(R.id.tvSign1);
         ivReturn.setOnClickListener(this);
         tvStarTime.setOnClickListener(this);
         tvEndTime.setOnClickListener(this);
@@ -94,13 +104,15 @@ public class AwardsInfoActivity extends BaseActivity {
         tvModify.setOnClickListener(this);
         tvModifyFill.setOnClickListener(this);
         tvDownLoad.setOnClickListener(this);
-
+        btnSign.setOnClickListener(this);
+        tvSignRecord.setOnClickListener(this);
     }
 
 
     public void onClick(View view){
         DatePickerDialog.OnDateSetListener listener;
         DatePickerDialog dialog;
+        Intent intent;
         switch (view.getId()){
             case R.id.ivReturn:
                 finish();
@@ -142,6 +154,16 @@ public class AwardsInfoActivity extends BaseActivity {
                 break;
             case R.id.tvModifuFill:
                 openSystemFile();
+                break;
+            case R.id.tvSign1:
+                intent = new Intent(AwardsInfoActivity.this,AwardSignActivity.class);
+                intent.putExtra("awardID",awardID + "");
+                startActivity(intent);
+                break;
+            case R.id.tvSignRecord:
+                intent = new Intent(AwardsInfoActivity.this,AwardRecordActivity.class);
+                intent.putExtra("awardID",awardID + "");
+                startActivity(intent);
                 break;
         }
 

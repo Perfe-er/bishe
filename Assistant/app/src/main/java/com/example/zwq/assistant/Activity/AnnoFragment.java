@@ -39,8 +39,8 @@ public class AnnoFragment extends BaseFragment {
     RecyclerView rvAnnoList;
     List<Anno> mAnnoList;
     ImageView ivAdd;
+    ImageView ivSearch;
     AnnoListAdapter mAnnoListAdapter;
-    AssistantAnnoListAdapter assistantClass;
     LinearLayoutManager mLinearLayoutManager;
     SwipeRefreshLayout annoRefresh;
     private int page;
@@ -62,6 +62,14 @@ public class AnnoFragment extends BaseFragment {
                     Intent intent = new Intent(getContext(), AnnoPubActivity.class);
                     startActivity(intent);
                 }
+            }
+        });
+        ivSearch = view.findViewById(R.id.ivSearch);
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),AnnoSearchActivity.class);
+                startActivity(intent);
             }
         });
         final int userType = UserInfoManager.getInstance().getLoginUser().getStuType();

@@ -12,7 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.ClassMoreActivity"></activity>
+        <activity android:name=".Activity.SignInfoActivity"></activity>
+        <activity android:name=".Activity.SignRecordActivity" />
+        <activity android:name=".Activity.SignPubActivity" />
+        <activity android:name=".Activity.SignActivity" />
+        <activity android:name=".Activity.MyAwardsListActivity" />
+        <activity android:name=".Activity.AwardSearchAcitivty" />
+        <activity android:name=".Activity.ActionSearchActivity" />
+        <activity android:name=".Activity.AnnoSearchActivity" />
+        <activity android:name=".Activity.AwardSignInfoActivity" />
+        <activity android:name=".Activity.AwardRecordActivity" />
+        <activity android:name=".Activity.AwardSignActivity" />
+        <activity android:name=".Activity.MyMoralRecordActivity" />
+        <activity android:name=".Activity.OtherMoralInfoActivity" />
+        <activity android:name=".Activity.ClassActionActivity" />
+        <activity android:name=".Activity.ClassAwardsActivity" />
+        <activity android:name=".Activity.ClassAnnoActivity" />
+        <activity android:name=".Activity.ClassMoreActivity" />
         <activity android:name=".Activity.ActionSignActivity" />
         <activity android:name=".Activity.ActionPubActivity" />
         <activity android:name=".Activity.ActionInfoActivity" />
@@ -69,7 +85,7 @@
     </application>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" /> <!-- 网络 -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />

@@ -44,6 +44,8 @@ public class AwardsFragment extends BaseFragment {
     AwardsPubAdapter mAwardsPubAdapter;
     List<Awards> mAwardsList;
     ImageView ivAdd;
+    ImageView ivSearch;
+    ImageView ivRecord;
     private int page;
 
 
@@ -69,6 +71,22 @@ public class AwardsFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 initList();
+            }
+        });
+        ivRecord = view.findViewById(R.id.ivRecord);
+        ivRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),MyAwardsListActivity.class);
+                startActivity(intent);
+            }
+        });
+        ivSearch = view.findViewById(R.id.ivSearch);
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),AwardSearchAcitivty.class);
+                startActivity(intent);
             }
         });
         initList();

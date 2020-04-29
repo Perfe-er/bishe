@@ -1,5 +1,7 @@
 package com.example.zwq.assistant.Service;
 
+import com.example.zwq.assistant.been.AwardSign;
+import com.example.zwq.assistant.been.AwardSignComment;
 import com.example.zwq.assistant.been.Awards;
 import com.example.zwq.assistant.been.HttpResult;
 
@@ -13,6 +15,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface AwardsInfo {
+    @GET("/searchAwards")
+    Observable<HttpResult<List<Awards>>> searchAwards(@Query("keyWorlds") String keyWorlds);
 
     @GET("/getListAwards")
     Observable<HttpResult<List<Awards>>> getListAwards(@Query("classID") int classID,@Query("page") int page);
@@ -38,5 +42,29 @@ public interface AwardsInfo {
                                              @Field("startTime") long startTime,@Field("endTime") long endTime,
                                              @Field("toClass") String toClass);
 
+    @FormUrlEncoded
+    @POST("/awardsSign")
+    Observable<HttpResult<AwardSign>> awardsSign(@Field("awardsPubId") int awardsPubId,@Field("uid") int uid,
+                                                 @Field("word") String word,@Field("date") long date);
 
+    @FormUrlEncoded
+    @POST("/editPass")
+    Observable<HttpResult<AwardSign>> editPass(@Field("awardSignID") int awardSignID);
+
+    @GET("/listAwardSignComment")
+    Observable<HttpResult<List<AwardSignComment>>> listAwardSignComment(@Query("awardSignID") int awardSignID);
+
+    @GET("/getAwardsSignById")
+    Observable<HttpResult<AwardSign>> getAwardsSignById(@Query("awardSignID") int awardSignID);
+
+    @GET("/getawardsSignOfPub")
+    Observable<HttpResult<List<AwardSign>>> getawardsSignOfPub(@Query("awardsID") int awardsID);
+
+    @GET("/listMySignById")
+    Observable<HttpResult<List<AwardSign>>> listMySignById(@Query("uid") int uid,@Query("page") int page);
+
+    @FormUrlEncoded
+    @POST("/awardsComment")
+    Observable<HttpResult<AwardSignComment>> awardsComment(@Field("uid") int uid,@Field("awardSignID") int awardSignID,
+                                                           @Field("commentContent") String commentContent);
 }

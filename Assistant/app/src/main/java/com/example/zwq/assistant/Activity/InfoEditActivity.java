@@ -19,8 +19,6 @@ import com.example.zwq.assistant.been.User;
 import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.manager.UserInfoManager;
 
-import java.util.Objects;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -65,7 +63,7 @@ public class InfoEditActivity extends BaseActivity implements RadioGroup.OnCheck
         etCollege = findViewById(R.id.etCollege);
         etBirthday = findViewById(R.id.etBirthday);
         conStuID = findViewById(R.id.conStuID);
-        conParentPho = findViewById(R.id.conPerentPho);
+        conParentPho = findViewById(R.id.conParentPho);
         conIDCard = findViewById(R.id.conIDCard);
         conAddress = findViewById(R.id.conAddress);
         rgSex = findViewById(R.id.rgSex);

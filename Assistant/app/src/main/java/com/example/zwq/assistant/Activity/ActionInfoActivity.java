@@ -1,6 +1,5 @@
 package com.example.zwq.assistant.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -24,7 +23,6 @@ import android.widget.Toast;
 
 import com.example.zwq.assistant.R;
 import com.example.zwq.assistant.Service.ActivityInfo;
-import com.example.zwq.assistant.Service.AnnoInfo;
 import com.example.zwq.assistant.been.Activity;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.manager.RetrofitManager;
@@ -67,10 +65,10 @@ public class ActionInfoActivity extends BaseActivity {
         tvModify = findViewById(R.id.tvModify);
         tvRelease = findViewById(R.id.tvRelease);
         tvTime = findViewById(R.id.tvTime);
-        tvSign = findViewById(R.id.tvSign);
+        btnSign = findViewById(R.id.btnSign);
         etTitle = findViewById(R.id.etTitle);
         etContent = findViewById(R.id.etContent);
-        btnSign = findViewById(R.id.btnSign);
+        tvSign = findViewById(R.id.tvSign);
         ivReturn.setOnClickListener(this);
         tvModify.setOnClickListener(this);
         tvSave.setOnClickListener(this);

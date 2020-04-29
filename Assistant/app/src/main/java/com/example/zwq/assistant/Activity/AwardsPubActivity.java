@@ -209,7 +209,7 @@ public class AwardsPubActivity extends BaseActivity {
             @Override
             public void onSuccess(String url) {
                 RetrofitManager.getInstance().createReq(AwardsInfo.class)
-                        .pubAwards(releaseID,title,content,path,startTime,endTime,classID)
+                        .pubAwards(releaseID,title,content,url,startTime,endTime,classID)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<HttpResult<Awards>>() {

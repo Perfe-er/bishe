@@ -1,13 +1,26 @@
 package com.example.zwq.assistant.been;
 
+
 public class AwardSign {
 
     private int awardSignID;
-    private int awardsRecID;
-    private int id;
+    private int awardsPubId;
+    private int uid;
     private String word;
-    private String evaluation;
+    private long date;
     private int pass;   //1：通过，2：未通过
+
+    private Awards awardsPub; //奖学金发布对应的信息
+
+
+
+    public Awards getAwardsPub() {
+        return awardsPub;
+    }
+
+    public void setAwardsPub(Awards awardsPub) {
+        this.awardsPub = awardsPub;
+    }
 
     public int getAwardSignID() {
         return awardSignID;
@@ -17,14 +30,21 @@ public class AwardSign {
         this.awardSignID = awardSignID;
     }
 
-    public int getAwardsRecID() {
-        return awardsRecID;
+    public int getAwardsPubId() {
+        return awardsPubId;
     }
 
-    public void setAwardsRecID(int awardsRecID) {
-        this.awardsRecID = awardsRecID;
+    public void setAwardsPubId(int awardsPubId) {
+        this.awardsPubId = awardsPubId;
     }
 
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
 
     public String getWord() {
         return word;
@@ -32,14 +52,6 @@ public class AwardSign {
 
     public void setWord(String word) {
         this.word = word;
-    }
-
-    public String getEvaluation() {
-        return evaluation;
-    }
-
-    public void setEvaluation(String evaluation) {
-        this.evaluation = evaluation;
     }
 
     public int getPass() {
@@ -50,11 +62,11 @@ public class AwardSign {
         this.pass = pass;
     }
 
-    public int getId() {
-        return id;
+    public long getDate() {
+        return date;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDate(long date) {
+        this.date = date;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.zwq.assistant.Activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import io.reactivex.Observer;
@@ -7,6 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -46,6 +48,7 @@ public class OtherInfoActivity extends AppCompatActivity {
     ConstraintLayout conIDCard;
     ConstraintLayout conClass;
     ConstraintLayout conParentPho;
+    private int userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +81,7 @@ public class OtherInfoActivity extends AppCompatActivity {
         conAddress = findViewById(R.id.conAddress);
         conStuID = findViewById(R.id.conStuID);
         conClass = findViewById(R.id.conClass);
-        conParentPho = findViewById(R.id.conPerentPho);
+        conParentPho = findViewById(R.id.conParentPho);
         conIDCard = findViewById(R.id.conIDCard);
         ivReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,9 +89,74 @@ public class OtherInfoActivity extends AppCompatActivity {
                 finish();
             }
         });
+        tvStuType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
+                if (userType == 2){
+                    selectStuType();
+                }else {
+                    Toast.makeText(OtherInfoActivity.this,"你不是导员，无权修改",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        conNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OtherInfoActivity.this, OtherMoralInfoActivity.class);
+                intent.putExtra("userID",userID + "");
+                startActivity(intent);
+            }
+        });
     }
 
+    public void selectStuType(){
+        new AlertDialog.Builder(OtherInfoActivity.this).setTitle("修改身份")
+                .setPositiveButton("班委", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        stuType(1);
+                    }
+                }).setNegativeButton("普通学生", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                stuType(0);
+            }
+        });
+    }
 
+    private void stuType(int stuType) {
+        RetrofitManager.getInstance().createReq(UserInfo.class)
+                .editStuType(userID, stuType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpResult<User>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult<User> userHttpResult) {
+                        if (userHttpResult.getCode() == 200) {
+                            tvStuType.setText("班委");
+                            Toast.makeText(OtherInfoActivity.this, "切换成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(OtherInfoActivity.this, "出现错误", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(OtherInfoActivity.this, "网络出错", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
     private void authority(){
         int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
         if (userType == 2 ){
@@ -103,7 +171,7 @@ public class OtherInfoActivity extends AppCompatActivity {
     }
     private void getUserInfo() {
         Intent intent = getIntent();
-        int userID = Integer.parseInt(intent.getStringExtra("userID"));
+        userID = Integer.parseInt(intent.getStringExtra("userID"));
         RetrofitManager.getInstance()
                 .createReq(UserInfo.class)
                 .getUserInfoById(userID)

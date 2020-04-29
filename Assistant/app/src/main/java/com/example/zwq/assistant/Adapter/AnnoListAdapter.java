@@ -33,9 +33,6 @@ public class AnnoListAdapter extends BaseQuickAdapter<Anno, BaseViewHolder> {
         Date date = new Date(item.getReleDate());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String dateTime = sdf.format(date);
-
-        int annoID = item.getAnnoID();
-        int position = helper.getLayoutPosition();
         int releaseID = item.getReleaseID();
         helper.setText(R.id.tvTitle,item.getAnnoTitle())
                 .setText(R.id.tvContent,item.getContent())

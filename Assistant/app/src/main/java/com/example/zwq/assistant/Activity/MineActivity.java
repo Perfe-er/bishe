@@ -76,7 +76,7 @@ public class MineActivity extends AppCompatActivity {
         conAddress = findViewById(R.id.conAddress);
         conStuID = findViewById(R.id.conStuID);
         conClass = findViewById(R.id.conClass);
-        conParentPho = findViewById(R.id.conPerentPho);
+        conParentPho = findViewById(R.id.conParentPho);
         conIDCard = findViewById(R.id.conIDCard);
         ivSetting = findViewById(R.id.ivSetting);
         ivSetting.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +91,6 @@ public class MineActivity extends AppCompatActivity {
                 intent.putExtra("address",tvAddress.getText());
                 intent.putExtra("IDCard",tvAddress.getText());
                 intent.putExtra("stuType",tvStuType.getText());
-                startActivity(intent);
                 startActivity(intent);
             }
         });
@@ -144,6 +143,12 @@ public class MineActivity extends AppCompatActivity {
                                 tvStuType.setText("班委");
                             }else if (stuType == 2){
                                 tvStuType.setText("导员");
+                                conStuID.setVisibility(View.GONE);
+                                conNumber.setVisibility(View.GONE);
+                                conClass.setVisibility(View.GONE);
+                                conAddress.setVisibility(View.GONE);
+                                conParentPho.setVisibility(View.GONE);
+                                conIDCard.setVisibility(View.GONE);
                             }
                             String url = userHttpResult.getData().getHead();
                             Glide.with(MineActivity.this)

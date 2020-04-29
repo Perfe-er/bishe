@@ -12,6 +12,7 @@ import com.example.zwq.assistant.been.ActSign;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.User;
 import com.example.zwq.assistant.manager.RetrofitManager;
+import com.example.zwq.assistant.manager.UserInfoManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,17 +30,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ActivitySignAdatper extends BaseQuickAdapter<ActSign, BaseViewHolder> {
     private List<String> students = new ArrayList<>();
-    private  HashMap<Integer, Boolean> map;
-    private List<ActSign> mActSigns;
-    BaseViewHolder helper;
 
     public ActivitySignAdatper(int layoutResId, @Nullable List<ActSign> data) {
         super(layoutResId, data);
-        for (int i = 0; i < data.size(); i++) {
-            //设置默认的显示
-            map.put(i, false);
-        }
-
     }
 
     @Override
@@ -49,6 +42,11 @@ public class ActivitySignAdatper extends BaseQuickAdapter<ActSign, BaseViewHolde
         String dateTime = sdf.format(date);
         helper.setText(R.id.tvTime,dateTime);
         int stuID = item.getStuID();
+        if (UserInfoManager.getInstance().getLoginUser().getStuType() == 0){
+            helper.getView(R.id.cbSelect).setVisibility(View.GONE);
+        }else {
+            helper.getView(R.id.cbSelect).setVisibility(View.VISIBLE);
+        }
         RetrofitManager.getInstance().createReq(UserInfo.class)
                 .getUserInfoById(stuID)
                 .subscribeOn(Schedulers.io())
@@ -96,49 +94,8 @@ public class ActivitySignAdatper extends BaseQuickAdapter<ActSign, BaseViewHolde
                 }
             }
         });
-        helper.addOnClickListener(R.id.cbSelect);
     }
 
-    public void setAll(){
-        helper.setChecked(R.id.cbSelect,true);
-//        Set<Map.Entry<Integer, Boolean>> entries = map.entrySet();
-//        boolean shouldall = false;
-//        for (Map.Entry<Integer, Boolean> entry : entries) {
-//            Boolean value = entry.getValue();
-//            if (!value) {
-//                shouldall = true;
-//                break;
-//            }
-//        }
-//        for (Map.Entry<Integer, Boolean> entry : entries) {
-//            entry.setValue(shouldall);
-//        }
-        notifyDataSetChanged();
-    }
-
-    public void never(){
-        CheckBox cb = helper.getView(R.id.cbSelect);
-        if (cb.isChecked()){
-            helper.setChecked(R.id.cbSelect,true);
-        }else {
-            helper.setChecked(R.id.cbSelect,false);
-        }
-//        helper.setOnCheckedChangeListener(R.id.cbSelect,new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked){
-//                    helper.setChecked(R.id.cbSelect,true);
-//                }else {
-//                    helper.setChecked(R.id.cbSelect,false);
-//                }
-//            }
-//        });
-//        Set<Map.Entry<Integer, Boolean>> entries = map.entrySet();
-//        for (Map.Entry<Integer, Boolean> entry : entries) {
-//            entry.setValue(!entry.getValue());
-//        }
-        notifyDataSetChanged();
-    }
 
     public List<String> getStudents(){
         return students;

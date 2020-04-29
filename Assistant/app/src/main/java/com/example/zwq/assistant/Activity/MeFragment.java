@@ -160,6 +160,8 @@ public class MeFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.conNumber:
+                intent = new Intent(getContext(), MyMoralRecordActivity.class);
+                startActivity(intent);
                 break;
             case R.id.conEditPassWd:
                 intent = new Intent(getContext(), EditPassActivity.class);
@@ -195,10 +197,13 @@ public class MeFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.llSign:
+                intent = new Intent(getContext(),SignActivity.class);
+                startActivity(intent);
                 break;
             case R.id.llSignList:
+                intent = new Intent(getContext(),SignRecordActivity.class);
+                startActivity(intent);
                 break;
-
             case R.id.photoGraph:
                 if (Build.VERSION.SDK_INT >= 23) {
                     int permission = ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA);
@@ -454,6 +459,7 @@ public class MeFragment extends BaseFragment {
         path = cursor.getString(columnIndex);
         return path ;
     }
+
     private void getUserInfo() {
         RetrofitManager.getInstance()
                 .createReq(UserInfo.class)
@@ -484,11 +490,17 @@ public class MeFragment extends BaseFragment {
                             int stuType = userHttpResult.getData().getStuType();
                             if (stuType == 0) {
                                 tvStuType.setText("普通学生");
+                                conClass.setVisibility(View.VISIBLE);
+                                conNumber.setVisibility(View.VISIBLE);
                             } else if (stuType == 1) {
                                 tvStuType.setText("班委");
+                                conClass.setVisibility(View.VISIBLE);
+                                conNumber.setVisibility(View.VISIBLE);
 
                             } else if (stuType == 2) {
                                 tvStuType.setText("导员");
+                                conClass.setVisibility(View.GONE);
+                                conNumber.setVisibility(View.GONE);
                             }
                             String head = userHttpResult.getData().getHead();
                             Glide.with(getContext()).load(head).into(ivHead);

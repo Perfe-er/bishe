@@ -15,6 +15,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ActivityInfo {
+    @GET("/searchActivity")
+    Observable<HttpResult<List<Activity>>> searchActivity(@Query("keyWorlds") String keyWorlds);
+
     @GET("/listActivity")
     Observable<HttpResult<List<Activity>>> listActivity(@Query("classID") int classID, @Query("page") int page);
 
