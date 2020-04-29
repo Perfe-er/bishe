@@ -58,6 +58,7 @@ public class SignInfoActivity extends BaseActivity implements CompoundButton.OnC
     private int signID;
     private int signType;
 
+    
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
