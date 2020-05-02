@@ -71,20 +71,24 @@ public class ActionFragment extends BaseFragment {
         });
         actRecycle = view.findViewById(R.id.actRecycle);
         actRefresh = view.findViewById(R.id.actRefresh);
-        actRefresh.setColorSchemeColors(R.color.colorPrimary);
-        actRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                initList();
-                Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
-            }
-        });
         int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
         if (userType == 2){
             assistantList();
         }else {
             initList();
         }
+        actRefresh.setColorSchemeColors(R.color.colorPrimary);
+        actRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (userType == 2){
+                    assistantList();
+                }else {
+                    initList();
+                }
+                Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
+            }
+        });
         onItemClick();
         onItemLongClick();
         return view;

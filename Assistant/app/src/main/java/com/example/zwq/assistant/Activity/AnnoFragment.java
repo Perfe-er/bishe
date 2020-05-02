@@ -85,7 +85,11 @@ public class AnnoFragment extends BaseFragment {
         annoRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                initList();
+                if (userType == 2){
+                    initListById();
+                }else {
+                    initList();
+                }
                 Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
             }
         });

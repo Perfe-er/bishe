@@ -67,10 +67,21 @@ public class AwardsFragment extends BaseFragment {
         });
         fillRecycle = view.findViewById(R.id.fillRecycle);
         fillRefresh = view.findViewById(R.id.fillRefresh);
+        int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
+        if (userType == 2){
+            assistantList();
+        }else {
+            initList();
+        }
         fillRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                initList();
+                if (userType == 2){
+                    assistantList();
+                }else {
+                    initList();
+                }
+                Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
             }
         });
         ivRecord = view.findViewById(R.id.ivRecord);
@@ -89,12 +100,7 @@ public class AwardsFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
-        int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
-        if (userType == 2){
-            assistantList();
-        }else {
-            initList();
-        }
+
         onItemClick();
         onItemLongClick();
         return view;
