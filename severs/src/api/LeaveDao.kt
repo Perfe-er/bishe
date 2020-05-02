@@ -15,7 +15,7 @@ import online.sanen.cdm.api.condition.C
 class LeaveDao : BaseDao() {
 
 
-    public fun findLevelById(leaveID: Int): Leave? {
+    fun findLevelById(leaveID: Int): Leave? {
         val leave = Leave()
         leave.leaveID = leaveID
 

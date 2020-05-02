@@ -21,6 +21,9 @@ public interface ActivityInfo {
     @GET("/listActivity")
     Observable<HttpResult<List<Activity>>> listActivity(@Query("classID") int classID, @Query("page") int page);
 
+    @GET("/assistantList")
+    Observable<HttpResult<List<Activity>>> assistantList(@Query("actFouID") int actFouID);
+
     @FormUrlEncoded
     @POST("/modifyActivity")
     Observable<HttpResult<Activity>> modifyActivity(@Field("actID") int actID, @Field("actTitle") String actTitle,

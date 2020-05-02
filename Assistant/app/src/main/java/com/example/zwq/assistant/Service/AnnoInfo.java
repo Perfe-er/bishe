@@ -14,6 +14,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface AnnoInfo {
+    @GET("/listAnnoByAssistant")
+    Observable<HttpResult<List<Anno>>> listAnnoByAssistant(@Query("releaseID") int releaseID);
+
 
     @GET("/listAnno")
     Observable<HttpResult<List<Anno>>> listAnno(@Query("classID") int classID, @Query("page") int page);

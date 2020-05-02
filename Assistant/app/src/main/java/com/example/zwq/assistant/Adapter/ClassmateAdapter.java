@@ -56,12 +56,7 @@ public class ClassmateAdapter extends RecyclerView.Adapter<ClassmateAdapter.View
         }else {
             holder.ivSex.setImageResource(R.drawable.sex_m);
         }
-        holder.ivChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClick.onChatItemClick(holder.ivChat);
-            }
-        });
+
         holder.ivPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +80,6 @@ public class ClassmateAdapter extends RecyclerView.Adapter<ClassmateAdapter.View
         TextView tvClassName;
         TextView tvPhone;
         ImageView ivPhone;
-        ImageView ivChat;
         ImageView ivSex;
         ConstraintLayout conClassmate;
 
@@ -94,7 +88,6 @@ public class ClassmateAdapter extends RecyclerView.Adapter<ClassmateAdapter.View
             tvClassName = itemView.findViewById(R.id.tvClassName);
             tvPhone = itemView.findViewById(R.id.tvStuID);
             ivPhone = itemView.findViewById(R.id.ivPhone);
-            ivChat = itemView.findViewById(R.id.ivChat);
             ivSex = itemView.findViewById(R.id.ivSex);
             conClassmate = itemView.findViewById(R.id.conClassmate);
         }

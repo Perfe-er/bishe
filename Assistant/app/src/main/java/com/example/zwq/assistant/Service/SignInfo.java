@@ -3,6 +3,7 @@ package com.example.zwq.assistant.Service;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.Sign;
 import com.example.zwq.assistant.been.SignRecord;
+import com.example.zwq.assistant.been.User;
 
 import java.util.List;
 
@@ -24,12 +25,12 @@ public interface SignInfo {
     Observable<HttpResult<Sign>> endSign(@Field("signID") int signID,@Field("endDate") long endDate);
 
     @GET("/getSiginOfUserRecev")
-    Observable<HttpResult<List<Sign>>> getSiginOfUserRecev(@Query("uid") int uid, @Query("page") int page);
+    Observable<HttpResult<List<SignRecord>>> getSiginOfUserRecev(@Query("uid") int uid, @Query("page") int page);
 
     @GET("/getSiginOfUserPub")
     Observable<HttpResult<List<Sign>>> getSiginOfUserPub(@Query("uid") int uid, @Query("page") int page);
 
     @GET("/getSignedUser")
-    Observable<HttpResult<List<SignRecord>>> getSignedUser(@Query("signID") int signID,@Query("type") int type);
+    Observable<HttpResult<List<User>>> getSignedUser(@Query("signID") int signID, @Query("type") int type);
 
 }

@@ -372,7 +372,7 @@ public class MeFragment extends BaseFragment {
                     @Override
                     public void onSuccess(String url) {
                         RetrofitManager.getInstance().createReq(UserInfo.class)
-                                .editHead(UserInfoManager.getInstance().getUid(), path)
+                                .editHead(UserInfoManager.getInstance().getUid(), url)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Observer<HttpResult<User>>() {

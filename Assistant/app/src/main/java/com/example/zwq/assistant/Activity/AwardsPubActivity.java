@@ -201,7 +201,12 @@ public class AwardsPubActivity extends BaseActivity {
         long endTime = endTime2.getTime();
         pubClass = adapter.getPubClass();
         int releaseID = UserInfoManager.getInstance().getUid();
-        String classID = String.join(",",pubClass);
+        String classID;
+        if (UserInfoManager.getInstance().getLoginUser().getStuType() == 2){
+            classID = String.join(",",pubClass);
+        }else {
+            classID = String.valueOf(UserInfoManager.getInstance().getLoginUser().getClassID());
+        }
         String path = tvPath.getText().toString();
         String uid = String.valueOf(UserInfoManager.getInstance().getUid());
         CosXmlProgressListener progressListener = null;

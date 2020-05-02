@@ -79,12 +79,57 @@ public class ActionFragment extends BaseFragment {
                 Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
             }
         });
-        initList();
+        int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
+        if (userType == 2){
+            assistantList();
+        }else {
+            initList();
+        }
         onItemClick();
         onItemLongClick();
         return view;
     }
 
+    public void assistantList(){
+        mActivities = new ArrayList<>();
+        mActivityAdapter = new ActivityAdapter(R.layout.item_activity_list,mActivities);
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        actRecycle.setAdapter(mActivityAdapter);
+        actRecycle.setLayoutManager(mLinearLayoutManager);
+        int uid = UserInfoManager.getInstance().getUid();
+        RetrofitManager.getInstance().createReq(ActivityInfo.class)
+                .assistantList(uid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpResult<List<Activity>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult<List<Activity>> listHttpResult) {
+                        if (listHttpResult.getCode() == 200 && listHttpResult.getData() != null) {
+                            mActivities.clear();
+                            mActivities.addAll(listHttpResult.getData());
+                            mActivityAdapter.notifyDataSetChanged();
+                            actRefresh.setRefreshing(false);
+                        }else {
+                            Toast.makeText(getContext(),"暂无活动",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
     public void initList(){
         mActivities = new ArrayList<>();
         mActivityAdapter = new ActivityAdapter(R.layout.item_activity_list,mActivities);

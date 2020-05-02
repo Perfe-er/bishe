@@ -6,6 +6,7 @@ import com.example.zwq.assistant.R;
 import com.example.zwq.assistant.Service.UserInfo;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.Sign;
+import com.example.zwq.assistant.been.SignRecord;
 import com.example.zwq.assistant.been.User;
 import com.example.zwq.assistant.manager.RetrofitManager;
 

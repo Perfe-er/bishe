@@ -35,6 +35,7 @@ import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.Moral;
 import com.example.zwq.assistant.been.Sign;
 import com.example.zwq.assistant.been.SignRecord;
+import com.example.zwq.assistant.been.User;
 import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.manager.UserInfoManager;
 
@@ -50,7 +51,7 @@ public class SignInfoActivity extends BaseActivity implements CompoundButton.OnC
     SwipeRefreshLayout recordRefresh;
     SignInfoAdapter mSignInfoAdapter;
     LinearLayoutManager mLinearLayoutManager;
-    List<SignRecord> mSignRecords;
+    List<User> mUsers;
     TextView tvAdd;
     TextView tvFine;
     TextView tvStop;
@@ -184,29 +185,27 @@ public class SignInfoActivity extends BaseActivity implements CompoundButton.OnC
     }
 
     public void initList(int type){
-        mSignRecords = new ArrayList<>();
+        mUsers = new ArrayList<>();
         mLinearLayoutManager = new LinearLayoutManager(this);
-        mSignInfoAdapter = new SignInfoAdapter(R.layout.item_sign_user,mSignRecords);
+        mSignInfoAdapter = new SignInfoAdapter(R.layout.item_sign_user,mUsers);
         recordRecycle.setLayoutManager(mLinearLayoutManager);
         recordRecycle.setAdapter(mSignInfoAdapter);
         RetrofitManager.getInstance().createReq(SignInfo.class)
                 .getSignedUser(signID,type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpResult<List<SignRecord>>>() {
+                .subscribe(new Observer<HttpResult<List<User>>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(HttpResult<List<SignRecord>> listHttpResult) {
-                        if (listHttpResult.getCode() == 200 && listHttpResult.getData() != null){
-                            mSignRecords.clear();
-                            mSignRecords.addAll(listHttpResult.getData());
-                            mSignInfoAdapter.notifyDataSetChanged();
-                            recordRefresh.setRefreshing(false);
-                        }
+                    public void onNext(HttpResult<List<User>> listHttpResult) {
+                        mUsers.clear();
+                        mUsers.addAll(listHttpResult.getData());
+                        mSignInfoAdapter.notifyDataSetChanged();
+                        recordRefresh.setRefreshing(false);
                     }
 
                     @Override
@@ -220,7 +219,6 @@ public class SignInfoActivity extends BaseActivity implements CompoundButton.OnC
                     }
                 });
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void studentList(double add,double fine,String reason){

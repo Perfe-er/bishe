@@ -42,6 +42,17 @@ class AnnoDao : BaseDao() {
 
     }
 
+    suspend fun listAnnoByAssistant(call: ApplicationCall){
+        val request = call.request
+        val releaseID = request.queryParameters["releaseID"]?.toInt()
+        val annoRes = ArrayList<Anno>();
+        val annos =
+            JdbcConnection.bootstrap.queryTable(Anno::class.java)
+                .addCondition { c -> c.add(C.eq("releaseID", releaseID)) }
+                .list(Anno::class.java)
+        annoRes.addAll(annos)
+        writeGsonResponds(JSON.toJSONString(HttpResult(annoRes, 200, "成功")), call)
+    }
     /**
      * 公告列表
      */

@@ -77,6 +77,18 @@ class ActivityDao : BaseDao() {
         JdbcConnection.bootstrap.query(actSign).insert()
         writeGsonResponds(JSON.toJSONString(HttpResult(actSign, 200, "报名成功")), call)
     }
+
+    suspend fun assistantList(call: ApplicationCall){
+        val request = call.request
+        val actFouID = request.queryParameters["actFouID"]?.toInt()
+        val actRes = ArrayList<Activity>()
+        val acts =
+            JdbcConnection.bootstrap.queryTable(Activity::class.java)
+                .addCondition { c -> c.add(C.eq("actFouID", actFouID)) }
+                .list(Activity::class.java)
+        actRes.addAll(acts)
+        writeGsonResponds(JSON.toJSONString(HttpResult(actRes, 200, "成功")), call)
+    }
     /**
      * 活动列表
      */
@@ -154,7 +166,7 @@ class ActivityDao : BaseDao() {
             val len = recs.size
 
             activity.classIDs = recs.asList()
-            for (i in 0 until len - 1) {
+            for (i in 0 until len) {
                 val cid = Integer.parseInt(recs[i])
                 val receive = ActReceive()
                 receive.actID = id

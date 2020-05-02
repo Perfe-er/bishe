@@ -340,6 +340,13 @@ fun Application.module(testing: Boolean = false) {
             }
 
             /**
+             * 辅导员的首页公告列表
+             */
+            get("/listAnnoByAssistant") {
+                annoDao.listAnnoByAssistant(call)
+            }
+
+            /**
              * 公告列表
              */
             get("/listAnno") {
@@ -522,6 +529,13 @@ fun Application.module(testing: Boolean = false) {
              */
 
             /**
+             * 发布的评选列表
+             */
+            get("/ListAwards"){
+                awardsDao.ListAwards(call)
+            }
+
+            /**
             * 奖学金列表
             */
             get("/getListAwards"){
@@ -678,6 +692,10 @@ fun Application.module(testing: Boolean = false) {
 
             get("/signList"){
                 activityDao.signList(call)
+            }
+
+            get("/assistantList"){
+                activityDao.assistantList(call)
             }
             get("/listActivity") {
                 activityDao.listActivity(call)

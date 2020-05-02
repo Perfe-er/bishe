@@ -47,6 +47,7 @@ public class OtherInfoActivity extends AppCompatActivity {
     ConstraintLayout conStuID;
     ConstraintLayout conIDCard;
     ConstraintLayout conClass;
+    ConstraintLayout conStuType;
     ConstraintLayout conParentPho;
     private int userID;
 
@@ -80,6 +81,7 @@ public class OtherInfoActivity extends AppCompatActivity {
         conNumber = findViewById(R.id.conNumber);
         conAddress = findViewById(R.id.conAddress);
         conStuID = findViewById(R.id.conStuID);
+        conStuType = findViewById(R.id.conStuType);
         conClass = findViewById(R.id.conClass);
         conParentPho = findViewById(R.id.conParentPho);
         conIDCard = findViewById(R.id.conIDCard);
@@ -89,7 +91,7 @@ public class OtherInfoActivity extends AppCompatActivity {
                 finish();
             }
         });
-        tvStuType.setOnClickListener(new View.OnClickListener() {
+        conStuType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
@@ -111,18 +113,18 @@ public class OtherInfoActivity extends AppCompatActivity {
     }
 
     public void selectStuType(){
-        new AlertDialog.Builder(OtherInfoActivity.this).setTitle("修改身份")
+        new AlertDialog.Builder(this).setTitle("修改身份")
                 .setPositiveButton("班委", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         stuType(1);
                     }
                 }).setNegativeButton("普通学生", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                stuType(0);
-            }
-        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        stuType(0);
+                    }
+                }).show();
     }
 
     private void stuType(int stuType) {
@@ -139,7 +141,11 @@ public class OtherInfoActivity extends AppCompatActivity {
                     @Override
                     public void onNext(HttpResult<User> userHttpResult) {
                         if (userHttpResult.getCode() == 200) {
-                            tvStuType.setText("班委");
+                            if(userHttpResult.getData().getStuType() == 1){
+                                tvStuType.setText("班委");
+                            }else if (userHttpResult.getData().getStuType() == 0){
+                                tvStuType.setText("普通学生");
+                            }
                             Toast.makeText(OtherInfoActivity.this, "切换成功", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(OtherInfoActivity.this, "出现错误", Toast.LENGTH_SHORT).show();

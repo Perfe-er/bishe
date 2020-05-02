@@ -37,7 +37,6 @@ import java.util.List;
 public class MyClassActivity extends BaseActivity {
     ImageView ivReturn;
     ImageView ivSeekClass;
-    ImageView ivAssistantChat;
     ImageView ivAssistantPhone;
     ImageView ivAssistantSex;
     TextView tvAssistantName;
@@ -68,7 +67,6 @@ public class MyClassActivity extends BaseActivity {
         mRecyclerView = findViewById(R.id.rvStudent);
         ivReturn = findViewById(R.id.ivReturn);
         ivSeekClass = findViewById(R.id.ivSeekClass);
-        ivAssistantChat = findViewById(R.id.ivAssistantChat);
         ivAssistantPhone = findViewById(R.id.ivAssistantPhone);
         ivAssistantSex = findViewById(R.id.ivAssistantSex);
         tvAssistantName = findViewById(R.id.tvAssistantName);
@@ -79,7 +77,6 @@ public class MyClassActivity extends BaseActivity {
         conAssistant.setOnClickListener(this);
         ivReturn.setOnClickListener(this);
         ivSeekClass.setOnClickListener(this);
-        ivAssistantChat.setOnClickListener(this);
         ivAssistantPhone.setOnClickListener(this);
     }
 
@@ -91,8 +88,6 @@ public class MyClassActivity extends BaseActivity {
                 break;
             case R.id.ivSeekClass:
                 seekClass();
-                break;
-            case R.id.ivAssistantChat:
                 break;
             case R.id.ivAssistantPhone:
                 String phone = tvAssistantPhone.getText().toString();

@@ -21,6 +21,9 @@ public interface AwardsInfo {
     @GET("/getListAwards")
     Observable<HttpResult<List<Awards>>> getListAwards(@Query("classID") int classID,@Query("page") int page);
 
+    @GET("/ListAwards")
+    Observable<HttpResult<List<Awards>>> ListAwards(@Query("releaseID") int releaseID);
+
     @FormUrlEncoded
     @POST("/deleteAwards")
     Observable<HttpResult<Awards>> deleteAwards(@Field("awardsID") int awardsID);

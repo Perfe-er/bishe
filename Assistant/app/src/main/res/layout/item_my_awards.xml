@@ -35,12 +35,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="TextView"
             app:layout_constraintStart_toEndOf="@+id/textView48"
-            app:layout_constraintTop_toBottomOf="@+id/ivTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <TextView
-            android:id="@+id/ivTitle"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -58,7 +57,7 @@
             android:layout_marginTop="16dp"
             android:text="发布人："
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <TextView
             android:id="@+id/tvEndTime"
@@ -66,7 +65,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="5dp"
-            android:text="TextView"
             app:layout_constraintBottom_toTopOf="@+id/textView56"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -99,7 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="TextView"
             app:layout_constraintStart_toEndOf="@+id/textView59"
             app:layout_constraintTop_toBottomOf="@+id/textView56" />
 
@@ -121,7 +118,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="5dp"
-            android:text="TextView"
             app:layout_constraintBottom_toTopOf="@+id/textView56"
             app:layout_constraintStart_toStartOf="parent" />
 

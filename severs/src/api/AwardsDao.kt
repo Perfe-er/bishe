@@ -233,6 +233,17 @@ class AwardsDao : BaseDao() {
 
     }
 
+    suspend fun ListAwards(call: ApplicationCall){
+        val request = call.request
+        val releaseID = request.queryParameters["releaseID"]?.toInt()
+        val awardsRes = ArrayList<AwardsPub>()
+        val awards =
+            JdbcConnection.bootstrap.queryTable(AwardsPub::class.java)
+                .addCondition { c -> c.add(C.eq("releaseID", releaseID)) }
+                .list(AwardsPub::class.java)
+        awardsRes.addAll(awards)
+        writeGsonResponds(JSON.toJSONString(HttpResult(awardsRes, 200, "成功")), call)
+    }
     suspend fun getListAwards(call: ApplicationCall){
         val request = call.request
         val classID = request.queryParameters["classID"]?.toInt()

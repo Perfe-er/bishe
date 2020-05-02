@@ -162,8 +162,14 @@ public class ActionPubActivity extends BaseActivity {
         String title = etTitle.getText().toString();
         String content = etContent.getText().toString();
         int actFouID = UserInfoManager.getInstance().getUid();
-        pubClass = adapter.getPubClass();
-        String classID = String.join(",",pubClass);
+        int userType =UserInfoManager.getInstance().getLoginUser().getStuType();
+        String classID;
+        if (userType == 2){
+            pubClass = adapter.getPubClass();
+            classID = String.join(",",pubClass);
+        }else {
+            classID = String.valueOf(UserInfoManager.getInstance().getLoginUser().getClassID());
+        }
         String time = tvTime.getText().toString();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         Date dateTime1 = null;

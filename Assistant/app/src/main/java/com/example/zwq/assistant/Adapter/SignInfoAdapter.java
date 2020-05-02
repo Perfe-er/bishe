@@ -22,50 +22,18 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class SignInfoAdapter extends BaseQuickAdapter<SignRecord, BaseViewHolder> {
+public class SignInfoAdapter extends BaseQuickAdapter<User, BaseViewHolder> {
     List<String> students = new ArrayList<>();
 
-    public SignInfoAdapter(int layoutResId, @Nullable List<SignRecord> data) {
+    public SignInfoAdapter(int layoutResId, @Nullable List<User> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, SignRecord item) {
-        int userID;
-        userID = item.getUid();
-        Date date = new Date(item.getSignDate());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-        String dateTime = sdf.format(date);
-        helper.setText(R.id.tvTime,dateTime);
-        RetrofitManager.getInstance().createReq(UserInfo.class)
-                .getUserInfoById(userID)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpResult<User>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(HttpResult<User> userHttpResult) {
-                        if (userHttpResult.getCode() == 200 && userHttpResult.getData() !=null){
-                            helper.setText(R.id.tvName,userHttpResult.getData().getName())
-                                    .setText(R.id.tvClassName,userHttpResult.getData().getClassName());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        String stuID = String.valueOf(userID);
+    protected void convert(BaseViewHolder helper, User item) {
+        helper.setText(R.id.tvName,item.getName())
+                .setText(R.id.tvClassName,item.getClassName());
+        String stuID = String.valueOf(item.getId());
         helper.setOnCheckedChangeListener(R.id.cbStudent, new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -81,4 +49,5 @@ public class SignInfoAdapter extends BaseQuickAdapter<SignRecord, BaseViewHolder
     public List<String> getUsers(){
         return students;
     }
+
 }

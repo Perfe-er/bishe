@@ -81,8 +81,14 @@ public class AnnoPubActivity extends BaseActivity {
         String content = etContent.getText().toString();
         int releaseID = UserInfoManager.getInstance().getUid();
         Long date = System.currentTimeMillis();
-        pubClass = adapter.getPubClass();
-        String classID = String.join(",",pubClass);
+        int userType =UserInfoManager.getInstance().getLoginUser().getStuType();
+        String classID;
+        if (userType == 2){
+            pubClass = adapter.getPubClass();
+            classID = String.join(",",pubClass);
+        }else {
+            classID = String.valueOf(UserInfoManager.getInstance().getLoginUser().getClassID());
+        }
         RetrofitManager.getInstance().createReq(AnnoInfo.class)
                 .pubAnno(title,content,releaseID,date,classID)
                 .subscribeOn(Schedulers.io())

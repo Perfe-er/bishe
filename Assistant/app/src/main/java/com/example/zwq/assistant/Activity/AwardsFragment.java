@@ -89,10 +89,54 @@ public class AwardsFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
-        initList();
+        int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
+        if (userType == 2){
+            assistantList();
+        }else {
+            initList();
+        }
         onItemClick();
         onItemLongClick();
         return view;
+    }
+
+    public void assistantList(){
+        mAwardsList = new ArrayList<>();
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mAwardsPubAdapter = new AwardsPubAdapter(R.layout.item_fill_awards,mAwardsList);
+        fillRecycle.setAdapter(mAwardsPubAdapter);
+        fillRecycle.setLayoutManager(mLinearLayoutManager);
+        int uid = UserInfoManager.getInstance().getUid();
+        RetrofitManager.getInstance().createReq(AwardsInfo.class)
+                .ListAwards(uid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpResult<List<Awards>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult<List<Awards>> listHttpResult) {
+                        if (listHttpResult.getCode() == 200 && listHttpResult.getData() != null){
+                            mAwardsList.clear();
+                            mAwardsList.addAll(listHttpResult.getData());
+                            fillRefresh.setRefreshing(false);
+                            mAwardsPubAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     public void initList(){

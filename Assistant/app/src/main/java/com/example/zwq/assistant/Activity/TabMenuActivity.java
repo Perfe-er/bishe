@@ -47,7 +47,7 @@ public class TabMenuActivity extends BaseActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_tab_menu);
         initView();
-        changeCheck(myInfo);
+        changeCheck(myHome);
     }
     public void initView(){
         ivHome = findViewById(R.id.ivHome);
@@ -73,11 +73,7 @@ public class TabMenuActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.myHome:
-                if (UserInfoManager.getInstance().getLoginUser().getStuType() == 2) {
-                    Toast.makeText(this,"查看通知请去班级查看",Toast.LENGTH_SHORT).show();
-                }else {
-                    changeCheck(myHome);
-                }
+                changeCheck(myHome);
                 break;
             case R.id.lClass:
                 if (UserInfoManager.getInstance().getLoginUser().getStuType() == 2){

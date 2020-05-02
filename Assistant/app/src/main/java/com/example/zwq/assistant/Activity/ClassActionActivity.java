@@ -73,7 +73,7 @@ public class ClassActionActivity extends AppCompatActivity {
         ivSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ClassActionActivity.this,AnnoSearchActivity.class);
+                Intent intent = new Intent(ClassActionActivity.this,ActionSearchActivity.class);
                 intent.putExtra("classID",classID + "");
                 startActivity(intent);
             }

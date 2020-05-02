@@ -75,7 +75,7 @@ public class ClassAwardsActivity extends AppCompatActivity {
         ivSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ClassAwardsActivity.this,AnnoSearchActivity.class);
+                Intent intent = new Intent(ClassAwardsActivity.this,AwardSearchAcitivty.class);
                 intent.putExtra("classID",classID + "");
                 startActivity(intent);
             }

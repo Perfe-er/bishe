@@ -73,7 +73,11 @@ public class AnnoFragment extends BaseFragment {
             }
         });
         final int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
-        initList();
+        if (userType == 2){
+            initListById();
+        }else {
+            initList();
+        }
         onItemClick();
         onItemLongClick();
 
@@ -88,6 +92,47 @@ public class AnnoFragment extends BaseFragment {
         return view;
     }
 
+
+    public void initListById(){
+        mAnnoList = new ArrayList<>();
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mAnnoListAdapter = new AnnoListAdapter(R.layout.item_anno_list,mAnnoList);
+        rvAnnoList.setLayoutManager(mLinearLayoutManager);
+        rvAnnoList.setAdapter(mAnnoListAdapter);
+        int uid = UserInfoManager.getInstance().getUid();
+        RetrofitManager.getInstance().createReq(AnnoInfo.class)
+                .listAnnoByAssistant(uid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpResult<List<Anno>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult<List<Anno>> listHttpResult) {
+                        if (listHttpResult.getCode() == 200 && listHttpResult.getData() != null){
+                            mAnnoList.clear();
+                            mAnnoList.addAll(listHttpResult.getData());
+                            mAnnoListAdapter.notifyDataSetChanged();
+                            annoRefresh.setRefreshing(false);
+                        }else {
+                            Toast.makeText(getContext(),"暂无公告",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 
     public void initList(){
         mAnnoList = new ArrayList<>();

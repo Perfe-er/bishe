@@ -17,11 +17,14 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.example.zwq.assistant.Adapter.MySignAdapter;
 import com.example.zwq.assistant.Adapter.SignListAdapter;
 import com.example.zwq.assistant.R;
 import com.example.zwq.assistant.Service.SignInfo;
 import com.example.zwq.assistant.been.HttpResult;
 import com.example.zwq.assistant.been.Sign;
+import com.example.zwq.assistant.been.SignRecord;
 import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.manager.UserInfoManager;
 
@@ -34,9 +37,9 @@ public class SignActivity extends AppCompatActivity {
     SwipeRefreshLayout signRefresh;
     RecyclerView signRecycle;
     ConstraintLayout conSign;
-    SignListAdapter mSignListAdapter;
+    MySignAdapter mMySignAdapter;
     LinearLayoutManager mLinearLayoutManager;
-    List<Sign> mSigns;
+    List<SignRecord> mSignRecords;
     private int userType;
     private int page;
 
@@ -85,27 +88,27 @@ public class SignActivity extends AppCompatActivity {
 
     //用户接收到的签到
     public void initUserList(){
-        mSigns = new ArrayList<>();
+        mSignRecords = new ArrayList<>();
         mLinearLayoutManager = new LinearLayoutManager(this);
-        mSignListAdapter = new SignListAdapter(R.layout.item_sign_list,mSigns);
-        signRecycle.setAdapter(mSignListAdapter);
+        mMySignAdapter = new MySignAdapter(R.layout.item_my_sign_list,mSignRecords);
+        signRecycle.setAdapter(mMySignAdapter);
         signRecycle.setLayoutManager(mLinearLayoutManager);
         RetrofitManager.getInstance().createReq(SignInfo.class)
                 .getSiginOfUserRecev(UserInfoManager.getInstance().getUid(),page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpResult<List<Sign>>>() {
+                .subscribe(new Observer<HttpResult<List<SignRecord>>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(HttpResult<List<Sign>> listHttpResult) {
+                    public void onNext(HttpResult<List<SignRecord>> listHttpResult) {
                         if (listHttpResult.getCode() == 200 && listHttpResult.getData() != null){
-                            mSigns.clear();
-                            mSigns.addAll(listHttpResult.getData());
-                            mSignListAdapter.notifyDataSetChanged();
+                            mSignRecords.clear();
+                            mSignRecords.addAll(listHttpResult.getData());
+                            mMySignAdapter.notifyDataSetChanged();
                             signRefresh.setRefreshing(false);
                         }
                     }
@@ -120,5 +123,14 @@ public class SignActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    public void onItemClick(){
+        mMySignAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
     }
 }

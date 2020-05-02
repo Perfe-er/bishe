@@ -64,6 +64,7 @@ public class AwardSignInfoActivity extends BaseActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_award_sign_info);
+        initView();
         Intent intent = getIntent();
         userID = Integer.parseInt(intent.getStringExtra("userID"));
         awardSignID = Integer.parseInt(intent.getStringExtra("awardSignID"));
@@ -72,8 +73,14 @@ public class AwardSignInfoActivity extends BaseActivity {
             tvPass.setTextColor(R.color.enable);
             tvPass.setEnabled(false);
         }
-
-        initView();
+        int userType = UserInfoManager.getInstance().getLoginUser().getStuType();
+        if (userType == 2){
+            tvPass.setVisibility(View.VISIBLE);
+            tvComment.setVisibility(View.VISIBLE);
+        }else {
+            tvPass.setVisibility(View.GONE);
+            tvComment.setVisibility(View.GONE);
+        }
         signInfo();
         commentList();
     }
