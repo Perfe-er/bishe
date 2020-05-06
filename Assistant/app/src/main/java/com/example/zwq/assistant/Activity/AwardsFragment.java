@@ -101,8 +101,12 @@ public class AwardsFragment extends BaseFragment {
             }
         });
 
-        onItemClick();
-        onItemLongClick();
+        if (userType == 0){
+            onItemClick();
+        }else {
+            onItemClick();
+            onItemLongClick();
+        }
         return view;
     }
 

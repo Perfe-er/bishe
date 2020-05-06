@@ -172,6 +172,11 @@ class SignDao : BaseDao() {
         val sign = getSiginById(signId)
         if (sign == null) {
             writeError("id错误", 400, call)
+           return
+        }
+        if (sign.signType == 1){
+            writeError("签到已结束，无法签到", 400, call)
+           return
         }
         val signRecord = SignRecord()
         signRecord.signDate = signDate
@@ -181,7 +186,7 @@ class SignDao : BaseDao() {
         val rId = JdbcConnection.bootstrap.query(signRecord).insert()
         signRecord.signRecordId = rId
         signRecord.sign = sign
-        writeGsonResponds(JSON.toJSONString(HttpResult<SignRecord>(signRecord, 200, "")), call)
+        writeGsonResponds(JSON.toJSONString(HttpResult<SignRecord>(signRecord, 200, "签到成功")), call)
     }
 
     suspend fun endSign(call: ApplicationCall){

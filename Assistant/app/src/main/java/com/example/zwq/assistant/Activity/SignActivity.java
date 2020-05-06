@@ -83,6 +83,7 @@ public class SignActivity extends AppCompatActivity {
         });
         signRecycle = findViewById(R.id.signRecycle);
         initUserList();
+        onItemClick();
     }
 
 
@@ -129,7 +130,10 @@ public class SignActivity extends AppCompatActivity {
         mMySignAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                int signID = mSignRecords.get(position).getSignId();
+                Intent intent = new Intent(SignActivity.this,StuSignActivity.class);
+                intent.putExtra("signID",signID + "");
+                startActivity(intent);
             }
         });
     }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.StuSignActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/textView66"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="打卡签到"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivReturn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/back_whait" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/mapview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#fff"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tvDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="距离目的地："
+            android:textColor="#000000"
+            android:layout_margin="10dp"/>
+
+        <RelativeLayout
+            android:id="@+id/Arrive"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/restaurant_btbg_gray">
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="18:00:00"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="打卡签到"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -26,7 +26,7 @@ public class CosManager {
 
 
     String bucket = "13758648443-1301628623"; //存储桶，格式：BucketName-APPID
-    private String cosPathSplit = "assistant"; //对象在存储桶中的位置标识符，即称对象键
+    private String cosPathSplit = ".doc"; //对象在存储桶中的位置标识符，即称对象键
     private String region = "ap-shanghai";
     // 创建 CosXmlServiceConfig 对象，根据需要修改默认的配置参数
     private CosXmlServiceConfig serviceConfig = new CosXmlServiceConfig.Builder()
@@ -106,7 +106,7 @@ public class CosManager {
     public void downLoad(String url, CosXmlProgressListener progressListener, CosXmlResultListener resultListener) {
         Context applicationContext = AppCache.getContext(); // application context
         String savePathDir = applicationContext.getExternalCacheDir().toString(); //本地目录路径
-        String savedFileName = "exampleobject";//本地保存的文件名，若不填（null），则与 COS 上的文件名一样
+        String savedFileName = null;//本地保存的文件名，若不填（null），则与 COS 上的文件名一样
 //下载对象
         TransferConfig transferConfig = new TransferConfig.Builder().build();
 //初始化 TransferManager

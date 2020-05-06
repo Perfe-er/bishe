@@ -83,14 +83,20 @@ public class ActionFragment extends BaseFragment {
             public void onRefresh() {
                 if (userType == 2){
                     assistantList();
+
                 }else {
                     initList();
                 }
                 Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
             }
         });
-        onItemClick();
-        onItemLongClick();
+        if (userType == 0){
+            onItemClick();
+        }else {
+            onItemClick();
+            onItemLongClick();
+        }
+
         return view;
     }
 

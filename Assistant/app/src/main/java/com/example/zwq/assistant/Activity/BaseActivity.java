@@ -1,13 +1,20 @@
 package com.example.zwq.assistant.Activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
+import android.widget.Toast;
 
 
+import com.baidu.mapapi.SDKInitializer;
 import com.example.zwq.assistant.util.Handler.CommonDoHandler;
 import com.example.zwq.assistant.util.Handler.CommonHandler;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener, CommonDoHandler {

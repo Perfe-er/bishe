@@ -3,6 +3,7 @@ package com.example.zwq.assistant;
 import android.app.Application;
 
 import com.example.zwq.assistant.manager.CosManager;
+import com.example.zwq.assistant.manager.HeadManager;
 import com.example.zwq.assistant.manager.UserInfoManager;
 import com.hapi.ut.AppCache;
 import com.hapi.ut.helper.ActivityManager;
@@ -18,5 +19,6 @@ public class App extends Application {
         ActivityManager.get().init(this);
         UserInfoManager.getInstance().init();
         CosManager.getInstance().init(BuildConfig.cosSecretId,BuildConfig.cosSecretKey);
+        HeadManager.getInstance().init(BuildConfig.cosSecretId,BuildConfig.cosSecretKey);
     }
 }

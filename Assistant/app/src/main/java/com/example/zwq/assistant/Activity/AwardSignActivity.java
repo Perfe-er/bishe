@@ -65,7 +65,7 @@ public class AwardSignActivity extends AppCompatActivity {
                 openSystemFile();
             }
         });
-        btnSign = findViewById(R.id.tvSign1);
+        btnSign = findViewById(R.id.tvSign);
         btnSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

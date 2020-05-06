@@ -28,7 +28,6 @@ class AnnoDao : BaseDao() {
 
         val request = call.request
         val keyWorlds = request.queryParameters["keyWorlds"]
-        val classID : Int = request.queryParameters["classID"]?.toInt()?:0
         val annoRes = ArrayList<Anno>()
         if (!TextUtils.isEmpty(keyWorlds)) {
                 val annos =

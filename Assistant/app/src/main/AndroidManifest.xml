@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.zwq.assistant">
-
+    <!-- 这个权限用于进行网络定位 -->
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.SignInfoActivity"></activity>
+        <activity android:name=".Activity.StuSignActivity"></activity>
+        <activity android:name=".Activity.SignInfoActivity" />
         <activity android:name=".Activity.SignRecordActivity" />
         <activity android:name=".Activity.SignPubActivity" />
         <activity android:name=".Activity.SignActivity" />
@@ -74,27 +75,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.BaseActivity" />
 
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_security_config" />
 
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
-        <service android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote"/>
-
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="axujxQG8E3VK5ShUBUoMv788CqC20D3U" />
 
-    </application>
-    <!-- 这个权限用于进行网络定位 -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+    </application> <!-- 这个权限用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 这个权限用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />

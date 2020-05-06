@@ -36,6 +36,6 @@ public interface AnnoInfo {
                                          @Field("releDate") Long releDate,@Field("classIDs") String classIDs);
 
     @GET("/searchAnno")
-    Observable<HttpResult<List<Anno>>> searchAnno(@Query("classID") int classID,@Query("keyWorlds") String keyWorlds);
+    Observable<HttpResult<List<Anno>>> searchAnno(@Query("keyWorlds") String keyWorlds);
 
 }

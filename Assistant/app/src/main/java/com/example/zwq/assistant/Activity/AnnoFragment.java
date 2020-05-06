@@ -78,8 +78,12 @@ public class AnnoFragment extends BaseFragment {
         }else {
             initList();
         }
-        onItemClick();
-        onItemLongClick();
+        if (userType == 0){
+            onItemClick();
+        }else {
+            onItemClick();
+            onItemLongClick();
+        }
 
         annoRefresh.setColorSchemeColors(R.color.colorPrimary);
         annoRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

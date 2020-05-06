@@ -41,7 +41,7 @@ public class AnnoSearchActivity extends BaseActivity {
     AnnoListAdapter mAnnoListAdapter;
     LinearLayoutManager mLinearLayoutManager;
     List<Anno> mAnnos;
-    private int classID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +85,9 @@ public class AnnoSearchActivity extends BaseActivity {
         mLinearLayoutManager = new LinearLayoutManager(this);
         searchRecycle.setLayoutManager(mLinearLayoutManager);
         searchRecycle.setAdapter(mAnnoListAdapter);
-        int thisClassID;
-        if (UserInfoManager.getInstance().getLoginUser().getStuType() == 2){
-            Intent intent = getIntent();
-            classID = Integer.parseInt(intent.getStringExtra("classID"));
-            thisClassID = classID;
-        }else {
-            thisClassID = UserInfoManager.getInstance().getLoginUser().getClassID();
-        }
         String keyWords = etKeyWords.getText().toString();
         RetrofitManager.getInstance().createReq(AnnoInfo.class)
-                .searchAnno(thisClassID,keyWords)
+                .searchAnno(keyWords)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HttpResult<List<Anno>>>() {

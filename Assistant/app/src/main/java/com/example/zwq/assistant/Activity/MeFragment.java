@@ -2,11 +2,15 @@ package com.example.zwq.assistant.Activity;
 
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,8 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.zwq.assistant.R;
 import com.example.zwq.assistant.manager.CosManager;
+import com.example.zwq.assistant.manager.HeadManager;
 import com.example.zwq.assistant.manager.RetrofitManager;
 import com.example.zwq.assistant.Service.UserInfo;
 import com.example.zwq.assistant.been.HttpResult;
@@ -39,6 +45,8 @@ import com.tencent.cos.xml.model.CosXmlResult;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -86,6 +94,7 @@ public class MeFragment extends BaseFragment {
     private TextView cancel;
     private String path;//图片路径
     private Uri imageUri;
+    private Uri uritempFile;
     public static final int NONE = 0;
     public static final int PHOTO_CAMERA = 1;// 相机拍照
     public static final int PHOTO_COMPILE = 2; // 编辑图片
@@ -209,7 +218,6 @@ public class MeFragment extends BaseFragment {
                     int permission = ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA);
                     if (permission == PackageManager.PERMISSION_GRANTED) {
                         //如果有了相机的权限就调用相机
-//                        intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         //设置图片的名称
                         ImageName = "/" + getStringToday() + ".jpg";
 
@@ -360,15 +368,16 @@ public class MeFragment extends BaseFragment {
             //裁剪图片
             imageUri = data.getData();
             startPhotoZoom(imageUri);
+            return;
         }
 
         // 裁剪照片的处理结果
         if (requestCode == PHOTO_RESOULT) {
-            if (data != null) {
                 setPicToView(data);
+
                 String uid = String.valueOf(UserInfoManager.getInstance().getUid());
                 CosXmlProgressListener progressListener = null;
-                CosManager.ICosXmlResultListener resultListener = new CosManager.ICosXmlResultListener() {
+                HeadManager.ICosXmlResultListener resultListener = new HeadManager.ICosXmlResultListener() {
                     @Override
                     public void onSuccess(String url) {
                         RetrofitManager.getInstance().createReq(UserInfo.class)
@@ -400,34 +409,39 @@ public class MeFragment extends BaseFragment {
 
                     @Override
                     public void onFail(int code, String msg) {
-                        Toast.makeText(getContext(),"上传失败",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "上传失败", Toast.LENGTH_SHORT).show();
                     }
                 };
-                CosManager.getInstance().uploadFile(path,uid,progressListener,resultListener);
+                HeadManager.getInstance().uploadFile(path,uid,progressListener,resultListener);
 
             }
 
         }
 
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-    /**调用系统的裁剪图片功能
-     *
-     * @param
-     */
     public void startPhotoZoom(Uri uri) {
-
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+        }
+        // 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
         intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽高的比例
+        intent.putExtra("scale", true);
+
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 64);
-        intent.putExtra("outputY", 64);
-        intent.putExtra("return-data", true);
 
+        //输出的宽高
+
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
+
+        intent.putExtra("return-data", true);
+        uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" + ImageName);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true); // no face detection
+        //创建file文件，用于存储剪裁后的照片
         startActivityForResult(intent, PHOTO_RESOULT);
     }
 
@@ -450,15 +464,6 @@ public class MeFragment extends BaseFragment {
 
     }
 
-    private String pathFromUri(Uri imageUri) {
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getActivity().getContentResolver().query(imageUri, filePathColumn,
-                null, null, null);
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        path = cursor.getString(columnIndex);
-        return path ;
-    }
 
     private void getUserInfo() {
         RetrofitManager.getInstance()
@@ -503,7 +508,11 @@ public class MeFragment extends BaseFragment {
                                 conNumber.setVisibility(View.GONE);
                             }
                             String head = userHttpResult.getData().getHead();
-                            Glide.with(getContext()).load(head).into(ivHead);
+                            Glide.with(getContext())
+                                    .load(head)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .centerCrop()//会裁减图片填充布局
+                                    .into(ivHead);
                         } else {
                             Toast.makeText(getContext(), "获取失败", Toast.LENGTH_SHORT).show();
                         }

@@ -1,8 +1,11 @@
 package com.example.zwq.assistant.Activity;
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -15,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import com.example.zwq.assistant.R;
 import com.example.zwq.assistant.Service.AwardsInfo;
@@ -38,6 +42,8 @@ import java.util.Date;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -57,8 +63,9 @@ public class AwardsInfoActivity extends BaseActivity {
     TextView tvSignRecord;
     ImageView ivReturn;
     Button btnSign;
-    private Calendar cal;
     private int year,month,day;
+    private int hour,minute, seconds;
+    Calendar cal;
     private int awardID;
     private int releaseID;
     private String url;
@@ -96,7 +103,7 @@ public class AwardsInfoActivity extends BaseActivity {
         tvModify = findViewById(R.id.tvModify);
         tvSignRecord = findViewById(R.id.tvSignRecord);
         ivReturn = findViewById(R.id.ivReturn);
-        btnSign = findViewById(R.id.tvSign1);
+        btnSign = findViewById(R.id.tvSign);
         ivReturn.setOnClickListener(this);
         tvStarTime.setOnClickListener(this);
         tvEndTime.setOnClickListener(this);
@@ -111,7 +118,9 @@ public class AwardsInfoActivity extends BaseActivity {
 
     public void onClick(View view){
         DatePickerDialog.OnDateSetListener listener;
+        TimePickerDialog.OnTimeSetListener listener1;
         DatePickerDialog dialog;
+        TimePickerDialog dialog1;
         Intent intent;
         switch (view.getId()){
             case R.id.ivReturn:
@@ -120,22 +129,48 @@ public class AwardsInfoActivity extends BaseActivity {
             case R.id.tvStartTime:
                 listener = new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker arg0, int year, int month, int day) {
-                        tvStarTime.setText(year+"年"+ (++month) +"月"+day + "日");      //将选择的日期显示到TextView中,因为之前获取month直接使用，所以不需要+1，这个地方需要显示，所以+1
+                    public void onDateSet(DatePicker arg0, int y, int m, int d) {
+                        tvStarTime.setText(y+"年"+ (++m) +"月"+d + "日 "+hour+":"+minute+":"+seconds);
+                        year = y;
+                        month = m;
+                        day = d;
+                    }
+                };
+                listener1 = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int min) {
+                        tvStarTime.setText(year+"年"+ (++month) +"月"+day + "日 "+hourOfDay+":"+min);
+                        hour = hourOfDay;
+                        minute = min;
                     }
                 };
                 dialog = new DatePickerDialog(this, 0,listener,year,month,day);//后边三个参数为显示dialog时默认的日期，月份从0开始，0-11对应1-12个月
+                dialog1 = new TimePickerDialog(this,0,listener1,hour,minute,true);
                 dialog.show();
+                dialog1.show();
                 break;
             case R.id.tvEndTime:
                 listener = new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker arg0, int year, int month, int day) {
-                        tvEndTime.setText(year +"年"+(++month)+"月"+day + "日");
+                    public void onDateSet(DatePicker arg0, int y, int m, int d) {
+                        tvEndTime.setText(y+"年"+ (++m) +"月"+d + "日 "+hour+":"+minute+":"+seconds);
+                        year = y;
+                        month = m;
+                        day = d;
                     }
                 };
-                dialog = new DatePickerDialog(this, 0,listener,year,month,day);
+                listener1 = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int min) {
+                        tvEndTime.setText(year+"年"+ (++month) +"月"+day + "日 "+hourOfDay+":"+min);
+                        hour = hourOfDay;
+                        minute = min;
+                    }
+                };
+                dialog = new DatePickerDialog(this, 0,listener,year,month,day);//后边三个参数为显示dialog时默认的日期，月份从0开始，0-11对应1-12个月
+                dialog1 = new TimePickerDialog(this,0,listener1,hour,minute,true);
                 dialog.show();
+                dialog1.show();
                 break;
             case R.id.tvSave:
                 saveAwards();
@@ -155,7 +190,7 @@ public class AwardsInfoActivity extends BaseActivity {
             case R.id.tvModifuFill:
                 openSystemFile();
                 break;
-            case R.id.tvSign1:
+            case R.id.tvSign:
                 intent = new Intent(AwardsInfoActivity.this,AwardSignActivity.class);
                 intent.putExtra("awardID",awardID + "");
                 startActivity(intent);
@@ -168,6 +203,22 @@ public class AwardsInfoActivity extends BaseActivity {
         }
 
 
+    }
+//权限动态申请
+
+    public void requestAllPower() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //如果应用之前请求过此权限但用户拒绝了请求，返回 true。
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            }
+        }
     }
 
     public void downLoad(){
@@ -186,41 +237,10 @@ public class AwardsInfoActivity extends BaseActivity {
         CosManager.getInstance().downLoad(url,progressListener,resultListener);
     }
 
-    public void openSystemFile() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        // 所有类型
-        intent.setType("*/*");
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        try {
-            startActivityForResult(Intent.createChooser(intent, "请选择文件"), 1);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "请安装文件管理器", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
-            if (null != uri) {
-                String path = ContentUriUtil.getPath(this, uri);
-                if (path != null) {
-                    tvPath.setText(path);
-                }else {
-                    Toast.makeText(AwardsInfoActivity.this,"文件不合法",Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
     private void saveAwards(){
         String title = etTitle.getText().toString();
         String content = etTitle.getText().toString();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         Date startTime1 = null;
         try {
             startTime1 = sdf.parse(tvStarTime.getText().toString());
@@ -284,6 +304,39 @@ public class AwardsInfoActivity extends BaseActivity {
 
     }
 
+    public void openSystemFile() {
+        requestAllPower();
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        // 所有类型
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            startActivityForResult(Intent.createChooser(intent, "请选择文件"), 1);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "请安装文件管理器", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getData();
+            if (null != uri) {
+                String path = ContentUriUtil.getPath(this, uri);
+                if (path != null) {
+                    tvPath.setText(path);
+                }else {
+                    Toast.makeText(AwardsInfoActivity.this,"文件不合法",Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+
     private void intentInfo(){
         Intent intent = getIntent();
         awardID = Integer.parseInt(intent.getStringExtra("awardID"));
@@ -342,10 +395,13 @@ public class AwardsInfoActivity extends BaseActivity {
     }
     //获取当前日期
     private void getDate() {
-        cal=Calendar.getInstance();
-        year=cal.get(Calendar.YEAR);       //获取年月日时分秒
-        month=cal.get(Calendar.MONTH);   //获取到的月份是从0开始计数
-        day=cal.get(Calendar.DAY_OF_MONTH);
+        cal = Calendar.getInstance();
+        year = cal.get(Calendar.YEAR);//获取当前年
+        month = cal.get(Calendar.MONTH);//月份从0开始计算的
+        day = cal.get(Calendar.DATE);//获取日
+        hour = cal.get(Calendar.HOUR);//获取小时
+        minute = cal.get(Calendar.MINUTE);//获取分钟
+        seconds = cal.get(Calendar.SECOND);//获取秒钟
     }
 
 }

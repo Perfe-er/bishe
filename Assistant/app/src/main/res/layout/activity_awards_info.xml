@@ -203,7 +203,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvModify" />
 
     <Button
-        android:id="@+id/tvSign1"
+        android:id="@+id/tvSign"
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"

@@ -33,4 +33,8 @@ public interface SignInfo {
     @GET("/getSignedUser")
     Observable<HttpResult<List<User>>> getSignedUser(@Query("signID") int signID, @Query("type") int type);
 
+    @FormUrlEncoded
+    @POST("/sign")
+    Observable<HttpResult<SignRecord>> sign(@Field("signID") int signID,@Field("uid") int uid,@Field("signDate") long signDate);
+
 }

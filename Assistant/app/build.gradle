@@ -45,10 +45,10 @@ android {
         }
     }
 
-    sourceSets{
-        main{
+    sourceSets {
+        main {
             jniLibs.srcDir 'libs'
-            jni.srcDirs = []    //disable automatic ndk-build
+            jni.srcDirs = []    //禁用自动ndk-build
         }
     }
 }
