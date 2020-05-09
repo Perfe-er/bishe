@@ -36,10 +36,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnnoFragment extends BaseFragment {
-    RecyclerView rvAnnoList;
-    List<Anno> mAnnoList;
     ImageView ivAdd;
     ImageView ivSearch;
+    RecyclerView rvAnnoList;
+    List<Anno> mAnnoList;
     AnnoListAdapter mAnnoListAdapter;
     LinearLayoutManager mLinearLayoutManager;
     SwipeRefreshLayout annoRefresh;
@@ -91,8 +91,12 @@ public class AnnoFragment extends BaseFragment {
             public void onRefresh() {
                 if (userType == 2){
                     initListById();
+                    onItemClick();
+                    onItemLongClick();
                 }else {
                     initList();
+                    onItemClick();
+                    onItemLongClick();
                 }
                 Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
             }

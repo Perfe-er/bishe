@@ -74,16 +74,17 @@ public class SignActivity extends AppCompatActivity {
                 finish();
             }
         });
+        signRecycle = findViewById(R.id.signRecycle);
+        initUserList();
+        onItemClick();
         signRefresh = findViewById(R.id.signRefresh);
         signRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 initUserList();
+                onItemClick();
             }
         });
-        signRecycle = findViewById(R.id.signRecycle);
-        initUserList();
-        onItemClick();
     }
 
 

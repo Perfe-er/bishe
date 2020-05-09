@@ -53,6 +53,7 @@ public class SignRecordActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 initList();
+                onItemClick();
             }
         });
         signRecycle = findViewById(R.id.signRecycle);

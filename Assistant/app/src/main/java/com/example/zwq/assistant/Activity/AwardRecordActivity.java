@@ -65,6 +65,7 @@ public class AwardRecordActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 initList();
+                onItemClick();
                 Toast.makeText(AwardRecordActivity.this,"刷新成功",Toast.LENGTH_SHORT).show();
             }
         });

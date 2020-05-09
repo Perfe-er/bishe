@@ -1,6 +1,8 @@
 package com.example.zwq.assistant.Activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -83,9 +85,12 @@ public class ActionFragment extends BaseFragment {
             public void onRefresh() {
                 if (userType == 2){
                     assistantList();
-
+                    onItemClick();
+                    onItemLongClick();
                 }else {
                     initList();
+                    onItemClick();
+                    onItemLongClick();
                 }
                 Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
             }
@@ -210,37 +215,44 @@ public class ActionFragment extends BaseFragment {
             @Override
             public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
                 int actID = mActivities.get(position).getActID();
-                RetrofitManager.getInstance().createReq(ActivityInfo.class)
-                        .deleteActivity(actID)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<HttpResult<Activity>>() {
+                new AlertDialog.Builder(getContext()).setTitle("是否删除")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onSubscribe(Disposable d) {
+                            public void onClick(DialogInterface dialog, int which) {
+                                RetrofitManager.getInstance().createReq(ActivityInfo.class)
+                                        .deleteActivity(actID)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Observer<HttpResult<Activity>>() {
+                                            @Override
+                                            public void onSubscribe(Disposable d) {
 
+                                            }
+
+                                            @Override
+                                            public void onNext(HttpResult<Activity> activityHttpResult) {
+                                                if (activityHttpResult.getCode() == 200 ){
+                                                    mActivities.remove(position);
+                                                    mActivityAdapter.notifyDataSetChanged();
+                                                    Toast.makeText(getContext(),"删除成功",Toast.LENGTH_SHORT).show();
+                                                }else {
+                                                    Toast.makeText(getContext(),"删除失败",Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+
+                                            }
+
+                                            @Override
+                                            public void onComplete() {
+
+                                            }
+                                        });
                             }
+                        }).setNegativeButton("取消",null).show();
 
-                            @Override
-                            public void onNext(HttpResult<Activity> activityHttpResult) {
-                                if (activityHttpResult.getCode() == 200 ){
-                                    mActivities.remove(position);
-                                    mActivityAdapter.notifyDataSetChanged();
-                                    Toast.makeText(getContext(),"删除成功",Toast.LENGTH_SHORT).show();
-                                }else {
-                                    Toast.makeText(getContext(),"删除失败",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
                 return false;
             }
         });

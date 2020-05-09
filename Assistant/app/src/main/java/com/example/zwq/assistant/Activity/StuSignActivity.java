@@ -187,7 +187,7 @@ public class StuSignActivity extends BaseActivity implements SensorEventListener
             BDLocation location = (BDLocation) msg.obj;
             LatLng LocationPoint = new LatLng(location.getLatitude(), location.getLongitude());
             //打卡范围
-            mDestinationPoint = new LatLng(28.951441,120.938619);//假设公司坐标
+            mDestinationPoint = new LatLng(28.951441,120.938619);//假设打卡坐标
 //            mDestinationPoint = new LatLng(location.getLatitude() ,location.getLongitude());
             setCircleOptions();
             //计算两点距离,单位：米

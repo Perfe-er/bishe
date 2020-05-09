@@ -2,9 +2,14 @@ package com.example.zwq.assistant.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.zwq.assistant.Activity.AnnoInfoActivity;
 import com.example.zwq.assistant.R;
 import com.example.zwq.assistant.Service.UserInfo;
 import com.example.zwq.assistant.been.Anno;
@@ -22,10 +27,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class AnnoListAdapter extends BaseQuickAdapter<Anno, BaseViewHolder> {
+public class AnnoListAdapter extends BaseQuickAdapter<Anno, BaseViewHolder>{
 
     public AnnoListAdapter(int layoutResId, @Nullable List<Anno> annoList) {
         super(layoutResId, annoList);
+
     }
 
     @Override
@@ -67,6 +73,7 @@ public class AnnoListAdapter extends BaseQuickAdapter<Anno, BaseViewHolder> {
 
                     }
                 });
+
     }
 
 }

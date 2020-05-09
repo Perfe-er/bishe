@@ -2,16 +2,13 @@ package com.example.zwq.assistant.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.MessagePattern;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.zwq.assistant.Activity.ClassManageActivity;
-import com.example.zwq.assistant.Activity.MyClassFragment;
 import com.example.zwq.assistant.R;
 import com.example.zwq.assistant.Service.UserInfo;
 import com.example.zwq.assistant.been.Class;
@@ -30,10 +27,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class BanjiAdapter extends RecyclerView.Adapter<BanjiAdapter.ViewHolder> {
+public class BanjiAdapter extends RecyclerView.Adapter<BanjiAdapter.ViewHolder> implements View.OnLongClickListener {
     private List<Class> mClasses;
     private Context context;
-    private View inflater;
     private onItemLongClickListener itemLongClickListener;
 
 
@@ -42,34 +38,34 @@ public class BanjiAdapter extends RecyclerView.Adapter<BanjiAdapter.ViewHolder> 
         this.context = context;
     }
 
+
+
     //条目长按接口
     public interface onItemLongClickListener {
-        void onItemLongClick(View view, int position,int classID);
+        void onItemLongClick(View view, int position);
     }
 
-    //设置提供监听方法
-    public void setOnItemLongClickListener(BanjiAdapter.onItemLongClickListener onItemLongClickListener) {
-        this.itemLongClickListener = onItemLongClickListener;
+    public void setOnItemClickListener(onItemLongClickListener listener) {
+        this.itemLongClickListener = listener;
     }
+
+    @Override
+    public boolean onLongClick(View v) {
+        Log.d("TAG", "onLongClick: 长按");
+        if (itemLongClickListener != null) {
+            Log.d("TAG", "onLongClick: 长按事件");
+            itemLongClickListener.onItemLongClick(v, (int) v.getTag());//注意这里使用getTag方法获取position
+        }
+        return true;
+    }
+
 
     @NonNull
     @Override
     public BanjiAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        inflater = LayoutInflater.from(context).inflate(R.layout.item_class,parent,false);
-        final ViewHolder holder = new ViewHolder(inflater);
-        inflater.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                //获取view对应的位置
-                int position=holder.getLayoutPosition();
-                int classID = mClasses.get(position).getClassID();
-                if (itemLongClickListener!=null){
-                    //回调监听
-                    itemLongClickListener.onItemLongClick(v,position,classID);
-                }
-                return true;
-            }
-        });
+        View view = LayoutInflater.from(context).inflate(R.layout.item_class,parent,false);
+        final ViewHolder holder = new ViewHolder(view);
+        view.setOnLongClickListener(this);
         return holder;
     }
 
@@ -77,6 +73,8 @@ public class BanjiAdapter extends RecyclerView.Adapter<BanjiAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull final BanjiAdapter.ViewHolder holder, final int position) {
             final Class aClass = mClasses.get(position);
             holder.classID = aClass.getClassID();
+            holder.itemView.setTag(position);
+            holder.itemView.setOnLongClickListener(this);
             holder.tvClassName.setText(aClass.getClassName());
             RetrofitManager.getInstance().createReq(UserInfo.class)
                 .getUserInfoById(aClass.getFounderID())
@@ -107,7 +105,9 @@ public class BanjiAdapter extends RecyclerView.Adapter<BanjiAdapter.ViewHolder> 
 
                     }
                 });
+
     }
+
 
     @Override
     public int getItemCount() {

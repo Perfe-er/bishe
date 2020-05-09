@@ -55,16 +55,19 @@ public class LeaveRecordActivity extends BaseActivity {
                 finish();
             }
         });
-        refreshLeave.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                initList();
-            }
-        });
         initList();
         onItemChildClick();
         onItemClick();
         onItemLongClick();
+        refreshLeave.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initList();
+                onItemChildClick();
+                onItemClick();
+                onItemLongClick();
+            }
+        });
     }
 
     public void onItemLongClick(){
@@ -141,7 +144,7 @@ public class LeaveRecordActivity extends BaseActivity {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()){
-                    case R.id.tvStuID:
+                    case R.id.ivPhone:
                         String phone = mLeaveListAdapter.getPhone();
                         Intent intent = new Intent(Intent.ACTION_DIAL);
                         Uri data = Uri.parse("tel:" + phone);

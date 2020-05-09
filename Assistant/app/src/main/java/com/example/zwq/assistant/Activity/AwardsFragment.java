@@ -78,8 +78,12 @@ public class AwardsFragment extends BaseFragment {
             public void onRefresh() {
                 if (userType == 2){
                     assistantList();
+                    onItemClick();
+                    onItemLongClick();
                 }else {
                     initList();
+                    onItemClick();
+                    onItemLongClick();
                 }
                 Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
             }
