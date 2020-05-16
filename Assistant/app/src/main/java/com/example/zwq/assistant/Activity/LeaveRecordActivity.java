@@ -96,7 +96,7 @@ public class LeaveRecordActivity extends BaseActivity {
                                                 public void onNext(HttpResult<Leave> leaveHttpResult) {
                                                     Toast.makeText(LeaveRecordActivity.this,leaveHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
                                                     if (leaveHttpResult.getCode() == 200) {
-                                                        mLeaves.remove(leaveID);
+                                                        mLeaves.remove(position);
                                                         mLeaveListAdapter.notifyDataSetChanged();
                                                     }else {
                                                         return;

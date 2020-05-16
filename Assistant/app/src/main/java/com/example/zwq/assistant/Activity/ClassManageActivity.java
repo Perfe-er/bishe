@@ -31,6 +31,7 @@ import java.util.List;
 public class ClassManageActivity extends BaseActivity {
     ImageView ivReturn;
     ImageView ivMore;
+    ImageView ivSearch;
     TextView tvClassName;
     RecyclerView rvStudent;
     ClassmateAdapter mClassmateAdapter;
@@ -47,6 +48,15 @@ public class ClassManageActivity extends BaseActivity {
         rvStudent = findViewById(R.id.rvStudent);
         ivReturn = findViewById(R.id.ivReturn);
         tvClassName = findViewById(R.id.tvClassName);
+        ivSearch = findViewById(R.id.ivSearch);
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ClassManageActivity.this, ClassComActivity.class);
+                intent.putExtra("classID",classID + "");
+                startActivity(intent);
+            }
+        });
         ivReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,10 +138,6 @@ public class ClassManageActivity extends BaseActivity {
                 Toast.makeText(ClassManageActivity.this,"个人信息查询",Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            public void onChatItemClick(ImageView ivChat) {
-                Toast.makeText(ClassManageActivity.this,"聊天",Toast.LENGTH_SHORT).show();
-            }
 
             @Override
             public void onPhoneItemClick(ImageView ivPhone,String phone) {

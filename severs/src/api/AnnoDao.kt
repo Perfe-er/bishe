@@ -47,6 +47,7 @@ class AnnoDao : BaseDao() {
         val annoRes = ArrayList<Anno>();
         val annos =
             JdbcConnection.bootstrap.queryTable(Anno::class.java)
+                .sort(Sorts.DESC, "annoID")
                 .addCondition { c -> c.add(C.eq("releaseID", releaseID)) }
                 .list(Anno::class.java)
         annoRes.addAll(annos)

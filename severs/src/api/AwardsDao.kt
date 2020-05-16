@@ -239,11 +239,13 @@ class AwardsDao : BaseDao() {
         val awardsRes = ArrayList<AwardsPub>()
         val awards =
             JdbcConnection.bootstrap.queryTable(AwardsPub::class.java)
+                .sort(Sorts.DESC, "awardsID")
                 .addCondition { c -> c.add(C.eq("releaseID", releaseID)) }
                 .list(AwardsPub::class.java)
         awardsRes.addAll(awards)
         writeGsonResponds(JSON.toJSONString(HttpResult(awardsRes, 200, "成功")), call)
     }
+
     suspend fun getListAwards(call: ApplicationCall){
         val request = call.request
         val classID = request.queryParameters["classID"]?.toInt()
@@ -265,6 +267,33 @@ class AwardsDao : BaseDao() {
             awardsRes.addAll(awards)
         }
         writeGsonResponds(JSON.toJSONString(HttpResult(awardsRes, 200, "成功")), call)
+    }
+
+    suspend fun deleteAwardsSign(call: ApplicationCall) {
+        val request = call.receiveParameters()
+        val awardSignID = request["awardSignID"]?.toInt()
+        val awardSign = AwardSign()
+        awardSign.awardSignID = awardSignID ?: 0
+        JdbcConnection.bootstrap.query(awardSign).delete()
+        writeGsonResponds(JSON.toJSONString(HttpResult(awardSign, 200, "取消报名")), call)
+    }
+
+    suspend fun modifyAwardsSign(call: ApplicationCall) {
+        val request = call.receiveParameters()
+        val awardSignID = request["awardSignID"]?.toInt()
+        var word: String? = request["word"] ?: ""  //文档地址　上传对象存储返回得到url
+        var date: Long = request["date"]?.toLong() ?: 0
+        val awardSign = AwardSign()
+        awardSign.awardSignID = awardSignID ?: 0
+        awardSign.word = word
+        awardSign.date = date
+        JdbcConnection.bootstrap.query(awardSign).setFields("word","date").update()
+        try {
+            writeGsonResponds(JSON.toJSONString(HttpResult(awardSign, 200, "修改成功")), call)
+        } catch (e: Exception) {
+            writeGsonResponds(JSON.toJSONString(HttpResult<Unit>(400, "修改失败${e.message}")), call)
+        }
+
     }
 
     suspend fun deleteAwards(call: ApplicationCall) {

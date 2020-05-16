@@ -68,14 +68,23 @@ class ActivityDao : BaseDao() {
         val classID:Int = request["classID"]?.toInt()?:0
         val actID:Int = request["actID"]?.toInt()?:0
         var receiveID:Int = getReceive(actID,classID)!!.receiveID
-        val actSign = ActSign()
-        actSign.receiveID = receiveID
-        actSign.stuID = stuID?:0
-        actSign.sign = sign?:0
-        actSign.signDate = signDate?:0
-        actSign.classID = classID
-        JdbcConnection.bootstrap.query(actSign).insert()
-        writeGsonResponds(JSON.toJSONString(HttpResult(actSign, 200, "报名成功")), call)
+        val signer = JdbcConnection.bootstrap.queryTable(ActSign::class.java).addCondition { c ->
+            c.add(C.eq("receiveID",receiveID))
+            c.add(C.eq("stuID",stuID))
+        }.list(ActSign::class.java)
+        if (signer.isEmpty()){
+            val actSign = ActSign()
+            actSign.receiveID = receiveID
+            actSign.stuID = stuID?:0
+            actSign.sign = sign?:0
+            actSign.signDate = signDate?:0
+            actSign.classID = classID
+            JdbcConnection.bootstrap.query(actSign).insert()
+            writeGsonResponds(JSON.toJSONString(HttpResult(actSign, 200, "报名成功")), call)
+        }else {
+            writeGsonResponds(JSON.toJSONString(HttpResult<Unit>(400, "你已报名，无法再次报名")), call)
+        }
+
     }
 
     suspend fun assistantList(call: ApplicationCall){
@@ -84,6 +93,7 @@ class ActivityDao : BaseDao() {
         val actRes = ArrayList<Activity>()
         val acts =
             JdbcConnection.bootstrap.queryTable(Activity::class.java)
+                .sort(Sorts.DESC, "actID")
                 .addCondition { c -> c.add(C.eq("actFouID", actFouID)) }
                 .list(Activity::class.java)
         actRes.addAll(acts)
@@ -192,6 +202,16 @@ class ActivityDao : BaseDao() {
         writeGsonResponds(JSON.toJSONString(HttpResult(activity, 200, "删除")), call)
     }
 
+    suspend fun deleteSign(call: ApplicationCall) {
+        val request = call.receiveParameters()
+        val actSignID = request["actSignID"]?.toInt()
+//        val stuID = request["stuID"]?.toInt()
+        val actSign = ActSign()
+        actSign.actSignID = actSignID ?: 0
+//        actSign.stuID = stuID ?:0
+        JdbcConnection.bootstrap.query(actSign).delete()
+        writeGsonResponds(JSON.toJSONString(HttpResult(actSign, 200, "删除")), call)
+    }
 
     suspend fun modifyActivity(call: ApplicationCall) {
 

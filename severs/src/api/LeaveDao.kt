@@ -155,7 +155,7 @@ class LeaveDao : BaseDao() {
     suspend fun delLeave(call: ApplicationCall) {
 
         val request = call.receiveParameters()
-        val ratify: Int = 0  //1：批准，2：不批准
+//        val ratify: Int = 0  //1：批准，2：不批准
         val leaveID: Int = request["leaveID"]?.toInt() ?: 0
         val uid: Int = request["uid"]?.toInt() ?: 0
         val leave = findLevelById(leaveID)

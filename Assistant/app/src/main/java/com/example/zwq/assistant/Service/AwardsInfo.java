@@ -1,5 +1,6 @@
 package com.example.zwq.assistant.Service;
 
+import com.example.zwq.assistant.been.ActSign;
 import com.example.zwq.assistant.been.AwardSign;
 import com.example.zwq.assistant.been.AwardSignComment;
 import com.example.zwq.assistant.been.Awards;
@@ -15,6 +16,15 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface AwardsInfo {
+
+    @FormUrlEncoded
+    @POST("/deleteAwardsSign")
+    Observable<HttpResult<AwardSign>> deleteAwardsSign(@Field("awardSignID") int awardSignID);
+
+    @FormUrlEncoded
+    @POST("/modifyAwardsSign")
+    Observable<HttpResult<AwardSign>> modifyAwardsSign(@Field("awardSignID") int awardSignID, @Field("word") String word,
+                                                     @Field("date") long date);
     @GET("/searchAwards")
     Observable<HttpResult<List<Awards>>> searchAwards(@Query("keyWorlds") String keyWorlds);
 

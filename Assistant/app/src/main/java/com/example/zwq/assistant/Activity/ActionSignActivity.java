@@ -71,6 +71,7 @@ public class ActionSignActivity extends BaseActivity implements CompoundButton.O
         }
         initView();
         initList();
+        onItemLongClick();
     }
 
     public void initView(){
@@ -90,6 +91,7 @@ public class ActionSignActivity extends BaseActivity implements CompoundButton.O
             @Override
             public void onRefresh() {
                 initList();
+                onItemLongClick();
                 Toast.makeText(ActionSignActivity.this,"刷新成功",Toast.LENGTH_SHORT).show();
             }
         });
@@ -134,6 +136,55 @@ public class ActionSignActivity extends BaseActivity implements CompoundButton.O
         }
     }
 
+    public void onItemLongClick(){
+        mActivitySignAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                int stuID = mActSigns.get(position).getStuID();
+                int actSignID = mActSigns.get(position).getActSignID();
+                if (stuID == UserInfoManager.getInstance().getUid()) {
+                    new android.app.AlertDialog.Builder(ActionSignActivity.this).setTitle("是否取消报名")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    RetrofitManager.getInstance().createReq(ActivityInfo.class)
+                                            .deleteSign(actSignID)
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(new Observer<HttpResult<ActSign>>() {
+                                                @Override
+                                                public void onSubscribe(Disposable d) {
+
+                                                }
+
+                                                @Override
+                                                public void onNext(HttpResult<ActSign> actSignHttpResult) {
+                                                    if (actSignHttpResult.getCode() == 200){
+                                                        Toast.makeText(ActionSignActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                                                    }else {
+                                                        Toast.makeText(ActionSignActivity.this,"删除失败",Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+
+                                                }
+
+                                                @Override
+                                                public void onComplete() {
+
+                                                }
+                                            });
+                                }
+                            }).setNegativeButton("取消",null).show();
+                }else {
+                    Toast.makeText(ActionSignActivity.this,"不是本人无法取消报名",Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+    }
     public void initList(){
         mActSigns = new ArrayList<>();
         mLinearLayoutManager = new LinearLayoutManager(this);

@@ -70,6 +70,17 @@ class UserDao : BaseDao() {
         writeGsonResponds(JSON.toJSONString(HttpResult<List<User>>(users,200,"")),call)
     }
 
+    suspend fun getClassCom(call: ApplicationCall){
+        val request = call.request
+        val classID = request.queryParameters["classID"]
+        val classID1 = Integer.valueOf(classID)
+        val stuType = 1
+        val users = JdbcConnection.bootstrap.queryTable(User::class.java).addCondition { c ->
+            c.add(C.eq("classID",classID1))
+            c.add(C.eq("stuType",stuType))
+        }.list(User::class.java)
+        writeGsonResponds(JSON.toJSONString(HttpResult<List<User>>(users,200,"")),call)
+    }
 
     suspend  fun getUserInfoById(call: ApplicationCall) {
         val request = call.request

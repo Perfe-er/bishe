@@ -41,6 +41,7 @@ public class MyClassActivity extends BaseActivity {
     ImageView ivAssistantSex;
     TextView tvAssistantName;
     TextView tvAssistantPhone;
+    TextView tvClassCom;
     ConstraintLayout conAssistant;
     ConstraintLayout conNoClass;
     ConstraintLayout conClassmate;
@@ -71,6 +72,7 @@ public class MyClassActivity extends BaseActivity {
         ivAssistantSex = findViewById(R.id.ivAssistantSex);
         tvAssistantName = findViewById(R.id.tvAssistantName);
         tvAssistantPhone = findViewById(R.id.tvAssistantPhone);
+        tvClassCom = findViewById(R.id.tvClassCom);
         conAssistant = findViewById(R.id.conAssistant);
         conNoClass = findViewById(R.id.conNoClass);
         conClassmate = findViewById(R.id.conClassmate);
@@ -78,6 +80,7 @@ public class MyClassActivity extends BaseActivity {
         ivReturn.setOnClickListener(this);
         ivSeekClass.setOnClickListener(this);
         ivAssistantPhone.setOnClickListener(this);
+        tvClassCom.setOnClickListener(this);
     }
 
 
@@ -98,7 +101,10 @@ public class MyClassActivity extends BaseActivity {
                 intent.putExtra("userID",userID + "");
                 startActivity(intent);
                 break;
-
+            case R.id.tvClassCom:
+                Intent intent1 = new Intent(this,ClassComActivity.class);
+                startActivity(intent1);
+                break;
         }
     }
 
@@ -202,11 +208,6 @@ public class MyClassActivity extends BaseActivity {
                 intent.putExtra("userID",userID + "");
                 startActivity(intent);
                Toast.makeText(MyClassActivity.this,"个人信息查询",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChatItemClick(ImageView ivChat) {
-                Toast.makeText(MyClassActivity.this,"聊天",Toast.LENGTH_SHORT).show();
             }
 
             @Override

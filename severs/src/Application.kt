@@ -204,6 +204,13 @@ fun Application.module(testing: Boolean = false) {
                 userDao.getUserInfoById(call)
             }
 
+            /**
+             * 查看班委
+             */
+            get("/getClassCom") {
+                userDao.getClassCom(call)
+            }
+
             get("/getClassmate"){
                 userDao.getClassmate(call)
             }
@@ -603,6 +610,27 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
             /**
+             * 修改报名文件
+             */
+            authenticate {
+                route("/modifyAwardsSign") {
+                    post {
+                        awardsDao.modifyAwardsSign(call)
+                    }
+                }
+            }
+            /**
+             * 取消报名
+             */
+            authenticate {
+                route("/deleteAwardsSign") {
+                    post {
+                        awardsDao.deleteAwardsSign(call)
+                    }
+                }
+            }
+
+            /**
              * 发布奖学金信息
              */
             authenticate {
@@ -664,6 +692,15 @@ fun Application.module(testing: Boolean = false) {
             }
 
             authenticate {
+                route("/deleteSign"){
+                    post {
+                        activityDao.deleteSign(call)
+                    }
+                }
+            }
+
+
+        authenticate {
                 route("/pubActivity"){
                     post {
                         activityDao.pubActivity(call)

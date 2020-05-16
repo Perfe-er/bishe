@@ -34,7 +34,6 @@ public class ClassmateAdapter extends RecyclerView.Adapter<ClassmateAdapter.View
 
     public interface OnItemClick {
         void onAllItemClick(int position,int userID);
-        void onChatItemClick(ImageView ivChat);
         void onPhoneItemClick(ImageView ivPhone,String phone);
     }
     @NonNull

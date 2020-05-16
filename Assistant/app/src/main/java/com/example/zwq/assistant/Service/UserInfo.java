@@ -43,6 +43,9 @@ public interface UserInfo {
     @GET("/getClassmate")
     Observable<HttpResult<List<User>>> getClassmate(@Query("classID") int classID);
 
+    @GET("/getClassCom")
+    Observable<HttpResult<List<User>>> getClassCom(@Query("classID") int classID);
+
     @GET("/getAssistantByClassID")
     Observable<HttpResult<User>> getAssistantByClassID(@Query("classID") int classID);
 

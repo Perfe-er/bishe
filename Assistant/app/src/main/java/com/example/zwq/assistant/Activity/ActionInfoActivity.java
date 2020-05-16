@@ -159,12 +159,10 @@ public class ActionInfoActivity extends BaseActivity {
 
                     @Override
                     public void onNext(HttpResult<Activity> activityHttpResult) {
+                        Toast.makeText(ActionInfoActivity.this,activityHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
                         if (activityHttpResult.getCode() == 200 ){
                             btnSign.setBackgroundResource(R.drawable.shape_login_no);
                             finish();
-                            Toast.makeText(ActionInfoActivity.this,"报名成功",Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(ActionInfoActivity.this,"报名失败",Toast.LENGTH_SHORT).show();
                         }
                     }
 

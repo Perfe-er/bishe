@@ -35,6 +35,10 @@ public interface ActivityInfo {
     Observable<HttpResult<Activity>> deleteActivity(@Field("actID") int actID);
 
     @FormUrlEncoded
+    @POST("/deleteSign")
+    Observable<HttpResult<ActSign>> deleteSign(@Field("actSignID") int actSignID);
+
+    @FormUrlEncoded
     @POST("/pubActivity")
     Observable<HttpResult<Activity>> pubActivity(@Field("actTitle") String actTitle,@Field("actContent") String actContent, @Field("actFouID") int actFouID,
                                          @Field("actDate") Long actDate,@Field("classIDs") String classIDs);
