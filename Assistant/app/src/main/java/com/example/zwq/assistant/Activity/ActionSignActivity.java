@@ -160,6 +160,8 @@ public class ActionSignActivity extends BaseActivity implements CompoundButton.O
                                                 @Override
                                                 public void onNext(HttpResult<ActSign> actSignHttpResult) {
                                                     if (actSignHttpResult.getCode() == 200){
+                                                        mActSigns.remove(position);
+                                                        mActivitySignAdapter.notifyDataSetChanged();
                                                         Toast.makeText(ActionSignActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
                                                     }else {
                                                         Toast.makeText(ActionSignActivity.this,"删除失败",Toast.LENGTH_SHORT).show();

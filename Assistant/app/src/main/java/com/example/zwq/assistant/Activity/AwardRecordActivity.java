@@ -52,7 +52,6 @@ public class AwardRecordActivity extends BaseActivity {
         awardID = Integer.parseInt(intent.getStringExtra("awardID"));
         initList();
         onItemClick();
-        onItemLongClick();
     }
 
     public void initView() {
@@ -71,7 +70,6 @@ public class AwardRecordActivity extends BaseActivity {
             public void onRefresh() {
                 initList();
                 onItemClick();
-                onItemLongClick();
                 Toast.makeText(AwardRecordActivity.this,"刷新成功",Toast.LENGTH_SHORT).show();
             }
         });
@@ -119,53 +117,7 @@ public class AwardRecordActivity extends BaseActivity {
                 });
     }
 
-    public void onItemLongClick(){
-        mAwardRecordAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-                int stuID = mAwardSigns.get(position).getUid();
-                int awardSignID = mAwardSigns.get(position).getAwardSignID();
-                if (stuID == UserInfoManager.getInstance().getUid()){
-                    new AlertDialog.Builder(AwardRecordActivity.this).setTitle("是否取消报名")
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    RetrofitManager.getInstance().createReq(AwardsInfo.class)
-                                            .deleteAwardsSign(awardSignID)
-                                            .subscribeOn(Schedulers.io())
-                                            .observeOn(AndroidSchedulers.mainThread())
-                                            .subscribe(new Observer<HttpResult<AwardSign>>() {
-                                                @Override
-                                                public void onSubscribe(Disposable d) {
 
-                                                }
-
-                                                @Override
-                                                public void onNext(HttpResult<AwardSign> awardSignHttpResult) {
-                                                    if (awardSignHttpResult.getCode() == 200) {
-                                                        Toast.makeText(AwardRecordActivity.this, "报名取消成功", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onError(Throwable e) {
-
-                                                }
-
-                                                @Override
-                                                public void onComplete() {
-
-                                                }
-                                            });
-                                }
-                            }).setNegativeButton("取消",null).show();
-                }else {
-                    Toast.makeText(AwardRecordActivity.this, "不是本人，无法操作", Toast.LENGTH_SHORT).show();
-                }
-                return false;
-            }
-        });
-    }
     public void onItemClick(){
         mAwardRecordAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

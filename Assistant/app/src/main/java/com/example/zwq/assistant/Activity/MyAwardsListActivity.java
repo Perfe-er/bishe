@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zwq.assistant.Adapter.MyAwardsAdapter;
@@ -55,11 +56,14 @@ public class MyAwardsListActivity extends AppCompatActivity {
         mineRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                initList();
+                onItemClick();
+                onItemLongClick();
             }
         });
         initList();
         onItemClick();
+        onItemLongClick();
     }
 
     public void initList(){
@@ -116,5 +120,53 @@ public class MyAwardsListActivity extends AppCompatActivity {
             }
         });
     }
+    public void onItemLongClick(){
+        mMyAwardsAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                int stuID = mAwardSigns.get(position).getUid();
+                int awardSignID = mAwardSigns.get(position).getAwardSignID();
+                if (stuID == UserInfoManager.getInstance().getUid()){
+                    new AlertDialog.Builder(MyAwardsListActivity.this).setTitle("是否取消报名")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    RetrofitManager.getInstance().createReq(AwardsInfo.class)
+                                            .deleteAwardsSign(awardSignID)
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(new Observer<HttpResult<AwardSign>>() {
+                                                @Override
+                                                public void onSubscribe(Disposable d) {
 
+                                                }
+
+                                                @Override
+                                                public void onNext(HttpResult<AwardSign> awardSignHttpResult) {
+                                                    if (awardSignHttpResult.getCode() == 200) {
+                                                        mAwardSigns.remove(position);
+                                                        mMyAwardsAdapter.notifyDataSetChanged();
+                                                        Toast.makeText(MyAwardsListActivity.this, "报名取消成功", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+
+                                                }
+
+                                                @Override
+                                                public void onComplete() {
+
+                                                }
+                                            });
+                                }
+                            }).setNegativeButton("取消",null).show();
+                }else {
+                    Toast.makeText(MyAwardsListActivity.this, "不是本人，无法操作", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+    }
 }
