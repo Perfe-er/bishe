@@ -202,7 +202,7 @@ public class AwardSignInfoActivity extends BaseActivity {
             @Override
             public void onSuccess(String url) {
                 RetrofitManager.getInstance().createReq(AwardsInfo.class)
-                        .modifyAwardsSign(awardSignID,path,date)
+                        .modifyAwardsSign(awardSignID,url,date)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<HttpResult<AwardSign>>() {
@@ -213,6 +213,7 @@ public class AwardSignInfoActivity extends BaseActivity {
 
                             @Override
                             public void onNext(HttpResult<AwardSign> awardSignHttpResult) {
+                                finish();
                                 Toast.makeText(AwardSignInfoActivity.this,awardSignHttpResult.getMsg(),Toast.LENGTH_SHORT).show();
                             }
 
